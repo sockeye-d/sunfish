@@ -28,3 +28,10 @@ theme/custom="uid://b5h26gykbdv4e"
 
 renderer/rendering_method="mobile"
 anti_aliasing/quality/msaa_2d=2
+
+[shader_globals]
+
+ui_scale={
+"type": "float",
+"value": 1.0
+}
