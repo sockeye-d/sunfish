@@ -10,7 +10,9 @@ var preview := BrushPreviewElement.new()
 
 
 func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
-	width = 5.0 * wb.draw_xform.get_scale().length()
+	width = 5.0 / wb.draw_scale
+	preview.width = width
+	preview.color = color
 	var display := Display.new([], [preview])
 	var mb := event as InputEventMouseButton
 	if mb:
@@ -41,18 +43,17 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 				el.color = color
 				el.width = width
 				display.elements = [el]
-		preview.brush_size = width
 		preview.position = mm.position
 	return display
 
 
 class BrushPreviewElement extends WhiteboardTool.PreviewElement:
 	var position: Vector2
-	var brush_size: float
+	var color: Color
+	var width: float
 	
 	func draw(control: Control, _wb: Whiteboard):
-		control.draw_circle(position, brush_size, Color.WHEAT, false, 0.5, true)
-		control.draw_circle(Vector2.ZERO, 10.0, Color.RED)
+		control.draw_circle(position, width, color, false, -2.0, false)
 
 
 class BrushElement extends WhiteboardTool.Element:
@@ -77,12 +78,11 @@ class BrushElement extends WhiteboardTool.Element:
 			var real_points: PackedVector2Array
 			real_points.resize(points.size() * 2)
 			for i in points.size() - 1:
-				if i == 0 or (points[i - 1] - points[i]).normalized().dot((points[i + 1] - points[i]).normalized()) > -0.5:
-					wb.draw_circle(points[i], width * 0.5, color, true, -1.0, true)
+				wb.draw_circle(points[i], width * 0.5, color, true, -1.0, false)
 				real_points[i * 2] = points[i]
 				real_points[i * 2 + 1] = points[i + 1]
-			wb.draw_circle(points[-1], width * 0.5, color, true, -1.0, true)
-			wb.draw_multiline(real_points, color, width, true)
+			wb.draw_circle(points[-1], width * 0.5, color, true, -1.0, false)
+			wb.draw_multiline(real_points, color, width, false)
 	
 	
 	func should_draw(at_pos: Vector2, threshold: float = width) -> bool:
