@@ -1,0 +1,9 @@
+description=An infinite canvas for anything
+icon=icon.svg
+name=sunfish
+tags=
+
+[version]
+isMono=false
+repo=/godotengine/godot-builds
+tagName=4.5.1-rc1
