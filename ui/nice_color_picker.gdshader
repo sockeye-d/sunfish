@@ -48,6 +48,8 @@ void vertex() {
 
 mat2 rot(float r) { return mat2(vec2(cos(r), -sin(r)), vec2(sin(r), cos(r))); }
 
+#define AA(value) smoothstep(aa_pixel, 0.0, value)
+
 void fragment() {
 	float hue = hsv.r;
 	float sat = hsv.g;
@@ -57,26 +59,26 @@ void fragment() {
 	float pixel = dFdx(uv.x);
 	float aa_pixel = pixel * 1.5;
 	float ui_pixel = pixel * ui_scale;
-	float donut_mask = smoothstep(aa_pixel, 0.0, donut(uv, 0.7, 1.0 - aa_pixel));
+	float donut_mask = AA(donut(uv, 0.7, 1.0 - aa_pixel));
 	vec2 square_size = vec2(0.7 - aa_pixel) * sqrt(0.5);
 	mat2 rotation = rot((-hue - 0.125) * TAU);
 	vec2 square_coords = (uv * rotation + square_size) / square_size * 0.5;
-	float square_mask = smoothstep(aa_pixel, 0.0, rectangle(uv * rotation, square_size));
+	float square_mask = AA(rectangle(uv * rotation, square_size));
 	COLOR = vec4(0);
 	float uv_angle = atan(uv.y, uv.x) / TAU;
 	COLOR = over(vec4(hsv2rgb(vec3(uv_angle, 1.0, 1.0)), donut_mask), COLOR);
 	COLOR = over(vec4(hsv2rgb(vec3(hue, clamp(square_coords.x, 0.0, 1.0), clamp(1.0 - square_coords.y, 0.0, 1.0))), square_mask), COLOR);
 	
 	vec2 sv_handle_pos = (vec2(sat, 1.0 - val) * (square_size / 0.5) - square_size) * inverse(rotation);
-	float sv_handle_mask_1 = smoothstep(aa_pixel, 0.0, donut(uv - sv_handle_pos, ui_pixel * 4.0, ui_pixel * 6.0));
-	float sv_handle_mask_2 = smoothstep(aa_pixel, 0.0, donut(uv - sv_handle_pos, ui_pixel * 5.0, ui_pixel * 5.0));
+	float sv_handle_mask_1 = AA(donut(uv - sv_handle_pos, ui_pixel * 4.0, ui_pixel * 6.0));
+	float sv_handle_mask_2 = AA(donut(uv - sv_handle_pos, ui_pixel * 5.0, ui_pixel * 5.0));
 	COLOR = over(vec4(vec3(1), sv_handle_mask_1), COLOR);
 	COLOR = over(vec4(vec3(0), sv_handle_mask_2), COLOR);
 	
 	vec2 h_pos = vec2(cos(hue * TAU), sin(hue * TAU));
 	float h_handle_sdf = line(uv, h_pos * (0.7 + ui_pixel * 2.0), h_pos * (1.0 - ui_pixel * 2.0));
-	float h_handle_mask_1 = smoothstep(aa_pixel, 0.0, h_handle_sdf - ui_pixel * 2.0);
-	float h_handle_mask_2 = smoothstep(aa_pixel, 0.0, h_handle_sdf - ui_pixel);
+	float h_handle_mask_1 = AA(h_handle_sdf - ui_pixel * 2.0);
+	float h_handle_mask_2 = AA(h_handle_sdf - ui_pixel);
 	COLOR = over(vec4(vec3(1), h_handle_mask_1), COLOR);
 	COLOR = over(vec4(vec3(0), h_handle_mask_2), COLOR);
 }

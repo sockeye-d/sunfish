@@ -13,12 +13,14 @@ config_version=5
 config/name="sunfish"
 run/main_scene="uid://cabo3vvcus82u"
 config/features=PackedStringArray("4.5")
+run/low_processor_mode=true
 config/icon="res://icon.svg"
 
 [display]
 
 window/energy_saving/keep_screen_on=false
 window/subwindows/embed_subwindows=false
+display_server/driver.linuxbsd="wayland"
 
 [gui]
 

@@ -2,7 +2,7 @@ extends WhiteboardTool
 
 
 var width: float = 5.0
-var color: Color = Color.WHEAT
+var color: Color
 
 var is_drawing: bool
 var last_draw_element: BrushElement
@@ -11,6 +11,7 @@ var preview := BrushPreviewElement.new()
 
 func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 	width = 5.0 / wb.draw_scale
+	color = wb.primary_color
 	preview.width = width
 	preview.color = color
 	var display := Display.new([], [preview])
@@ -74,24 +75,26 @@ class BrushElement extends WhiteboardTool.Element:
 	
 	
 	func draw(wb: Whiteboard) -> void:
+		if width * wb.draw_scale < 0.25:
+			return
 		if points.size() >= 2:
 			var real_points: PackedVector2Array
 			real_points.resize(points.size() * 2)
 			for i in points.size() - 1:
-				wb.draw_circle(points[i], width * 0.5, color, true, -1.0, false)
+				wb.draw_circle(points[i], width * 0.5, color)
 				real_points[i * 2] = points[i]
 				real_points[i * 2 + 1] = points[i + 1]
-			wb.draw_circle(points[-1], width * 0.5, color, true, -1.0, false)
-			wb.draw_multiline(real_points, color, width, false)
+			wb.draw_circle(points[-1], width * 0.5, color)
+			wb.draw_multiline(real_points, color, width)
 	
 	
 	func should_draw(at_pos: Vector2, threshold: float = width) -> bool:
 		if points.is_empty():
 			return false
-		return points[-1].distance_squared_to(at_pos) > threshold
+		return points[-1].distance_squared_to(at_pos) > threshold * threshold
 	
 	func get_bounding_box() -> Rect2:
-		return Rect2(min_p, max_p).grow(width).abs()
+		return Rect2(min_p, max_p - min_p).grow(width).abs()
 
 
 class BrushDotElement extends WhiteboardTool.Element:
@@ -100,7 +103,7 @@ class BrushDotElement extends WhiteboardTool.Element:
 	var width: float
 	
 	func draw(wb: Whiteboard) -> void:
-		wb.draw_circle(position, width * 0.5, color, true, -1.0, true)
+		wb.draw_circle(position, width * 0.5, color)
 	
 	func get_bounding_box() -> Rect2:
 		return Rect2(position, Vector2.ZERO).grow(width)

@@ -28,6 +28,18 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> WhiteboardTool.Display:
 		if mm.button_mask & MOUSE_BUTTON_MASK_MIDDLE:
 			wb.draw_xform = wb.draw_xform.translated(mm.relative * wb.draw_scale)
 			wb.redraw_all()
+	var pg := event as InputEventPanGesture
+	if pg:
+		if pg.ctrl_pressed:
+			wb.draw_xform = zoom(wb.draw_xform, pg.position, exp(-pg.delta.y * 0.05))
+			wb.redraw_all()
+		else:
+			wb.draw_xform = wb.draw_xform.translated(-pg.delta * 2.0)
+			wb.redraw_all()
+	var zg := event as InputEventMagnifyGesture
+	if zg:
+		wb.draw_xform = zoom(wb.draw_xform, zg.position, zg.factor)
+		wb.redraw_all()
 	return null
 
 

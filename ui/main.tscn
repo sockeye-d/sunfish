@@ -118,11 +118,12 @@ icon = SubResource("ImageTexture_fc3ap")
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Whiteboard" type="Panel" parent="HBoxContainer/SplitContainer"]
+[node name="Whiteboard" type="Panel" parent="HBoxContainer/SplitContainer" node_paths=PackedStringArray("color_picker")]
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("1_ig7tw")
+color_picker = NodePath("../SplitContainer/ColorContainer/NiceColorPicker")
 metadata/_custom_type_script = "uid://byygqcqk1nokj"
 
 [node name="SplitContainer" type="SplitContainer" parent="HBoxContainer/SplitContainer"]
@@ -135,7 +136,18 @@ layout_mode = 2
 [node name="NiceColorPicker" type="VBoxContainer" parent="HBoxContainer/SplitContainer/SplitContainer/ColorContainer"]
 layout_mode = 2
 script = ExtResource("3_loxbi")
+color = Color(1, 1, 1, 1)
 metadata/_custom_type_script = "uid://bwc2gp0rut4nn"
 
 [node name="LayerContainer" type="PanelContainer" parent="HBoxContainer/SplitContainer/SplitContainer"]
 layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/SplitContainer/SplitContainer/LayerContainer"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="Label" type="Label" parent="HBoxContainer/SplitContainer/SplitContainer/LayerContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "abghejgewhkaabghejgewhkaabghejgewhkaabghejgewhkaabghejgewhkaabghejgewhkaabghejgewhkaabghejgewhkaabghejgewhkaabghejgewhkaabghejgewhkaabghejgewhkaabghejgewhkaabghejgewhkaabghejgewhkaabghejgewhkaabghejgewhkaabghejgewhkaabghejgewhkaabghejgewhkaabghejgewhka"
+autowrap_mode = 3
