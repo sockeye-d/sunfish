@@ -6,7 +6,10 @@ var color: Color
 
 var is_drawing: bool
 var last_draw_element: BrushElement
-var preview := BrushPreviewElement.new()
+var preview := PlainPreviewElement.new()
+
+
+static func get_id() -> String: return "dev.fishies.sunfish.BrushTool"
 
 
 func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
@@ -48,15 +51,6 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 	return display
 
 
-class BrushPreviewElement extends WhiteboardTool.PreviewElement:
-	var position: Vector2
-	var color: Color
-	var width: float
-	
-	func draw(control: Control, _wb: Whiteboard):
-		control.draw_circle(position, width, color, false, -2.0, false)
-
-
 class BrushElement extends WhiteboardTool.Element:
 	var points: PackedVector2Array
 	var color: Color
@@ -64,6 +58,8 @@ class BrushElement extends WhiteboardTool.Element:
 	
 	var min_p: Vector2 = Vector2(+INF, +INF)
 	var max_p: Vector2 = Vector2(-INF, -INF)
+	
+	static func get_id() -> String: return "dev.fishies.sunfish.BrushElement"
 	
 	func append_point(point: Vector2) -> void:
 		min_p = min_p.min(point)
@@ -74,18 +70,21 @@ class BrushElement extends WhiteboardTool.Element:
 			points.append(point)
 	
 	
+	func _falloff(x: float) -> float: return max(0.0, 2.0 - 1.0 / x if x <= 1.0 else x)
+	
 	func draw(wb: Whiteboard) -> void:
-		if width * wb.draw_scale < 0.25:
+		var real_width := _falloff(width * wb.draw_scale) / wb.draw_scale
+		if real_width < 0.0:
 			return
 		if points.size() >= 2:
 			var real_points: PackedVector2Array
 			real_points.resize(points.size() * 2)
 			for i in points.size() - 1:
-				wb.draw_circle(points[i], width * 0.5, color)
+				wb.draw_circle(points[i], real_width * 0.5, color)
 				real_points[i * 2] = points[i]
 				real_points[i * 2 + 1] = points[i + 1]
-			wb.draw_circle(points[-1], width * 0.5, color)
-			wb.draw_multiline(real_points, color, width)
+			wb.draw_circle(points[-1], real_width * 0.5, color)
+			wb.draw_multiline(real_points, color, real_width)
 	
 	
 	func should_draw(at_pos: Vector2, threshold: float = width) -> bool:
@@ -101,6 +100,8 @@ class BrushDotElement extends WhiteboardTool.Element:
 	var position: Vector2
 	var color: Color
 	var width: float
+	
+	static func get_id() -> String: return "dev.fishies.sunfish.BrushDotElement"
 	
 	func draw(wb: Whiteboard) -> void:
 		wb.draw_circle(position, width * 0.5, color)

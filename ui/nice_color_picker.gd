@@ -73,9 +73,12 @@ func _color_wheel_gui_input(e: InputEvent) -> void:
 				_set_colors(mb)
 			else:
 				_clicked_area = ClickedArea.NONE
+			_color_wheel.accept_event()
 	var mm := e as InputEventMouseMotion
 	if mm:
-		_set_colors(mm)
+		if _clicked_area != ClickedArea.NONE:
+			_set_colors(mm)
+			_color_wheel.accept_event()
 
 
 func _set_colors(mm: InputEventMouse) -> void:

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b58u5b1agh8r7"
-path="res://.godot/imported/image.svg-6265d7d1c4807a85d50bccd0542ac193.ctex"
+uid="uid://c3o0m07bn1bu8"
+path="res://.godot/imported/dev.fishies.sunfish.FilledCircleTool.svg-d20101a45160dcd83a6c21fff6dc7e20.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tools/image.svg"
-dest_files=["res://.godot/imported/image.svg-6265d7d1c4807a85d50bccd0542ac193.ctex"]
+source_file="res://assets/tools/dev.fishies.sunfish.FilledCircleTool.svg"
+dest_files=["res://.godot/imported/dev.fishies.sunfish.FilledCircleTool.svg-d20101a45160dcd83a6c21fff6dc7e20.ctex"]
 
 [params]
 

@@ -1,0 +1,61 @@
+[gd_scene load_steps=2 format=3 uid="uid://dbxmfkswghn1p"]
+
+[ext_resource type="Script" uid="uid://3ujj1wwej6lg" path="res://ui/status_box/status_box.gd" id="1_qfuws"]
+
+[node name="StatusBox" type="HBoxContainer"]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 3
+script = ExtResource("1_qfuws")
+
+[node name="LeftHBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="PositionLabel" type="Label" parent="LeftHBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "position: x, y"
+
+[node name="VSeparator" type="VSeparator" parent="LeftHBoxContainer"]
+layout_mode = 2
+
+[node name="ZoomLabel" type="Label" parent="LeftHBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "zoom: 100%"
+
+[node name="VSeparator2" type="VSeparator" parent="LeftHBoxContainer"]
+layout_mode = 2
+
+[node name="ToolLabel" type="Label" parent="LeftHBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "tool: Select"
+
+[node name="Spacer" type="Control" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RightHBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+alignment = 2
+
+[node name="StrokeLabel" type="Label" parent="RightHBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "FPS: 165"
+
+[node name="VSeparator" type="VSeparator" parent="RightHBoxContainer"]
+layout_mode = 2
+
+[node name="FPSLabel" type="Label" parent="RightHBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "FPS: 165"

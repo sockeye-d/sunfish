@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d0d15n7lp6se1"
-path="res://.godot/imported/circle.svg-2b2b938160a5b43684614c644cf4cecc.ctex"
+uid="uid://ca6n7k3mj7n0h"
+path="res://.godot/imported/dev.fishies.sunfish.LineTool.svg-bb1aa0ea167f33bace370a210c74dd59.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tools/circle.svg"
-dest_files=["res://.godot/imported/circle.svg-2b2b938160a5b43684614c644cf4cecc.ctex"]
+source_file="res://assets/tools/dev.fishies.sunfish.LineTool.svg"
+dest_files=["res://.godot/imported/dev.fishies.sunfish.LineTool.svg-bb1aa0ea167f33bace370a210c74dd59.ctex"]
 
 [params]
 

@@ -14,8 +14,26 @@ class_name IconTexture2D extends ImageTexture
 		_update_image()
 
 
+static var _res_fs_script: Script:
+	get:
+		if not _res_fs_script:
+			var script := GDScript.new()
+			script.source_code = """
+static func connect_resource_filesystem(to_func) -> void:
+	EditorInterface.get_resource_filesystem().resources_reimported.connect(to_func, CONNECT_DEFERRED)
+"""
+			script.reload()
+			_res_fs_script = script
+		return _res_fs_script
+
+
+func _init() -> void:
+	if Engine.is_editor_hint():
+		_res_fs_script.connect_resource_filesystem(func(resources: PackedStringArray): if _get_svg_path() in resources: _update_image())
+
+
 func _update_image() -> void:
-	var svg := FileAccess.get_file_as_string("res://assets/%s.svg" % icon)
+	var svg := FileAccess.get_file_as_string(_get_svg_path()) if OS.has_feature("editor") else (load(_get_svg_path()) as DPITexture).get_source()
 	if svg:
 		var img := Image.new()
 		img.load_svg_from_string(svg, icon_scale)
@@ -37,3 +55,6 @@ func _update_image() -> void:
 		set_image(img)
 		set_block_signals(false)
 		emit_changed()
+
+
+func _get_svg_path() -> String: return "res://assets/%s.svg" % icon

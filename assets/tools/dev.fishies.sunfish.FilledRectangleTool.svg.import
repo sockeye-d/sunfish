@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dgs2an4apult6"
-path="res://.godot/imported/rectangle.svg-25565a11f3ccf9104b60c4b0e421d6e2.ctex"
+uid="uid://dff27i7ag78x2"
+path="res://.godot/imported/dev.fishies.sunfish.FilledRectangleTool.svg-c2cd6d741a4e0eda33b7fa0136828cfc.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tools/rectangle.svg"
-dest_files=["res://.godot/imported/rectangle.svg-25565a11f3ccf9104b60c4b0e421d6e2.ctex"]
+source_file="res://assets/tools/dev.fishies.sunfish.FilledRectangleTool.svg"
+dest_files=["res://.godot/imported/dev.fishies.sunfish.FilledRectangleTool.svg-c2cd6d741a4e0eda33b7fa0136828cfc.ctex"]
 
 [params]
 
