@@ -26,22 +26,22 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> WhiteboardTool.Display:
 					if mb.ctrl_pressed:
 						wb.draw_xform = zoom(wb.draw_xform, mb.position, 1.0 * 1.1)
 					else:
-						pan(wb, mb, +00.0, +20.0)
+						pan(wb, mb, +00.0, +80.0)
 					wb.accept_event()
 			MOUSE_BUTTON_WHEEL_DOWN:
 				if mb.pressed:
 					if mb.ctrl_pressed:
 						wb.draw_xform = zoom(wb.draw_xform, mb.position, 1.0 / 1.1)
 					else:
-						pan(wb, mb, +00.0, -20.0)
+						pan(wb, mb, +00.0, -80.0)
 					wb.accept_event()
 			MOUSE_BUTTON_WHEEL_LEFT:
 				if mb.pressed:
-					pan(wb, mb, +20.0, +00.0)
+					pan(wb, mb, +80.0, +00.0)
 					wb.accept_event()
 			MOUSE_BUTTON_WHEEL_RIGHT:
 				if mb.pressed:
-					pan(wb, mb, -20.0, +00.0)
+					pan(wb, mb, -80.0, +00.0)
 					wb.accept_event()
 	var mm := event as InputEventMouseMotion
 	if mm:

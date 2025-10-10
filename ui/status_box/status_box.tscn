@@ -20,7 +20,6 @@ size_flags_horizontal = 0
 [node name="PositionLabel" type="Label" parent="LeftHBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "position: x, y"
 
 [node name="VSeparator" type="VSeparator" parent="LeftHBoxContainer"]
 layout_mode = 2
@@ -28,7 +27,6 @@ layout_mode = 2
 [node name="ZoomLabel" type="Label" parent="LeftHBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "zoom: 100%"
 
 [node name="VSeparator2" type="VSeparator" parent="LeftHBoxContainer"]
 layout_mode = 2
@@ -36,7 +34,6 @@ layout_mode = 2
 [node name="ToolLabel" type="Label" parent="LeftHBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "tool: Select"
 
 [node name="Spacer" type="Control" parent="."]
 layout_mode = 2
@@ -50,7 +47,6 @@ alignment = 2
 [node name="StrokeLabel" type="Label" parent="RightHBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "FPS: 165"
 
 [node name="VSeparator" type="VSeparator" parent="RightHBoxContainer"]
 layout_mode = 2
@@ -58,4 +54,3 @@ layout_mode = 2
 [node name="FPSLabel" type="Label" parent="RightHBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "FPS: 165"

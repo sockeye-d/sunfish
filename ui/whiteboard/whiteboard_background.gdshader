@@ -17,7 +17,7 @@ void fragment() {
 	
 	COLOR = vec4(
 		vec3(1),
-		smoothstep(aa_pixel, 0.0, length(fract(uv) - 0.5) - ui_pixel) * smoothstep(0.15, 0.03, pixel) * smoothstep(0.0015, 0.005, pixel)
+		smoothstep(aa_pixel, 0.0, length(fract(uv) - 0.5) - ui_pixel) * smoothstep(0.15, 0.03, pixel) * smoothstep(0.0015, 0.005, pixel) * 0.1
 	);
 }
 

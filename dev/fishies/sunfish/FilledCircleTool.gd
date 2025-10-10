@@ -11,6 +11,9 @@ func create_element() -> ShapeElement:
 
 
 class FilledCircleElement extends ShapeTool.ShapeElement:
+	static func _static_init() -> void:
+		WhiteboardTools.register_deserializer(FilledCircleElement)
+	
 	static func get_id() -> String: return "dev.fishies.sunfish.FilledCircleElement"
 	
 	func _falloff(x: float) -> float: return max(0.0, 2.0 - 1.0 / x if x <= 1.0 else x)
@@ -28,3 +31,5 @@ class FilledCircleElement extends ShapeTool.ShapeElement:
 		points.append(points[0])
 		wb.draw_polyline(points, color, width)
 		wb.draw_colored_polygon(points, color)
+	
+	static func create() -> ShapeElement: return new()

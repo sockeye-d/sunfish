@@ -11,6 +11,9 @@ func create_element() -> ShapeElement:
 
 
 class RectangleElement extends ShapeTool.ShapeElement:
+	static func _static_init() -> void:
+		WhiteboardTools.register_deserializer(RectangleElement)
+	
 	static func get_id() -> String: return "dev.fishies.sunfish.RectangleElement"
 	
 	func _falloff(x: float) -> float: return max(0.0, 2.0 - 1.0 / x if x <= 1.0 else x)
@@ -31,3 +34,5 @@ class RectangleElement extends ShapeTool.ShapeElement:
 		wb.draw_line(p_tr, p_br, color, width)
 		wb.draw_line(p_br, p_bl, color, width)
 		wb.draw_line(p_bl, p_tl, color, width)
+	
+	static func create() -> ShapeElement: return new()

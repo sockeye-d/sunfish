@@ -11,6 +11,9 @@ func create_element() -> ShapeElement:
 
 
 class FilledRectangleElement extends ShapeTool.ShapeElement:
+	static func _static_init() -> void:
+		WhiteboardTools.register_deserializer(FilledRectangleElement)
+	
 	static func get_id() -> String: return "dev.fishies.sunfish.FilledRectangleElement"
 	
 	func _falloff(x: float) -> float: return max(0.0, 2.0 - 1.0 / x if x <= 1.0 else x)
@@ -31,3 +34,5 @@ class FilledRectangleElement extends ShapeTool.ShapeElement:
 			rect.position - Vector2(0.0, real_width * 0.5),
 			rect.size + Vector2(0.0, real_width)
 		), color)
+	
+	static func create() -> ShapeElement: return new()

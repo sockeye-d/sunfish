@@ -2,7 +2,7 @@ class_name Util
 
 
 static func unused(v) -> void:
-	pass
+	v = v
 
 
 static func log10(v: float) -> float: return log(v) / log(10)

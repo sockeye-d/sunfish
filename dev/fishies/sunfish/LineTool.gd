@@ -46,6 +46,9 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 
 
 class LineElement extends WhiteboardTool.Element:
+	static func _static_init() -> void:
+		WhiteboardTools.register_deserializer(LineElement)
+	
 	var color: Color
 	var width: float
 	
@@ -66,3 +69,21 @@ class LineElement extends WhiteboardTool.Element:
 	
 	func get_bounding_box() -> Rect2:
 		return Rect2(start_pos, end_pos - start_pos).abs().grow(width)
+	
+	
+	func serialize() -> Dictionary:
+		return {
+			"color": color,
+			"width": width,
+			"start_pos": start_pos,
+			"end_pos": end_pos,
+		}
+	
+	
+	static func deserialize(data: Dictionary) -> Element:
+		var el := LineElement.new()
+		el.color = data.color
+		el.width = data.width
+		el.start_pos = data.start_pos
+		el.end_pos = data.end_pos
+		return el

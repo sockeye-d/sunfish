@@ -52,6 +52,9 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 
 
 class BrushElement extends WhiteboardTool.Element:
+	static func _static_init() -> void:
+		WhiteboardTools.register_deserializer(BrushElement)
+	
 	var points: PackedVector2Array
 	var color: Color
 	var width: float
@@ -94,9 +97,27 @@ class BrushElement extends WhiteboardTool.Element:
 	
 	func get_bounding_box() -> Rect2:
 		return Rect2(min_p, max_p - min_p).grow(width).abs()
+	
+	func serialize() -> Dictionary:
+		return {
+			"points": points,
+			"color": color,
+			"width": width,
+		}
+	
+	
+	static func deserialize(data: Dictionary) -> Element:
+		var el := BrushElement.new()
+		el.points = data.points
+		el.color = data.color
+		el.width = data.width
+		return el
 
 
 class BrushDotElement extends WhiteboardTool.Element:
+	static func _static_init() -> void:
+		WhiteboardTools.register_deserializer(BrushDotElement)
+	
 	var position: Vector2
 	var color: Color
 	var width: float
@@ -108,3 +129,19 @@ class BrushDotElement extends WhiteboardTool.Element:
 	
 	func get_bounding_box() -> Rect2:
 		return Rect2(position, Vector2.ZERO).grow(width)
+	
+	
+	func serialize() -> Dictionary:
+		return {
+			"position": position,
+			"color": color,
+			"width": width,
+		}
+	
+	
+	static func deserialize(data: Dictionary) -> Element:
+		var el := BrushDotElement.new()
+		el.position = data.position
+		el.color = data.color
+		el.width = data.width
+		return el

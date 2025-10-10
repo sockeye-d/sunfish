@@ -46,7 +46,7 @@ func _init() -> void:
 	background = Panel.new()
 	background.show_behind_parent = true
 	background.clip_contents = true
-	background.clip_children = CanvasItem.CLIP_CHILDREN_AND_DRAW
+	#background.clip_children = CanvasItem.CLIP_CHILDREN_AND_DRAW
 	background.mouse_behavior_recursive = Control.MOUSE_BEHAVIOR_DISABLED
 	background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(background)
@@ -103,9 +103,18 @@ func _draw() -> void:
 func _gui_input(e: InputEvent) -> void:
 	if e.is_action_pressed("ui_undo"):
 		undo()
+	if e.is_action_pressed("save"):
+		var json := var_to_bytes(WhiteboardTools.serialize(elements))
+		var json_compressed := json.compress(FileAccess.COMPRESSION_ZSTD)
+		print(json_compressed.size())
+		elements = WhiteboardTools.deserialize(bytes_to_var(json_compressed.decompress(json.size(), FileAccess.COMPRESSION_ZSTD)))
+		queue_redraw()
+	if e is InputEventMouseMotion and not has_focus():
+		grab_focus()
 	var new_preview_elements: Array[WhiteboardTool.PreviewElement]
 	for tool in active_tools:
-		var tool_output := tool.receive_input(self, e.xformed_by((draw_xform).affine_inverse()))
+		@warning_ignore("redundant_await") # I don't know why it thinks this isn't a coroutine
+		var tool_output := await tool.receive_input(self, e.xformed_by((draw_xform).affine_inverse()))
 		if tool_output == null:
 			continue
 		
@@ -139,6 +148,8 @@ func set_active_tools(new_active_tools: Array[WhiteboardTool]) -> void:
 		if not tool.get_script().is_visible():
 			new_tools.append(tool)
 	new_tools.append_array(new_active_tools)
+	for tool in new_active_tools:
+		tool.activated(self)
 	active_tools = new_tools
 	active_tools_changed.emit()
 

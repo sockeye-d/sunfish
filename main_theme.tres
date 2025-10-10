@@ -25,5 +25,9 @@ corner_radius_bottom_left = 4
 corner_detail = 5
 
 [resource]
+MarginContainer/constants/margin_bottom = 4
+MarginContainer/constants/margin_left = 4
+MarginContainer/constants/margin_right = 4
+MarginContainer/constants/margin_top = 4
 Panel/styles/panel = SubResource("StyleBoxFlat_gsqoc")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_470mv")

@@ -1,6 +1,7 @@
 @abstract
 class_name WhiteboardTool
 
+
 ## Get a reverse-DNS (e.g. com.example.Tool) identifier specific to this tool
 static func get_id() -> String:
 	assert(false)
@@ -14,6 +15,9 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display
 func create_configuration_display() -> Control: return null
 
 
+func activated(wb: Whiteboard) -> void: Util.unused(wb)
+
+
 static func is_visible() -> bool: return true
 
 
@@ -23,15 +27,28 @@ class Element:
 	static func get_id() -> String:
 		assert(false)
 		return ""
-
+	
+	
 	@abstract
 	func draw(wb: Whiteboard)
+	
 	
 	@abstract
 	func get_bounding_box() -> Rect2
 	
+	
 	func dragged(delta: Vector2) -> void:
 		Util.unused(delta)
+	
+	
+	@abstract
+	func serialize() -> Dictionary
+	
+	
+	static func deserialize(data: Dictionary) -> Element:
+		Util.unused(data)
+		assert(false)
+		return null
 
 
 @abstract

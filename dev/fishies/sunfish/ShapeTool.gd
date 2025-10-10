@@ -74,3 +74,21 @@ class ShapeElement extends WhiteboardTool.Element:
 	
 	func get_bounding_box() -> Rect2:
 		return rect.abs().grow(width)
+	
+	
+	func serialize() -> Dictionary:
+		return {
+			"color": color,
+			"width": width,
+			"rect": rect,
+		}
+	
+	
+	static func deserialize(data: Dictionary) -> Element:
+		var el := create()
+		el.rect = data.rect
+		el.color = data.color
+		el.width = data.width
+		return el
+	
+	static func create() -> ShapeElement: return null
