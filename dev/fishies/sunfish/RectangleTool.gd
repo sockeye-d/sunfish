@@ -35,4 +35,4 @@ class RectangleElement extends ShapeTool.ShapeElement:
 		wb.draw_line(p_br, p_bl, color, width)
 		wb.draw_line(p_bl, p_tl, color, width)
 	
-	static func create() -> ShapeElement: return new()
+	static func deserialize(data: Dictionary) -> Element: return deserialize_into(new(), data)

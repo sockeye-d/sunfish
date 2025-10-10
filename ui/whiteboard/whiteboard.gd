@@ -101,7 +101,7 @@ func _draw() -> void:
 
 
 func _gui_input(e: InputEvent) -> void:
-	if e.is_action_pressed("ui_undo"):
+	if e.is_action_pressed("ui_undo", true):
 		undo()
 	if e.is_action_pressed("save"):
 		var json := var_to_bytes(WhiteboardTools.serialize(elements))

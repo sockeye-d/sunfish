@@ -21,7 +21,8 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	Util.unused(delta)
-	fps_label.text = "FPS: %.0f" % Engine.get_frames_per_second()
+	fps_label.text = "FPS: %.5f" % Engine.get_frames_per_second()
+	#print(Engine.max_fps)
 
 
 func _update_text() -> void:

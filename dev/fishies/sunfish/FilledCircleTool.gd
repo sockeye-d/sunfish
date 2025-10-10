@@ -32,4 +32,4 @@ class FilledCircleElement extends ShapeTool.ShapeElement:
 		wb.draw_polyline(points, color, width)
 		wb.draw_colored_polygon(points, color)
 	
-	static func create() -> ShapeElement: return new()
+	static func deserialize(data: Dictionary) -> Element: return deserialize_into(new(), data)

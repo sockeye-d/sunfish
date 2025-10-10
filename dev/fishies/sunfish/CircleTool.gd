@@ -31,4 +31,4 @@ class CircleElement extends ShapeTool.ShapeElement:
 		points.append(points[0])
 		wb.draw_polyline(points, color, width)
 	
-	static func create() -> ShapeElement: return new()
+	static func deserialize(data: Dictionary) -> Element: return deserialize_into(new(), data)

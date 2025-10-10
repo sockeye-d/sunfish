@@ -35,4 +35,4 @@ class FilledRectangleElement extends ShapeTool.ShapeElement:
 			rect.size + Vector2(0.0, real_width)
 		), color)
 	
-	static func create() -> ShapeElement: return new()
+	static func deserialize(data: Dictionary) -> Element: return deserialize_into(new(), data)

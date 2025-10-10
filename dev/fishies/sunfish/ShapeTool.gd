@@ -85,10 +85,11 @@ class ShapeElement extends WhiteboardTool.Element:
 	
 	
 	static func deserialize(data: Dictionary) -> Element:
-		var el := create()
-		el.rect = data.rect
-		el.color = data.color
-		el.width = data.width
-		return el
+		Util.unused(data)
+		return null
 	
-	static func create() -> ShapeElement: return null
+	static func deserialize_into(instance: ShapeElement, data: Dictionary) -> ShapeElement:
+		instance.rect = data.rect
+		instance.color = data.color
+		instance.width = data.width
+		return instance
