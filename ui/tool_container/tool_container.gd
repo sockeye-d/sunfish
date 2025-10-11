@@ -14,16 +14,21 @@ var tool_button_group := ButtonGroup.new()
 @export_tool_button("Update tools") var __ := _update_tools
 
 
+var tool_buttons: Dictionary[Script, Button]
+
+
 func _ready() -> void:
-	_update_tools()
 	active_tool_changed.connect(func(new_tool: Script):
-		whiteboard.set_active_tools([new_tool.new()])
+		if whiteboard:
+			whiteboard.set_active_tools([new_tool.new()])
 	)
+	_update_tools.call_deferred()
 
 
 func _update_tools() -> void:
 	for child in get_children():
 		child.queue_free()
+	tool_buttons.clear()
 	for tool in tools:
 		if not tool.is_visible():
 			continue
@@ -35,5 +40,9 @@ func _update_tools() -> void:
 		btn.icon = icon
 		btn.button_group = tool_button_group
 		
+		tool_buttons[tool] = btn
 		btn.pressed.connect(active_tool_changed.emit.bind(tool))
 		add_child(btn)
+	
+	active_tool_changed.emit(tools.front())
+	tool_buttons[tools.front()].button_pressed = true

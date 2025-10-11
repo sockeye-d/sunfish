@@ -35,10 +35,13 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 	if mm:
 		if mm.button_mask & MOUSE_BUTTON_MASK_LEFT and not mm.relative.is_zero_approx():
 			if last_draw_element:
+				if mm.alt_pressed:
+					start_pos += mm.relative
 				var snapped_pos := mm.position
 				if mm.ctrl_pressed:
 					var delta := snapped_pos - start_pos
 					snapped_pos = Vector2.from_angle(snappedf(delta.angle(), TAU / 16.0)) * delta.length() + start_pos
+				last_draw_element.start_pos = start_pos
 				last_draw_element.end_pos = snapped_pos
 				display.elements = [last_draw_element]
 		preview.position = mm.position

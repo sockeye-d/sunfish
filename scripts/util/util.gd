@@ -1,8 +1,8 @@
 class_name Util
 
 
-static func unused(v) -> void:
-	v = v
+static func unused(..._v) -> void:
+	pass
 
 
 static func log10(v: float) -> float: return log(v) / log(10)

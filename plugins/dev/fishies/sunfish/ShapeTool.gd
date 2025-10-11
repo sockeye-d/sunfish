@@ -32,6 +32,8 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 	if mm:
 		if mm.button_mask & MOUSE_BUTTON_MASK_LEFT and not mm.relative.is_zero_approx():
 			if last_draw_element:
+				if mm.alt_pressed:
+					start_pos += mm.relative
 				var pos := start_pos
 				var size := mm.position - start_pos
 				if mm.shift_pressed:

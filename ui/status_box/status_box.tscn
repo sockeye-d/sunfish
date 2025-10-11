@@ -25,6 +25,8 @@ size_flags_horizontal = 3
 [node name="PositionLabel" type="Label" parent="HBoxContainer/LeftHBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_type_variation = &"SubtextLabel"
+text = "pos"
 
 [node name="VSeparator" type="VSeparator" parent="HBoxContainer/LeftHBoxContainer"]
 layout_mode = 2
@@ -32,6 +34,8 @@ layout_mode = 2
 [node name="ZoomLabel" type="Label" parent="HBoxContainer/LeftHBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_type_variation = &"SubtextLabel"
+text = "zoom"
 
 [node name="VSeparator2" type="VSeparator" parent="HBoxContainer/LeftHBoxContainer"]
 layout_mode = 2
@@ -39,6 +43,8 @@ layout_mode = 2
 [node name="ToolLabel" type="Label" parent="HBoxContainer/LeftHBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_type_variation = &"SubtextLabel"
+text = "tool"
 
 [node name="RightHBoxContainer" type="HBoxContainer" parent="HBoxContainer"]
 layout_mode = 2
@@ -48,6 +54,8 @@ alignment = 2
 [node name="StrokeLabel" type="Label" parent="HBoxContainer/RightHBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_type_variation = &"SubtextLabel"
+text = "stroke"
 
 [node name="VSeparator" type="VSeparator" parent="HBoxContainer/RightHBoxContainer"]
 layout_mode = 2
@@ -55,3 +63,5 @@ layout_mode = 2
 [node name="FPSLabel" type="Label" parent="HBoxContainer/RightHBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_type_variation = &"SubtextLabel"
+text = "fps"

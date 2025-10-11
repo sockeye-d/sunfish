@@ -12,9 +12,17 @@ config_version=5
 
 config/name="sunfish"
 run/main_scene="uid://cabo3vvcus82u"
-config/features=PackedStringArray("4.5")
+config/use_custom_user_dir=true
+config/custom_user_dir_name="sunfish"
+config/features=PackedStringArray("4.6")
 run/low_processor_mode=true
-config/icon="res://icon.svg"
+boot_splash/fullsize=false
+boot_splash/image="uid://d0ovrms2e78nv"
+config/icon="uid://dnclcms20swyj"
+config/macos_native_icon="res://sunfish.icns"
+config/windows_native_icon="res://sunfish.ico"
+config/icon.android="uid://1iolvcrehtuo"
+boot_splash/image.android="uid://cpaseabjoyjv3"
 
 [autoload]
 
@@ -29,6 +37,7 @@ window/subwindows/embed_subwindows=false
 window/per_pixel_transparency/allowed=true
 display_server/driver.linuxbsd="wayland"
 window/vsync/vsync_mode=0
+window/stretch/scale.mobile=3.0
 
 [gui]
 

@@ -49,11 +49,15 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 			else:
 				var img_path: PackedStringArray = await FileDialogUtil.open_file_dialog([], FileDialog.FILE_MODE_OPEN_FILE).selected
 				if img_path:
-					var img := Image.load_from_file(img_path[0])
-					current_image = img
-					image_preview_element = ImagePreviewElement.new()
-					image_preview_element.image = current_image
-					image_preview_element.center_position = wb.draw_xform * wb.get_local_mouse_position()
+					var img := Image.new()
+					var err := img.load(img_path[0])
+					if err:
+						print("%s when loading file %s" % [error_string(err), img_path[0]])
+					else:
+						current_image = img
+						image_preview_element = ImagePreviewElement.new()
+						image_preview_element.image = current_image
+						image_preview_element.center_position = wb.draw_xform * wb.get_local_mouse_position()
 	if image_preview_element:
 		display.preview_elements = [image_preview_element]
 	return display

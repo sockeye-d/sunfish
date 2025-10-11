@@ -6,4 +6,4 @@ tags=
 [version]
 isMono=false
 repo=/godotengine/godot-builds
-tagName=4.5.1-rc1
+tagName=4.6-dev1

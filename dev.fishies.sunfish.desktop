@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Sunfish
+Comment=An infinite whiteboard
+Exec=/home/fish/Documents/godot/projects/sunfish/export/sunfish.x86_64
+Icon=dev.fishies.sunfish
+Terminal=false
+Type=Application
+Categories=Graphics
+

@@ -1,379 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://cabo3vvcus82u"]
+[gd_scene load_steps=7 format=3 uid="uid://cabo3vvcus82u"]
 
 [ext_resource type="Script" uid="uid://c06cfhdwo6mqj" path="res://ui/main.gd" id="1_fc3ap"]
-[ext_resource type="Script" uid="uid://cg1d5ghvrv5un" path="res://scripts/resources/icon_texture_2d.gd" id="1_h17sc"]
 [ext_resource type="Script" uid="uid://byygqcqk1nokj" path="res://ui/whiteboard/whiteboard.gd" id="1_ig7tw"]
 [ext_resource type="PackedScene" uid="uid://smm58ph42b7w" path="res://ui/tool_container/tool_container.tscn" id="1_t6oic"]
+[ext_resource type="PackedScene" uid="uid://78r8qgrrm8sv" path="res://ui/main_menu.tscn" id="2_fc3ap"]
 [ext_resource type="Script" uid="uid://bwc2gp0rut4nn" path="res://ui/nice_color_picker.gd" id="3_loxbi"]
 [ext_resource type="PackedScene" uid="uid://dbxmfkswghn1p" path="res://ui/status_box/status_box.tscn" id="3_t6oic"]
-
-[sub_resource type="DPITexture" id="DPITexture_06s8x"]
-_source = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
-<svg
-   width=\"16\"
-   height=\"16\"
-   viewBox=\"0 0 4.2333333 4.2333333\"
-   version=\"1.1\"
-   id=\"svg1\"
-   xml:space=\"preserve\"
-   xmlns=\"http://www.w3.org/2000/svg\"
-   xmlns:svg=\"http://www.w3.org/2000/svg\"><defs
-     id=\"defs1\"><filter
-       id=\"selectable_hidder_filter\"
-       width=\"1\"
-       height=\"1\"
-       x=\"0\"
-       y=\"0\"
-       style=\"color-interpolation-filters:sRGB;\"><feComposite
-         id=\"boolops_hidder_primitive\"
-         result=\"composite1\"
-         operator=\"arithmetic\"
-         in2=\"SourceGraphic\"
-         in=\"BackgroundImage\" /></filter></defs><g
-     id=\"layer1\"><path
-       style=\"fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1\"
-       d=\"M 1.5614771,0.99756371 C 1.3273057,1.0272714 0.95626887,0.38461692 0.84257637,0.38819982 0.72888371,0.39178282 0.65703871,0.43684272 0.67934395,0.52301831 0.70164915,0.60919401 0.89629787,1.1997163 1.1275459,1.4105152\"
-       id=\"path22\" /><path
-       style=\"fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1\"
-       d=\"M 3.4199235,1.1939131 C 3.5586802,1.9445516 3.0282479,2.3604591 2.8866015,2.4422387 2.7449551,2.5240183 2.6252442,2.5979947 2.4059964,2.6565853 2.1867497,2.7151775 2.0393201,2.7738557 1.9204543,2.8689232 1.6881774,2.7348445 0.98232477,2.2384747 1.1275457,1.4105154 c 0.18976,-0.07281 0.363963,-0.3121196 0.4339311,-0.41295139 0.1522175,-0.076555 0.6789438,-0.41995298 1.1881773,-0.2807038 0.125312,0.034267 0.4510115,0.064575 0.4510115,0.064575 L 3.0139454,1.1746263 Z\"
-       id=\"path21\" /><path
-       style=\"fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1\"
-       d=\"M 2.4528069,2.6434104 C 2.6673332,3.2201094 2.8598031,3.618578 2.8176541,3.7041033 2.7755051,3.7896291 2.7004073,3.7610687 2.6524005,3.723412 2.6043929,3.6857523 2.2721418,3.4462083 2.0556306,3.0938479 1.9863037,2.9810301 1.9204573,2.8689208 1.9204573,2.8689208\"
-       id=\"path23\" /><path
-       style=\"fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1\"
-       d=\"M 1.0645714,1.502378 C 0.53866605,1.478293 0.66452552,2.0441889 1.1389434,1.9370222 0.60574691,2.2951692 1.1315734,2.890364 1.5283779,2.5968427 1.1971995,3.1121011 1.7182496,3.3402047 1.9204578,2.8689208\"
-       id=\"path24\" /><circle
-       style=\"fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1\"
-       id=\"path25\"
-       cx=\"-1.6259655\"
-       cy=\"2.2767658\"
-       r=\"0.13229166\"
-       transform=\"matrix(-0.8660254,0.5,0.5,0.8660254,0,0)\" /><path
-       style=\"fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1\"
-       d=\"M 2.6682692,1.6342305 C 2.517379,1.6892925 2.4160643,1.6262062 2.3104777,1.7262956 2.197551,1.8333426 2.2101872,1.9558684 2.2832364,2.0573712 2.4092323,2.2324446 2.5794669,2.041615 2.7215877,1.9308703\"
-       id=\"path26\" /></g></svg>
-"
-base_scale = 1.5
-script = ExtResource("1_h17sc")
-icon = "sunfish"
-icon_scale = 1.5
-metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
-
-[sub_resource type="DPITexture" id="DPITexture_04ebt"]
-_source = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>
-<svg
-   width=\"16px\"
-   height=\"16px\"
-   version=\"1.1\"
-   xml:space=\"preserve\"
-   style=\"fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;\"
-   id=\"svg5\"
-   xmlns=\"http://www.w3.org/2000/svg\"
-   xmlns:svg=\"http://www.w3.org/2000/svg\"><defs
-     id=\"defs5\" /><g
-     id=\"layer1\"><rect
-       x=\"0\"
-       y=\"0\"
-       width=\"16\"
-       height=\"16\"
-       style=\"clip-rule:evenodd;fill:none;fill-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5\"
-       id=\"rect1\" /><path
-       d=\"m 3.2332058,5.5 c 0,0 0.1256667,-1.885 0.2045334,-3.067 C 3.4724059,1.908 3.909206,1.5 4.4352729,1.5 h 3.2647346 c 0.5520669,0 1.0001337,0.448 1.0001337,1 v 1 c 0,0.552 0.4472002,1 1.0001337,1 h 4.7998691 l -1.000134,10\"
-       style=\"clip-rule:evenodd;fill:none;fill-rule:evenodd;stroke:#eeeeee;stroke-width:0.996116px;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5\"
-       id=\"path2\" /><path
-       d=\"m 1.5995385,6.5904627 c -0.026,-0.2793999 0.0676,-0.5573331 0.2574001,-0.7648663 C 2.045872,5.6180631 2.3136721,5.4999965 2.5953389,5.4999965 h 3.0047345 c 0.2920667,0 0.5711335,0.1158666 0.7774003,0.3219332 0.2062667,0.2067999 0.3224001,0.4861998 0.3224001,0.7780663 0,0.6071997 0.4922668,1.0999995 1.0998004,1.0999995 H 11.499877 L 13.50001,14.499992 H 2.5000055 c 0,0 -0.6482669,-5.1301973 -0.900467,-7.9095293 z\"
-       style=\"clip-rule:evenodd;fill:none;fill-rule:evenodd;stroke:#eeeeee;stroke-width:0.996522px;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:1.5\"
-       id=\"path3\" /></g></svg>
-"
-script = ExtResource("1_h17sc")
-icon = "open"
-metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
-
-[sub_resource type="DPITexture" id="DPITexture_7nk2m"]
-_source = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
-<svg
-   width=\"16\"
-   height=\"16\"
-   viewBox=\"0 0 4.2333333 4.2333333\"
-   version=\"1.1\"
-   id=\"svg1\"
-   inkscape:version=\"1.4.2 (ebf0e940d0, 2025-05-08)\"
-   sodipodi:docname=\"save.svg\"
-   xmlns:inkscape=\"http://www.inkscape.org/namespaces/inkscape\"
-   xmlns:sodipodi=\"http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd\"
-   xmlns=\"http://www.w3.org/2000/svg\"
-   xmlns:svg=\"http://www.w3.org/2000/svg\">
-  <sodipodi:namedview
-     id=\"namedview1\"
-     pagecolor=\"#505050\"
-     bordercolor=\"#ffffff\"
-     borderopacity=\"1\"
-     inkscape:showpageshadow=\"0\"
-     inkscape:pageopacity=\"0\"
-     inkscape:pagecheckerboard=\"1\"
-     inkscape:deskcolor=\"#505050\"
-     inkscape:document-units=\"px\"
-     showgrid=\"true\"
-     inkscape:zoom=\"39.185567\"
-     inkscape:cx=\"5.9333071\"
-     inkscape:cy=\"7.1199685\"
-     inkscape:window-width=\"2560\"
-     inkscape:window-height=\"1404\"
-     inkscape:window-x=\"0\"
-     inkscape:window-y=\"0\"
-     inkscape:window-maximized=\"1\"
-     inkscape:current-layer=\"layer1\">
-    <inkscape:grid
-       id=\"grid1\"
-       units=\"px\"
-       originx=\"0\"
-       originy=\"0\"
-       spacingx=\"0.26458333\"
-       spacingy=\"0.26458333\"
-       empcolor=\"#0099e5\"
-       empopacity=\"0.30196078\"
-       color=\"#0099e5\"
-       opacity=\"0.14901961\"
-       empspacing=\"4\"
-       enabled=\"true\"
-       visible=\"true\" />
-  </sodipodi:namedview>
-  <defs
-     id=\"defs1\">
-    <inkscape:path-effect
-       effect=\"bool_op\"
-       operand-path=\"\"
-       id=\"path-effect1\"
-       is_visible=\"true\"
-       lpeversion=\"1\"
-       operation=\"diff\"
-       swap-operands=\"false\"
-       filltype-this=\"from-curve\"
-       filter=\"\"
-       filltype-operand=\"from-curve\" />
-    <filter
-       id=\"selectable_hidder_filter\"
-       width=\"1\"
-       height=\"1\"
-       x=\"0\"
-       y=\"0\"
-       style=\"color-interpolation-filters:sRGB;\"
-       inkscape:label=\"LPE boolean visibility\">
-      <feComposite
-         id=\"boolops_hidder_primitive\"
-         result=\"composite1\"
-         operator=\"arithmetic\"
-         in2=\"SourceGraphic\"
-         in=\"BackgroundImage\" />
-    </filter>
-    <inkscape:path-effect
-       effect=\"bool_op\"
-       operand-path=\"\"
-       id=\"path-effect6\"
-       is_visible=\"true\"
-       lpeversion=\"1.2\"
-       operation=\"diff\"
-       swap-operands=\"false\"
-       filltype-this=\"from-curve\"
-       filter=\"\"
-       filltype-operand=\"from-curve\" />
-    <inkscape:path-effect
-       effect=\"offset\"
-       id=\"path-effect5\"
-       is_visible=\"true\"
-       lpeversion=\"1.3\"
-       linejoin_type=\"miter\"
-       unit=\"px\"
-       offset=\"1.5\"
-       miter_limit=\"4\"
-       attempt_force_join=\"false\"
-       update_on_knot_move=\"true\" />
-    <inkscape:path-effect
-       effect=\"offset\"
-       id=\"path-effect4\"
-       is_visible=\"true\"
-       lpeversion=\"1.3\"
-       linejoin_type=\"bevel\"
-       unit=\"px\"
-       offset=\"0.9\"
-       miter_limit=\"4\"
-       attempt_force_join=\"false\"
-       update_on_knot_move=\"true\" />
-  </defs>
-  <g
-     inkscape:label=\"Layer 1\"
-     inkscape:groupmode=\"layer\"
-     id=\"layer1\">
-    <path
-       style=\"fill:none;stroke:#ffffff;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round\"
-       d=\"m 3.3072917,1.8520832 -10e-8,-1.19062487 H 1.3229167 l -0.39687504,0.39687497 -10e-9,0.7937499 m 0,1.3229166 10e-9,0.3968752 H 3.3072915 l 2e-7,-0.3968752\"
-       id=\"path1\"
-       sodipodi:nodetypes=\"ccccccccc\" />
-    <path
-       style=\"fill:none;stroke:#ffffff;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round\"
-       d=\"M 2.1166665,1.0583333 V 3.1749999\"
-       id=\"path3\"
-       sodipodi:nodetypes=\"cc\" />
-    <path
-       style=\"fill:none;stroke:#ffffff;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round\"
-       d=\"M 1.3229166,2.3812498 2.1166665,3.1749999 2.9104166,2.3812498\"
-       id=\"path4\" />
-  </g>
-</svg>
-"
-script = ExtResource("1_h17sc")
-icon = "save"
-metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
-
-[sub_resource type="DPITexture" id="DPITexture_ar4ev"]
-_source = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-
-<svg
-   width=\"16\"
-   height=\"16\"
-   viewBox=\"0 0 4.2333333 4.2333333\"
-   version=\"1.1\"
-   id=\"svg1\"
-   inkscape:version=\"1.4.2 (ebf0e940d0, 2025-05-08)\"
-   sodipodi:docname=\"new.svg\"
-   xmlns:inkscape=\"http://www.inkscape.org/namespaces/inkscape\"
-   xmlns:sodipodi=\"http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd\"
-   xmlns=\"http://www.w3.org/2000/svg\"
-   xmlns:svg=\"http://www.w3.org/2000/svg\">
-  <sodipodi:namedview
-     id=\"namedview1\"
-     pagecolor=\"#505050\"
-     bordercolor=\"#ffffff\"
-     borderopacity=\"1\"
-     inkscape:showpageshadow=\"0\"
-     inkscape:pageopacity=\"0\"
-     inkscape:pagecheckerboard=\"1\"
-     inkscape:deskcolor=\"#505050\"
-     inkscape:document-units=\"px\"
-     showgrid=\"true\"
-     inkscape:zoom=\"41.623835\"
-     inkscape:cx=\"8.5407796\"
-     inkscape:cy=\"7.6158288\"
-     inkscape:window-width=\"2560\"
-     inkscape:window-height=\"1404\"
-     inkscape:window-x=\"0\"
-     inkscape:window-y=\"0\"
-     inkscape:window-maximized=\"1\"
-     inkscape:current-layer=\"layer1\">
-    <inkscape:grid
-       id=\"grid1\"
-       units=\"px\"
-       originx=\"0\"
-       originy=\"0\"
-       spacingx=\"0.26458333\"
-       spacingy=\"0.26458333\"
-       empcolor=\"#0099e5\"
-       empopacity=\"0.30196078\"
-       color=\"#0099e5\"
-       opacity=\"0.14901961\"
-       empspacing=\"4\"
-       enabled=\"true\"
-       visible=\"true\" />
-  </sodipodi:namedview>
-  <defs
-     id=\"defs1\">
-    <inkscape:path-effect
-       effect=\"bool_op\"
-       operand-path=\"\"
-       id=\"path-effect1\"
-       is_visible=\"true\"
-       lpeversion=\"1\"
-       operation=\"diff\"
-       swap-operands=\"false\"
-       filltype-this=\"from-curve\"
-       filter=\"\"
-       filltype-operand=\"from-curve\" />
-    <filter
-       id=\"selectable_hidder_filter\"
-       width=\"1\"
-       height=\"1\"
-       x=\"0\"
-       y=\"0\"
-       style=\"color-interpolation-filters:sRGB;\"
-       inkscape:label=\"LPE boolean visibility\">
-      <feComposite
-         id=\"boolops_hidder_primitive\"
-         result=\"composite1\"
-         operator=\"arithmetic\"
-         in2=\"SourceGraphic\"
-         in=\"BackgroundImage\" />
-    </filter>
-    <inkscape:path-effect
-       effect=\"bool_op\"
-       operand-path=\"\"
-       id=\"path-effect6\"
-       is_visible=\"true\"
-       lpeversion=\"1.2\"
-       operation=\"diff\"
-       swap-operands=\"false\"
-       filltype-this=\"from-curve\"
-       filter=\"\"
-       filltype-operand=\"from-curve\" />
-    <inkscape:path-effect
-       effect=\"offset\"
-       id=\"path-effect5\"
-       is_visible=\"true\"
-       lpeversion=\"1.3\"
-       linejoin_type=\"miter\"
-       unit=\"px\"
-       offset=\"1.5\"
-       miter_limit=\"4\"
-       attempt_force_join=\"false\"
-       update_on_knot_move=\"true\" />
-    <inkscape:path-effect
-       effect=\"offset\"
-       id=\"path-effect4\"
-       is_visible=\"true\"
-       lpeversion=\"1.3\"
-       linejoin_type=\"bevel\"
-       unit=\"px\"
-       offset=\"0.9\"
-       miter_limit=\"4\"
-       attempt_force_join=\"false\"
-       update_on_knot_move=\"true\" />
-  </defs>
-  <g
-     inkscape:label=\"Layer 1\"
-     inkscape:groupmode=\"layer\"
-     id=\"layer1\">
-    <path
-       style=\"fill:none;stroke:#ffffff;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round\"
-       d=\"M 3.3072916,1.8520832 V 0.66145833 H 1.3229167 L 0.92604166,1.0583333 V 3.571875 H 1.3229166\"
-       id=\"path1\"
-       sodipodi:nodetypes=\"cccccc\" />
-    <path
-       sodipodi:type=\"star\"
-       style=\"fill:none;stroke:#ffffff;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round\"
-       id=\"path2\"
-       inkscape:flatsided=\"false\"
-       sodipodi:sides=\"5\"
-       sodipodi:cx=\"2.1166666\"
-       sodipodi:cy=\"2.1166666\"
-       sodipodi:r1=\"0.79374999\"
-       sodipodi:r2=\"0.39687499\"
-       sodipodi:arg1=\"-1.5707963\"
-       sodipodi:arg2=\"-0.9424778\"
-       inkscape:rounded=\"0\"
-       inkscape:randomized=\"0\"
-       d=\"M 2.1166666,1.3229166 2.3499438,1.7955879 2.8715677,1.8713843 2.4941171,2.2393077 2.5832211,2.7588238 2.1166666,2.5135415 1.650112,2.7588238 1.739216,2.2393077 1.3617655,1.8713843 1.8833893,1.7955879 Z\"
-       inkscape:transform-center-y=\"-0.075796376\"
-       transform=\"translate(0.52916666,0.79374999)\" />
-  </g>
-</svg>
-"
-script = ExtResource("1_h17sc")
-icon = "new"
-metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [node name="Main" type="ColorRect"]
 anchors_preset = 15
@@ -381,12 +13,14 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.1764706, 0.1764706, 0.1764706, 1)
+color = Color(0.09411765, 0.09411765, 0.14509805, 1)
 script = ExtResource("1_fc3ap")
+current_theme = "dev.fishies.sunfish.themes.CatppuccinMocha"
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
+unique_name_in_owner = true
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -406,21 +40,8 @@ size_flags_horizontal = 0
 [node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="MenuButton" type="MenuButton" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer2"]
+[node name="MainMenu" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer2" instance=ExtResource("2_fc3ap")]
 layout_mode = 2
-icon = SubResource("DPITexture_06s8x")
-flat = false
-icon_alignment = 1
-item_count = 3
-popup/item_0/text = "Open"
-popup/item_0/icon = SubResource("DPITexture_04ebt")
-popup/item_0/id = 0
-popup/item_1/text = "Save"
-popup/item_1/icon = SubResource("DPITexture_7nk2m")
-popup/item_1/id = 1
-popup/item_2/text = "New"
-popup/item_2/icon = SubResource("DPITexture_ar4ev")
-popup/item_2/id = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
@@ -429,38 +50,37 @@ size_flags_vertical = 3
 
 [node name="ToolContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer" node_paths=PackedStringArray("whiteboard") instance=ExtResource("1_t6oic")]
 layout_mode = 2
-whiteboard = NodePath("../../../SplitContainer/Whiteboard")
+whiteboard = NodePath("../../../SplitContainer/VBoxContainer/Whiteboard")
 
-[node name="SplitContainer" type="SplitContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="SplitContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Whiteboard" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer/SplitContainer" node_paths=PackedStringArray("color_picker")]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/SplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Whiteboard" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer/SplitContainer/VBoxContainer" node_paths=PackedStringArray("color_picker")]
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
 focus_mode = 2
 script = ExtResource("1_ig7tw")
-color_picker = NodePath("../SplitContainer/ColorContainer/NiceColorPicker")
+color_picker = NodePath("../../SplitContainer/ColorContainer/NiceColorPicker")
 metadata/_custom_type_script = "uid://byygqcqk1nokj"
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/SplitContainer/Whiteboard"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="MarginContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/SplitContainer/VBoxContainer"]
+layout_mode = 2
 mouse_filter = 2
 
-[node name="StatusBox" parent="MarginContainer/VBoxContainer/HBoxContainer/SplitContainer/Whiteboard/MarginContainer" node_paths=PackedStringArray("whiteboard") instance=ExtResource("3_t6oic")]
+[node name="StatusBox" parent="MarginContainer/VBoxContainer/HBoxContainer/SplitContainer/VBoxContainer/MarginContainer" node_paths=PackedStringArray("whiteboard") instance=ExtResource("3_t6oic")]
 layout_mode = 2
 size_flags_vertical = 8
-whiteboard = NodePath("../..")
+whiteboard = NodePath("../../Whiteboard")
 
-[node name="SplitContainer" type="SplitContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/SplitContainer"]
+[node name="SplitContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/SplitContainer"]
 layout_mode = 2
-vertical = true
 
 [node name="ColorContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/SplitContainer/SplitContainer"]
 layout_mode = 2
@@ -473,3 +93,4 @@ metadata/_custom_type_script = "uid://bwc2gp0rut4nn"
 
 [node name="LayerContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/SplitContainer/SplitContainer"]
 layout_mode = 2
+size_flags_vertical = 3

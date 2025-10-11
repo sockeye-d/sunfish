@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="ThemeColors" load_steps=2 format=3 uid="uid://bbxn7bu23hw1e"]
+
+[ext_resource type="Script" uid="uid://54gqboo3cmcx" path="res://scripts/resources/theme_colors.gd" id="1_a3d8k"]
+
+[resource]
+script = ExtResource("1_a3d8k")
+background_0 = Color(0.9372549, 0.94509804, 0.9607843, 1)
+background_1 = Color(0.9019608, 0.9137255, 0.9372549, 1)
+background_2 = Color(0.8627451, 0.8784314, 0.9098039, 1)
+surface = Color(0.6745098, 0.6901961, 0.74509805, 1)
+surface_hover = Color(0.7372549, 0.7529412, 0.8, 1)
+surface_press = Color(0.8, 0.8156863, 0.85490197, 1)
+overlay = Color(0.4862745, 0.49803922, 0.5764706, 1)
+overlay_hover = Color(0.54901963, 0.56078434, 0.6313726, 1)
+overlay_press = Color(0.6117647, 0.627451, 0.6901961, 1)
+text = Color(0.29803923, 0.30980393, 0.4117647, 1)
+subtext = Color(0.36078432, 0.37254903, 0.46666667, 1)
+accent_0 = Color(0.53333336, 0.22352941, 0.9372549, 1)
+accent_1 = Color(0.11764706, 0.4, 0.9607843, 1)
+error = Color(0.8235294, 0.05882353, 0.22352941, 1)
+warning = Color(0.8745098, 0.5568628, 0.11372549, 1)
+success = Color(0.2509804, 0.627451, 0.16862746, 1)
+id = "dev.fishies.sunfish.themes.CatppuccinLatte"
+name = "Catppuccin Latte"
+metadata/_custom_type_script = "uid://54gqboo3cmcx"

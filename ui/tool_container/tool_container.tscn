@@ -1,15 +1,14 @@
-[gd_scene load_steps=10 format=3 uid="uid://smm58ph42b7w"]
+[gd_scene load_steps=9 format=3 uid="uid://smm58ph42b7w"]
 
 [ext_resource type="Script" uid="uid://g8c0ppafuaxo" path="res://ui/tool_container/tool_container.gd" id="1_tpjp1"]
-[ext_resource type="Script" uid="uid://c1ms438i3s12n" path="res://dev/fishies/sunfish/BrushTool.gd" id="2_4tnpy"]
-[ext_resource type="Script" uid="uid://b8lnmmnaqqd45" path="res://dev/fishies/sunfish/SelectTool.gd" id="2_vdal4"]
-[ext_resource type="Script" uid="uid://d4m22ttv2xvn1" path="res://dev/fishies/sunfish/LineTool.gd" id="3_vdal4"]
-[ext_resource type="Script" uid="uid://dpvmaml2j0jyi" path="res://dev/fishies/sunfish/RectangleTool.gd" id="5_vdal4"]
-[ext_resource type="Script" uid="uid://y0v704p056ni" path="res://dev/fishies/sunfish/CircleTool.gd" id="6_oca4x"]
-[ext_resource type="Script" uid="uid://dvp05mfiibug7" path="res://dev/fishies/sunfish/FilledRectangleTool.gd" id="7_l6jjv"]
-[ext_resource type="Script" uid="uid://rs0y22ca3j7o" path="res://dev/fishies/sunfish/FilledCircleTool.gd" id="8_l6jjv"]
-[ext_resource type="Script" uid="uid://bi24rbhujoj7e" path="res://dev/fishies/sunfish/ImageTool.gd" id="9_gmbhn"]
+[ext_resource type="Script" uid="uid://c1ms438i3s12n" path="res://plugins/dev/fishies/sunfish/BrushTool.gd" id="2_4tnpy"]
+[ext_resource type="Script" uid="uid://d4m22ttv2xvn1" path="res://plugins/dev/fishies/sunfish/LineTool.gd" id="3_vdal4"]
+[ext_resource type="Script" uid="uid://dpvmaml2j0jyi" path="res://plugins/dev/fishies/sunfish/RectangleTool.gd" id="5_vdal4"]
+[ext_resource type="Script" uid="uid://y0v704p056ni" path="res://plugins/dev/fishies/sunfish/CircleTool.gd" id="6_oca4x"]
+[ext_resource type="Script" uid="uid://dvp05mfiibug7" path="res://plugins/dev/fishies/sunfish/FilledRectangleTool.gd" id="7_l6jjv"]
+[ext_resource type="Script" uid="uid://rs0y22ca3j7o" path="res://plugins/dev/fishies/sunfish/FilledCircleTool.gd" id="8_l6jjv"]
+[ext_resource type="Script" uid="uid://bi24rbhujoj7e" path="res://plugins/dev/fishies/sunfish/ImageTool.gd" id="9_gmbhn"]
 
 [node name="ToolContainer" type="VFlowContainer"]
 script = ExtResource("1_tpjp1")
-tools = Array[Script]([ExtResource("2_vdal4"), ExtResource("2_4tnpy"), ExtResource("3_vdal4"), ExtResource("5_vdal4"), ExtResource("7_l6jjv"), ExtResource("6_oca4x"), ExtResource("8_l6jjv"), ExtResource("9_gmbhn")])
+tools = Array[Script]([ExtResource("2_4tnpy"), ExtResource("3_vdal4"), ExtResource("5_vdal4"), ExtResource("7_l6jjv"), ExtResource("6_oca4x"), ExtResource("8_l6jjv"), ExtResource("9_gmbhn")])
