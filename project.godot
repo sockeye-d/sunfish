@@ -18,7 +18,7 @@ config/features=PackedStringArray("4.6")
 run/low_processor_mode=true
 boot_splash/fullsize=false
 boot_splash/image="uid://d0ovrms2e78nv"
-config/icon="uid://dnclcms20swyj"
+config/icon="uid://d0ovrms2e78nv"
 config/macos_native_icon="res://sunfish.icns"
 config/windows_native_icon="res://sunfish.ico"
 config/icon.android="uid://1iolvcrehtuo"
@@ -59,8 +59,10 @@ pointing/android/enable_pan_and_scale_gestures=true
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=2
 renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
+anti_aliasing/quality/msaa_2d=2
 environment/defaults/default_clear_color=Color(0.1764706, 0.1764706, 0.1764706, 1)
 
 [shader_globals]

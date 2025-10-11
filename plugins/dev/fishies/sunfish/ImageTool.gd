@@ -89,6 +89,8 @@ class ImageElement extends WhiteboardTool.Element:
 	var image: Image:
 		set(value):
 			image = value
+			if not image.has_mipmaps():
+				image.generate_mipmaps()
 			image_texture = ImageTexture.create_from_image(value)
 	var image_texture: ImageTexture
 	
@@ -119,7 +121,6 @@ class ImageElement extends WhiteboardTool.Element:
 		el.rect = data.rect
 		var image_data = data.image_data.decompress(data.image_data_length, FileAccess.COMPRESSION_ZSTD)
 		var new_image := Image.create_from_data(data.image_width, data.image_height, false, data.image_format, image_data)
-		#var new_image := Image.new()
-		#new_image.load_png_from_buffer(data.image_data)
+		new_image.generate_mipmaps()
 		el.image = new_image
 		return el
