@@ -16,7 +16,7 @@ const SERIF_ITALIC = preload("uid://dgk7hn73us187")
 const SERIF = preload("uid://dyte8f36cqfjo")
 
 
-var theme_res: Theme
+@onready var theme_res: Theme = load("res://main_theme.tres")
 
 
 signal ui_scale_changed
@@ -32,7 +32,6 @@ var active_theme: ThemeColors
 
 
 func _ready() -> void:
-	theme_res = load("res://main_theme.tres")
 	ui_scale_changed.connect(func(): RenderingServer.global_shader_parameter_set("ui_scale", ui_scale))
 	ui_scale_changed.connect(func(): get_tree().root.content_scale_factor = ui_scale)
 
@@ -42,6 +41,7 @@ func register_theme(theme: ThemeColors) -> void:
 
 
 func set_theme(theme: ThemeColors) -> void:
+	get_tree().root.theme = theme_res
 	active_theme = theme
 	
 	var selection := Color(theme.accent_0, 0.3)
@@ -101,7 +101,8 @@ func set_theme(theme: ThemeColors) -> void:
 	theme_res.set_block_signals(false)
 	theme_res.emit_changed()
 	background_color_changed.emit(theme.background_1)
-	IconTexture2D.SignalBus.instance.change_text_color.emit.call_deferred(theme.text)
+	#IconTexture2D.SignalBus.instance.change_text_color.emit.call_deferred(theme.text)
+	(IconTexture2D as Script).emit_signal.call_deferred("change_text_color", theme.text)
 	
 	ResourceSaver.save(theme_res, theme_res.resource_path)
 
@@ -114,7 +115,8 @@ func set_theme_id(id: String) -> void:
 
 
 func reload_theme() -> void:
-	set_theme(active_theme)
+	if active_theme:
+		set_theme(active_theme)
 
 
 func new_flat(

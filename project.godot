@@ -28,6 +28,7 @@ boot_splash/image.android="uid://cpaseabjoyjv3"
 
 FileDialogUtil="*res://scripts/autoload/file_dialog_util.gd"
 ThemeManager="*res://scripts/autoload/theme_manager.gd"
+DebugManager="*res://scripts/autoload/debug_manager.gd"
 
 [display]
 
@@ -38,10 +39,6 @@ window/per_pixel_transparency/allowed=true
 display_server/driver.linuxbsd="wayland"
 window/vsync/vsync_mode=0
 window/stretch/scale.mobile=3.0
-
-[gui]
-
-theme/custom="uid://b5h26gykbdv4e"
 
 [input]
 
@@ -64,7 +61,6 @@ pointing/android/enable_pan_and_scale_gestures=true
 
 renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
-anti_aliasing/quality/msaa_2d=2
 environment/defaults/default_clear_color=Color(0.1764706, 0.1764706, 0.1764706, 1)
 
 [shader_globals]

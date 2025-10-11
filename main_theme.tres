@@ -1,7 +1,7 @@
-[gd_resource type="Theme" load_steps=22 format=3 uid="uid://b5h26gykbdv4e"]
+[gd_resource type="Theme" load_steps=22 format=3]
 
-[ext_resource type="FontFile" uid="uid://cm1owo44e6kug" path="res://assets/fonts/LiberationSans-Regular.ttf" id="1_470mv"]
-[ext_resource type="Script" uid="uid://cg1d5ghvrv5un" path="res://scripts/resources/icon_texture_2d.gd" id="1_a2l2q"]
+[ext_resource type="FontFile" path="res://assets/fonts/LiberationSans-Regular.ttf" id="1_470mv"]
+[ext_resource type="Script" path="res://scripts/resources/icon_texture_2d.gd" id="1_a2l2q"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a2l2q"]
 content_margin_left = 4.0
@@ -54,7 +54,7 @@ corner_radius_bottom_left = 4
 [sub_resource type="DPITexture" id="DPITexture_0omi4"]
 _source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><rect id=\"rect1\" width=\"13\" height=\"13\" x=\"1.5\" y=\"1.5\" ry=\"2\" fill=\"none\" stroke=\"#fff\"/><path d=\"M4 10 7 12 12 4\" id=\"path1\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
 color_map = {
-Color(1, 1, 1, 1): Color(0.8039216, 0.8392157, 0.95686275, 1)
+Color(1, 1, 1, 1): Color(0, 0, 0, 1)
 }
 script = ExtResource("1_a2l2q")
 icon = "gui/checkbox_checked"
@@ -63,7 +63,7 @@ metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 [sub_resource type="DPITexture" id="DPITexture_a2l2q"]
 _source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><rect id=\"rect1\" width=\"13\" height=\"13\" x=\"1.5\" y=\"1.5\" ry=\"2\" fill=\"none\" stroke=\"#fff\"/><path d=\"M4 10 7 12 12 4\" id=\"path1\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
 color_map = {
-Color(1, 1, 1, 1): Color(0.8039216, 0.8392157, 0.95686275, 1)
+Color(1, 1, 1, 1): Color(0, 0, 0, 1)
 }
 script = ExtResource("1_a2l2q")
 icon = "gui/checkbox_checked"
@@ -72,7 +72,7 @@ metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 [sub_resource type="DPITexture" id="DPITexture_58jnp"]
 _source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><rect id=\"rect1\" width=\"13\" height=\"13\" x=\"1.5\" y=\"1.5\" ry=\"2\" stroke=\"#fff\" fill=\"none\"/></svg>"
 color_map = {
-Color(1, 1, 1, 1): Color(0.8039216, 0.8392157, 0.95686275, 1)
+Color(1, 1, 1, 1): Color(0, 0, 0, 1)
 }
 script = ExtResource("1_a2l2q")
 icon = "gui/checkbox_unchecked"
@@ -81,7 +81,7 @@ metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 [sub_resource type="DPITexture" id="DPITexture_466ly"]
 _source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><rect id=\"rect1\" width=\"13\" height=\"13\" x=\"1.5\" y=\"1.5\" ry=\"2\" stroke=\"#fff\" fill=\"none\"/></svg>"
 color_map = {
-Color(1, 1, 1, 1): Color(0.8039216, 0.8392157, 0.95686275, 1)
+Color(1, 1, 1, 1): Color(0, 0, 0, 1)
 }
 script = ExtResource("1_a2l2q")
 icon = "gui/checkbox_unchecked"

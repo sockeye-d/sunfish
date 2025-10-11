@@ -41,3 +41,4 @@ func _ready() -> void:
 		print("container.offset_bottom: ", container.offset_bottom)
 	PluginManager.scan_plugins()
 	ThemeManager.background_color_changed.connect(func(color: Color): self.color = color)
+	current_theme = current_theme

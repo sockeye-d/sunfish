@@ -79,9 +79,14 @@ func _ready() -> void:
 	if color_picker:
 		color_picker.color_changed.connect(func(new_color: Color): primary_color = new_color)
 		primary_color = color_picker.color
+	var fd := FileAccess.open("user://save.sunfish", FileAccess.READ)
+	var json_size := fd.get_64()
+	var json_compressed := fd.get_buffer(FileAccess.get_size("user://save.sunfish") - fd.get_position())
+	elements = WhiteboardTools.deserialize(bytes_to_var(json_compressed.decompress(json_size, FileAccess.COMPRESSION_ZSTD)))
 
 
 func _draw() -> void:
+	#get_tree().root.msaa_2d = Viewport.MSAA_4X
 	var new_element_count := elements.size()
 	var new_visible_element_count := 0
 	draw_set_transform_matrix(draw_xform)
@@ -90,6 +95,8 @@ func _draw() -> void:
 	for element in elements:
 		var bounds := element.get_bounding_box()
 		var screen_size := bounds.size[bounds.size.max_axis_index()] * draw_scale_cache
+		if DebugManager.show_bounds:
+			draw_rect(bounds, Color.RED, false, 2.0 / draw_scale_cache)
 		if screen_size > 2.0 and self_bounds.intersects(bounds):
 			new_visible_element_count += 1
 			element.draw(self)
@@ -106,6 +113,9 @@ func _gui_input(e: InputEvent) -> void:
 	if e.is_action_pressed("save"):
 		var json := var_to_bytes(WhiteboardTools.serialize(elements))
 		var json_compressed := json.compress(FileAccess.COMPRESSION_ZSTD)
+		var fd := FileAccess.open("user://save.sunfish", FileAccess.WRITE)
+		fd.store_64(json.size())
+		fd.store_buffer(json_compressed)
 		print(json_compressed.size())
 		elements = WhiteboardTools.deserialize(bytes_to_var(json_compressed.decompress(json.size(), FileAccess.COMPRESSION_ZSTD)))
 		queue_redraw()

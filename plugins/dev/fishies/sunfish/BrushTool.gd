@@ -82,10 +82,21 @@ class BrushElement extends WhiteboardTool.Element:
 		if points.size() >= 2:
 			var real_points: PackedVector2Array
 			real_points.resize(points.size() * 2)
+			var real_size: int = 0
+			var last_point: Vector2 = points[0]
 			for i in points.size() - 1:
-				wb.draw_circle(points[i], real_width * 0.5, color)
-				real_points[i * 2] = points[i]
-				real_points[i * 2 + 1] = points[i + 1]
+				if last_point.distance_squared_to(points[i]) < 16.0 / wb.draw_scale and (i != points.size() - 2 and real_points.size() % 2 == 0) and i != 0:
+					continue
+				real_size += 2
+				wb.draw_circle(last_point, real_width * 0.5, color)
+				real_points[real_size] = last_point
+				real_points[real_size + 1] = points[i + 1]
+				last_point = points[i + 1]
+			if real_points[-1] != points[-1]:
+				real_size += 2
+				real_points[real_size] = last_point
+				real_points[real_size + 1] = points[-1]
+			real_points.resize(real_size)
 			wb.draw_circle(points[-1], real_width * 0.5, color)
 			wb.draw_multiline(real_points, color, real_width)
 	
@@ -96,7 +107,7 @@ class BrushElement extends WhiteboardTool.Element:
 		return points[-1].distance_squared_to(at_pos) > threshold * threshold
 	
 	func get_bounding_box() -> Rect2:
-		return Rect2(min_p, max_p - min_p).grow(width).abs()
+		return Rect2(min_p, max_p - min_p).grow(width * 0.5).abs()
 	
 	func serialize() -> Dictionary:
 		return {
@@ -111,6 +122,13 @@ class BrushElement extends WhiteboardTool.Element:
 		el.points = data.points
 		el.color = data.color
 		el.width = data.width
+		var new_min_p: Vector2 = Vector2(+INF, +INF)
+		var new_max_p: Vector2 = Vector2(-INF, -INF)
+		for point in el.points:
+			new_min_p = new_min_p.min(point)
+			new_max_p = new_max_p.max(point)
+		el.min_p = new_min_p
+		el.max_p = new_max_p
 		return el
 
 
