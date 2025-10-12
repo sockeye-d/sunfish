@@ -34,6 +34,8 @@ var active_theme: ThemeColors
 func _ready() -> void:
 	ui_scale_changed.connect(func(): RenderingServer.global_shader_parameter_set("ui_scale", ui_scale))
 	ui_scale_changed.connect(func(): get_tree().root.content_scale_factor = ui_scale)
+	get_tree().root.focus_entered.connect(func(): reload_theme())
+	get_tree().root.focus_exited.connect(func(): reload_theme())
 
 
 func register_theme(theme: ThemeColors) -> void:
@@ -41,9 +43,13 @@ func register_theme(theme: ThemeColors) -> void:
 
 
 @warning_ignore_start("integer_division")
-func set_theme(theme: ThemeColors) -> void:
+func set_theme(new_theme: ThemeColors) -> void:
+	active_theme = new_theme
+	var theme: ThemeColors = new_theme.duplicate(true)
+	if not get_tree().root.has_focus():
+		# hehe
+		theme.background_1 = theme.background_0
 	get_tree().root.theme = theme_res
-	active_theme = theme
 	
 	var selection := Color(theme.accent_0, 0.3)
 	var disabled_surface := theme.surface.lerp(theme.background_0, 0.5)

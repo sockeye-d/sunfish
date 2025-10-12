@@ -97,5 +97,6 @@ layout_mode = 2
 whiteboard = NodePath("../../VBoxContainer/Whiteboard")
 
 [node name="LayerContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/SplitContainer/SplitContainer"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3

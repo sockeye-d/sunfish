@@ -71,6 +71,6 @@ func _update_inspector() -> void:
 	if inner_container.get_child_count() == 0:
 		inner_container.queue_free()
 		inner_container = null
-		hide()
+		#hide()
 	else:
 		show()
