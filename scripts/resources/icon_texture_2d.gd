@@ -13,11 +13,16 @@ class_name IconTexture2D extends DPITexture
 	set(value):
 		icon_scale = value
 		_update_image()
+var secondary_icon_scale: float = 1.0:
+	get: return secondary_icon_scale
+	set(value):
+		secondary_icon_scale = value
+		_update_image()
 @export var modulate: Color = Color.WHITE:
 	set(value):
 		modulate = value
 		_update_image()
-var text_color: Color = Color.BLACK:
+var text_color: Color = Color.WHITE:
 	set(value):
 		text_color = value
 		_update_image()
@@ -42,12 +47,25 @@ var _is_connected: bool = false
 
 
 func _update_image() -> void:
-	var svg := FileAccess.get_file_as_string(_get_svg_path()) if OS.has_feature("editor") else (load(_get_svg_path()) as DPITexture).get_source()
-	if svg:
-		set_source(svg)
-		base_scale = icon_scale
-		color_map = { Color.WHITE: text_color }
-		emit_changed()
+	var paths := _get_svg_path()
+	var svg: String
+	for path in paths:
+		svg = _attempt_path(path)
+		if svg:
+			set_source(svg)
+			base_scale = icon_scale * secondary_icon_scale
+			color_map = { Color.WHITE: text_color * modulate }
+			emit_changed()
+			return
+
+
+func _attempt_path(path: String) -> String:
+	if OS.has_feature("editor"):
+		return FileAccess.get_file_as_string(path)
+	else:
+		if ResourceLoader.exists(path, "DPITexture"):
+			return (load(path) as DPITexture).get_source()
+	return ""
 
 
 func setup_signals() -> void:
@@ -68,4 +86,5 @@ func setup_signals() -> void:
 #func svg_color(color: Color) -> 
 
 
-func _get_svg_path() -> String: return "res://assets/%s.svg" % icon
+func _get_svg_path() -> PackedStringArray:
+	return ["res://assets/%s.svg" % icon, "res://plugins/%s.svg" % ReverseDNSUtil.id_to_path(icon)]

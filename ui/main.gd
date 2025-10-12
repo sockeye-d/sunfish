@@ -19,6 +19,7 @@ const SUNFISH = preload("uid://d0ovrms2e78nv")
 		current_theme = value
 		if current_theme in ThemeManager.themes:
 			ThemeManager.set_theme_id(current_theme)
+			propagate_notification(NOTIFICATION_THEME_CHANGED)
 
 func _validate_property(property: Dictionary) -> void:
 	if property.name == "current_theme":

@@ -1,7 +1,7 @@
 extends WhiteboardTool
 
 
-var width: float = 5.0
+@export_range(1.0, 5.0, 0.0, "or_greater") var width: float = 5.0
 var color: Color
 
 var is_drawing: bool
@@ -13,9 +13,9 @@ static func get_id() -> String: return "dev.fishies.sunfish.BrushTool"
 
 
 func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
-	width = 5.0 / wb.draw_scale
+	var draw_width := width / wb.draw_scale
 	color = wb.primary_color
-	preview.width = width
+	preview.width = draw_width
 	preview.color = color
 	var display := Display.new([], [preview])
 	var mb := event as InputEventMouseButton
@@ -32,7 +32,7 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 						var dot = BrushDotElement.new()
 						dot.position = mb.position
 						dot.color = color
-						dot.width = width
+						dot.width = draw_width
 						display.elements = [dot]
 					last_draw_element = null
 	var mm := event as InputEventMouseMotion
@@ -45,7 +45,7 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 				var el := last_draw_element
 				el.append_point(mm_pos)
 				el.color = color
-				el.width = width
+				el.width = draw_width
 				display.elements = [el]
 		preview.position = mm.position
 	return display

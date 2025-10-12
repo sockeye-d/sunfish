@@ -40,18 +40,38 @@ func register_theme(theme: ThemeColors) -> void:
 	themes[theme.id] = theme
 
 
+@warning_ignore_start("integer_division")
 func set_theme(theme: ThemeColors) -> void:
 	get_tree().root.theme = theme_res
 	active_theme = theme
 	
 	var selection := Color(theme.accent_0, 0.3)
 	var disabled_surface := theme.surface.lerp(theme.background_0, 0.5)
+	var base_spacing := 8 if OS.has_feature("mobile") else 4
+	var base_font_size := 12 if OS.has_feature("mobile") else 16
 	
 	theme_res.set_block_signals(true)
 	theme_res.default_font = SANS
+	theme_res.default_font_size = base_font_size
 	
-	theme_res.set_stylebox("panel", "PanelContainer", new_flat(theme.background_0, [4], [4]))
-	theme_res.set_stylebox("panel", "Panel", new_flat(theme.background_0, [4], [4]))
+	theme_res.set_font("font", "HeaderLarge", SERIF_BOLD)
+	theme_res.set_font_size("font_size", "HeaderLarge", int(base_font_size * 1.5))
+	theme_res.set_font("font", "HeaderMedium", SANS_BOLD)
+	theme_res.set_font_size("font_size", "HeaderMedium", int(base_font_size * 1.125))
+	theme_res.set_font("font", "HeaderSmall", SANS)
+	theme_res.set_font_size("font_size", "HeaderSmall", base_font_size)
+	
+	theme_res.set_constant("separation", "BoxContainer", base_spacing)
+	theme_res.set_constant("separation", "HBoxContainer", base_spacing)
+	theme_res.set_constant("separation", "VBoxContainer", base_spacing)
+	
+	theme_res.set_constant("margin_bottom", "MarginContainer", base_spacing)
+	theme_res.set_constant("margin_top", "MarginContainer", base_spacing)
+	theme_res.set_constant("margin_left", "MarginContainer", base_spacing)
+	theme_res.set_constant("margin_right", "MarginContainer", base_spacing)
+	
+	theme_res.set_stylebox("panel", "PanelContainer", new_flat(theme.background_0, [base_spacing], [base_spacing]))
+	theme_res.set_stylebox("panel", "Panel", new_flat(theme.background_0, [base_spacing], [base_spacing]))
 	
 	theme_res.set_color("font_color", "Label", theme.text)
 	
@@ -61,50 +81,82 @@ func set_theme(theme: ThemeColors) -> void:
 	theme_res.set_color("font_pressed_color", "Button", theme.text)
 	theme_res.set_color("font_hover_pressed_color", "Button", theme.text)
 	theme_res.set_color("font_hover_color", "Button", theme.subtext)
-	theme_res.set_stylebox("normal", "Button", new_flat(theme.surface, [4], [4]))
-	theme_res.set_stylebox("hover", "Button", new_flat(theme.surface_hover, [4], [4]))
-	theme_res.set_stylebox("pressed", "Button", new_flat(theme.surface_press, [4], [4]))
-	theme_res.set_stylebox("disabled", "Button", new_flat(disabled_surface, [4], [4]))
+	theme_res.set_stylebox("normal", "Button", new_flat(theme.surface, [base_spacing], [base_spacing]))
+	theme_res.set_stylebox("hover", "Button", new_flat(theme.surface_hover, [base_spacing], [base_spacing]))
+	theme_res.set_stylebox("pressed", "Button", new_flat(theme.surface_press, [base_spacing], [base_spacing]))
+	theme_res.set_stylebox("disabled", "Button", new_flat(disabled_surface, [base_spacing], [base_spacing]))
 	
 	theme_res.set_color("font_color", "PopupMenu", theme.text)
 	theme_res.set_color("font_disabled_color", "PopupMenu", theme.subtext)
 	theme_res.set_color("font_hover_color", "PopupMenu", theme.text)
-	theme_res.set_stylebox("panel", "PopupMenu", new_flat(theme.background_1, [4], [4]))
-	theme_res.set_stylebox("hover", "PopupMenu", new_flat(theme.overlay, [4], [4]))
+	theme_res.set_stylebox("panel", "PopupMenu", new_flat(theme.background_1, [base_spacing], [base_spacing]))
+	theme_res.set_stylebox("hover", "PopupMenu", new_flat(theme.overlay, [base_spacing], [base_spacing]))
 	
-	theme_res.set_stylebox("panel", "PopupPanel", new_flat(theme.background_1, [4], [4]))
+	theme_res.set_stylebox("panel", "PopupPanel", new_flat(theme.background_1, [base_spacing], [base_spacing]))
 	
-	theme_res.set_stylebox("panel", "PopupPanel", new_flat(theme.background_1, [4], [4]))
+	theme_res.set_stylebox("panel", "PopupPanel", new_flat(theme.background_1, [base_spacing], [base_spacing]))
 	
 	theme_res.set_color("font_color", "LineEdit", theme.text)
 	theme_res.set_color("font_selected_color", "LineEdit", theme.text)
 	theme_res.set_color("font_uneditable_color", "LineEdit", theme.subtext)
 	theme_res.set_color("selection_color", "LineEdit", selection)
-	theme_res.set_stylebox("normal", "LineEdit", new_flat(theme.surface, [4], [4]))
-	theme_res.set_stylebox("read_only", "LineEdit", new_flat(disabled_surface, [4], [4]))
+	theme_res.set_stylebox("normal", "LineEdit", new_flat(theme.surface, [base_spacing], [base_spacing]))
+	theme_res.set_stylebox("read_only", "LineEdit", new_flat(disabled_surface, [base_spacing], [base_spacing]))
 	
 	theme_res.set_color("font_color", "TextEdit", theme.text)
 	theme_res.set_color("font_selected_color", "TextEdit", theme.text)
 	theme_res.set_color("font_uneditable_color", "TextEdit", theme.subtext)
 	theme_res.set_color("selection_color", "TextEdit", selection)
-	theme_res.set_stylebox("normal", "TextEdit", new_flat(theme.surface, [4], [4]))
+	theme_res.set_stylebox("normal", "TextEdit", new_flat(theme.surface, [base_spacing], [base_spacing]))
 	
-	var tab_radii: PackedInt32Array = [4, 4, 0, 0]
-	theme_res.set_stylebox("tab_unselected", "TabContainer", new_flat(theme.surface, tab_radii, [4]))
-	theme_res.set_stylebox("tab_selected", "TabContainer", new_flat(theme.surface_press, tab_radii, [4], [0, 0, 0, 2], theme.accent_0))
-	theme_res.set_stylebox("tab_hovered", "TabContainer", new_flat(theme.surface_hover, tab_radii, [4]))
+	var tab_radii: PackedInt32Array = [base_spacing, base_spacing, 0, 0]
+	theme_res.set_stylebox("tab_unselected", "TabContainer", new_flat(theme.surface, tab_radii, [base_spacing]))
+	theme_res.set_stylebox("tab_selected", "TabContainer", new_flat(theme.surface_press, tab_radii, [base_spacing], [0, 0, 0, 2], theme.accent_0))
+	theme_res.set_stylebox("tab_hovered", "TabContainer", new_flat(theme.surface_hover, tab_radii, [base_spacing]))
 	theme_res.set_color("font_disabled_color", "TabContainer", theme.subtext)
 	theme_res.set_color("font_hovered_color", "TabContainer", theme.text)
 	theme_res.set_color("font_selected_color", "TabContainer", theme.text)
 	theme_res.set_color("font_unselected_color", "TabContainer", theme.text)
 	
+	theme_res.set_stylebox("panel", "SliderCombo", new_flat(theme.background_1, [base_spacing], [base_spacing]))
+	
+	theme_res.set_stylebox("slider", "HSlider", new_flat(theme.surface, [base_spacing / 2], [0, base_spacing / 2]))
+	theme_res.set_stylebox("grabber_area", "HSlider", new_flat(theme.overlay_hover, [base_spacing / 2], [0, base_spacing / 2]))
+	theme_res.set_stylebox("grabber_area_highlight", "HSlider", new_flat(theme.overlay_press, [base_spacing / 2], [0, base_spacing / 2]))
+	
+	theme_res.set_stylebox("slider", "VSlider", new_flat(theme.surface, [base_spacing / 2], [base_spacing / 2, 0]))
+	theme_res.set_stylebox("grabber_area", "VSlider", new_flat(theme.overlay_hover, [base_spacing / 2], [base_spacing / 2, 0]))
+	theme_res.set_stylebox("grabber_area_highlight", "VSlider", new_flat(theme.overlay_press, [base_spacing / 2], [base_spacing / 2, 0]))
+	theme_res.set_icon("grabber", "VSlider", theme_res.get_icon("grabber", "HSlider"))
+	theme_res.set_icon("grabber_highlight", "VSlider", theme_res.get_icon("grabber_highlight", "HSlider"))
+	
+	theme_res.set_stylebox("grabber", "HScrollBar", new_flat(theme.overlay, [base_spacing / 2], [0, base_spacing / 2]))
+	theme_res.set_stylebox("grabber_highlight", "HScrollBar", new_flat(theme.overlay_hover, [base_spacing / 2], [0, base_spacing / 2]))
+	theme_res.set_stylebox("grabber_pressed", "HScrollBar", new_flat(theme.overlay_press, [base_spacing / 2], [0, base_spacing / 2]))
+	theme_res.set_stylebox("scroll", "HScrollBar", new_flat(theme.surface, [base_spacing / 2], [0, base_spacing / 2]))
+	
+	theme_res.set_stylebox("grabber", "VScrollBar", new_flat(theme.overlay, [base_spacing / 2], [base_spacing / 2, 0]))
+	theme_res.set_stylebox("grabber_highlight", "VScrollBar", new_flat(theme.overlay_hover, [base_spacing / 2], [base_spacing / 2, 0]))
+	theme_res.set_stylebox("grabber_pressed", "VScrollBar", new_flat(theme.overlay_press, [base_spacing / 2], [base_spacing / 2, 0]))
+	theme_res.set_stylebox("scroll", "VScrollBar", new_flat(theme.surface, [base_spacing / 2], [base_spacing / 2, 0]))
+	
+	theme_res.set_stylebox("separator", "VSeparator", new_flat(theme.surface, [base_spacing / 4], [base_spacing / 4, 0], [0, base_spacing]))
+	theme_res.set_stylebox("separator", "HSeparator", new_flat(theme.surface, [base_spacing / 4], [0, base_spacing / 4], [base_spacing, 0]))
+	
+	for prop in theme_res.get_property_list():
+		if prop.class_name == "Texture2D":
+			var val = theme_res.get(prop.name)
+			if val is IconTexture2D:
+				val.secondary_icon_scale = base_spacing / 4.0
+	
 	theme_res.set_block_signals(false)
 	theme_res.emit_changed()
 	background_color_changed.emit(theme.background_1)
-	#IconTexture2D.SignalBus.instance.change_text_color.emit.call_deferred(theme.text)
 	(IconTexture2D as Script).emit_signal.call_deferred("change_text_color", theme.text)
 	
-	ResourceSaver.save(theme_res, theme_res.resource_path)
+	if Engine.is_editor_hint():
+		ResourceSaver.save(theme_res, theme_res.resource_path)
+@warning_ignore_restore("integer_division")
 
 
 func set_theme_id(id: String) -> void:

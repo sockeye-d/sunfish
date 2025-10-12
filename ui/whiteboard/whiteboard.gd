@@ -80,9 +80,10 @@ func _ready() -> void:
 		color_picker.color_changed.connect(func(new_color: Color): primary_color = new_color)
 		primary_color = color_picker.color
 	var fd := FileAccess.open("user://save.sunfish", FileAccess.READ)
-	var json_size := fd.get_64()
-	var json_compressed := fd.get_buffer(FileAccess.get_size("user://save.sunfish") - fd.get_position())
-	elements = WhiteboardTools.deserialize(bytes_to_var(json_compressed.decompress(json_size, FileAccess.COMPRESSION_ZSTD)))
+	if fd:
+		var json_size := fd.get_64()
+		var json_compressed := fd.get_buffer(FileAccess.get_size("user://save.sunfish") - fd.get_position())
+		elements = WhiteboardTools.deserialize(bytes_to_var(json_compressed.decompress(json_size, FileAccess.COMPRESSION_ZSTD)))
 
 
 func _draw() -> void:

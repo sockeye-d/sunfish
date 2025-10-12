@@ -29,10 +29,10 @@ class FilledRectangleElement extends ShapeTool.ShapeElement:
 		wb.draw_rect(Rect2(
 			rect.position - Vector2(real_width * 0.5, 0.0),
 			rect.size + Vector2(real_width, 0.0)
-		), color)
+		).abs(), color)
 		wb.draw_rect(Rect2(
 			rect.position - Vector2(0.0, real_width * 0.5),
 			rect.size + Vector2(0.0, real_width)
-		), color)
+		).abs(), color)
 	
 	static func deserialize(data: Dictionary) -> Element: return deserialize_into(new(), data)

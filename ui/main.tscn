@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://cabo3vvcus82u"]
+[gd_scene load_steps=8 format=3 uid="uid://cabo3vvcus82u"]
 
 [ext_resource type="Script" uid="uid://c06cfhdwo6mqj" path="res://ui/main.gd" id="1_fc3ap"]
 [ext_resource type="Script" uid="uid://byygqcqk1nokj" path="res://ui/whiteboard/whiteboard.gd" id="1_ig7tw"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://78r8qgrrm8sv" path="res://ui/main_menu.tscn" id="2_fc3ap"]
 [ext_resource type="Script" uid="uid://bwc2gp0rut4nn" path="res://ui/nice_color_picker.gd" id="3_loxbi"]
 [ext_resource type="PackedScene" uid="uid://dbxmfkswghn1p" path="res://ui/status_box/status_box.tscn" id="3_t6oic"]
+[ext_resource type="PackedScene" uid="uid://dl3cf2qtuhquc" path="res://ui/inspector/inspector.tscn" id="7_06s8x"]
 
 [node name="Main" type="ColorRect"]
 anchors_preset = 15
@@ -90,6 +91,10 @@ layout_mode = 2
 script = ExtResource("3_loxbi")
 color = Color(1, 1, 1, 1)
 metadata/_custom_type_script = "uid://bwc2gp0rut4nn"
+
+[node name="Inspector" parent="MarginContainer/VBoxContainer/HBoxContainer/SplitContainer/SplitContainer" node_paths=PackedStringArray("whiteboard") instance=ExtResource("7_06s8x")]
+layout_mode = 2
+whiteboard = NodePath("../../VBoxContainer/Whiteboard")
 
 [node name="LayerContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/SplitContainer/SplitContainer"]
 layout_mode = 2

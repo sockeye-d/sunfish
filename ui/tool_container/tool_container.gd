@@ -34,7 +34,7 @@ func _update_tools() -> void:
 			continue
 		var btn := Button.new()
 		var icon := IconTexture2D.new()
-		icon.icon = "tools/" + tool.get_id()
+		icon.icon = tool.get_id()
 		icon.icon_scale = 1.5
 		btn.toggle_mode = true
 		btn.icon = icon
