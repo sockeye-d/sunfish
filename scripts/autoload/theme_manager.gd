@@ -38,15 +38,24 @@ func _ready() -> void:
 	get_tree().root.focus_exited.connect(func(): reload_theme())
 
 
+func unregister_theme(id: String) -> void: if id in themes: themes.erase(id)
+
+
 func register_theme(theme: ThemeColors) -> void:
 	themes[theme.id] = theme
+	for theme_key in themes:
+		if not is_instance_valid(themes[theme_key]):
+			themes.erase(theme_key)
 
 
 @warning_ignore_start("integer_division")
 func set_theme(new_theme: ThemeColors) -> void:
+	if active_theme and active_theme.changed.is_connected(reload_theme):
+		active_theme.changed.disconnect(reload_theme)
 	active_theme = new_theme
+	active_theme.changed.connect(reload_theme)
 	var theme: ThemeColors = new_theme.duplicate(true)
-	if not get_tree().root.has_focus():
+	if not get_tree().root.has_focus() and not Engine.is_editor_hint():
 		# hehe
 		theme.background_1 = theme.background_0
 	get_tree().root.theme = theme_res
@@ -146,8 +155,8 @@ func set_theme(new_theme: ThemeColors) -> void:
 	theme_res.set_stylebox("grabber_pressed", "VScrollBar", new_flat(theme.overlay_press, [base_spacing / 2], [base_spacing / 2, 0]))
 	theme_res.set_stylebox("scroll", "VScrollBar", new_flat(theme.surface, [base_spacing / 2], [base_spacing / 2, 0]))
 	
-	theme_res.set_stylebox("separator", "VSeparator", new_flat(theme.surface, [base_spacing / 4], [base_spacing / 4, 0], [0, base_spacing]))
-	theme_res.set_stylebox("separator", "HSeparator", new_flat(theme.surface, [base_spacing / 4], [0, base_spacing / 4], [base_spacing, 0]))
+	theme_res.set_stylebox("separator", "VSeparator", new_flat(theme.surface.lerp(theme.background_0, 0.5), [1], [1, 0], [0, 0]))
+	theme_res.set_stylebox("separator", "HSeparator", new_flat(theme.surface.lerp(theme.background_0, 0.5), [1], [0, 1], [0, 0]))
 	
 	for prop in theme_res.get_property_list():
 		if prop.class_name == "Texture2D":

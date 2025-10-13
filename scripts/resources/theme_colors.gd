@@ -44,6 +44,7 @@ class_name ThemeColors extends Resource
 ## The reverse-DNS identifier of this theme
 @export var id: String:
 	set(value):
+		ThemeManager.unregister_theme(id)
 		id = value
 		ThemeManager.register_theme(self)
 

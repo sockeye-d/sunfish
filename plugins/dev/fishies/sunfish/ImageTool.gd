@@ -120,7 +120,6 @@ class ImageElement extends WhiteboardTool.Element:
 		var el := ImageElement.new()
 		el.rect = data.rect
 		var image_data = data.image_data.decompress(data.image_data_length, FileAccess.COMPRESSION_ZSTD)
-		var new_image := Image.create_from_data(data.image_width, data.image_height, false, data.image_format, image_data)
-		new_image.generate_mipmaps()
+		var new_image := Image.create_from_data(data.image_width, data.image_height, true, data.image_format, image_data)
 		el.image = new_image
 		return el

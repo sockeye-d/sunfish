@@ -46,7 +46,6 @@ func _init() -> void:
 	background = Panel.new()
 	background.show_behind_parent = true
 	background.clip_contents = true
-	#background.clip_children = CanvasItem.CLIP_CHILDREN_AND_DRAW
 	background.mouse_behavior_recursive = Control.MOUSE_BEHAVIOR_DISABLED
 	background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(background)
@@ -57,7 +56,6 @@ func _init() -> void:
 	background_shader = ColorRect.new()
 	background_shader.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	background_shader.material = mat
-	background_shader.show_behind_parent = true
 	background.add_child(background_shader)
 	
 	preview = PreviewControl.new()
@@ -73,6 +71,8 @@ func _init() -> void:
 	)
 	
 	focus_mode = Control.FOCUS_ALL
+	
+	theme_changed.connect(func(): if ThemeManager.active_theme: mat.set_shader_parameter("text_color", ThemeManager.active_theme.text))
 
 
 func _ready() -> void:

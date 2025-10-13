@@ -18,10 +18,9 @@ config/features=PackedStringArray("4.6")
 run/low_processor_mode=true
 boot_splash/fullsize=false
 boot_splash/image="uid://d0ovrms2e78nv"
-config/icon="uid://d0ovrms2e78nv"
+config/icon="uid://dnclcms20swyj"
 config/macos_native_icon="res://sunfish.icns"
 config/windows_native_icon="res://sunfish.ico"
-config/icon.android="uid://1iolvcrehtuo"
 boot_splash/image.android="uid://cpaseabjoyjv3"
 
 [autoload]
@@ -37,8 +36,11 @@ window/energy_saving/keep_screen_on=false
 window/subwindows/embed_subwindows=false
 window/per_pixel_transparency/allowed=true
 display_server/driver.linuxbsd="wayland"
-window/vsync/vsync_mode=0
 window/stretch/scale.mobile=3.0
+
+[gui]
+
+theme/custom="uid://6m1sumf80mct"
 
 [input]
 
@@ -62,6 +64,7 @@ pointing/android/enable_pan_and_scale_gestures=true
 textures/canvas_textures/default_texture_filter=2
 renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
+shader_compiler/shader_cache/enabled=false
 anti_aliasing/quality/msaa_2d=2
 environment/defaults/default_clear_color=Color(0.1764706, 0.1764706, 0.1764706, 1)
 

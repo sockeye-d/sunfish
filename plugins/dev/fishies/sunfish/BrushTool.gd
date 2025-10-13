@@ -81,21 +81,21 @@ class BrushElement extends WhiteboardTool.Element:
 			return
 		if points.size() >= 2:
 			var real_points: PackedVector2Array
-			real_points.resize(points.size() * 2)
+			real_points.resize(points.size() * 2 + 2)
 			var real_size: int = 0
 			var last_point: Vector2 = points[0]
 			for i in points.size() - 1:
-				if last_point.distance_squared_to(points[i]) < 16.0 / wb.draw_scale and (i != points.size() - 2 and real_points.size() % 2 == 0) and i != 0:
+				if last_point.distance_to(points[i]) < 4.0 / wb.draw_scale and (i != points.size() - 2 and real_points.size() % 2 == 0) and i != 0:
 					continue
-				real_size += 2
 				wb.draw_circle(last_point, real_width * 0.5, color)
 				real_points[real_size] = last_point
-				real_points[real_size + 1] = points[i + 1]
-				last_point = points[i + 1]
-			if real_points[-1] != points[-1]:
+				real_points[real_size + 1] = points[i]
+				last_point = points[i]
 				real_size += 2
+			if real_points[real_size] != points[-1]:
 				real_points[real_size] = last_point
 				real_points[real_size + 1] = points[-1]
+				real_size += 2
 			real_points.resize(real_size)
 			wb.draw_circle(points[-1], real_width * 0.5, color)
 			wb.draw_multiline(real_points, color, real_width)

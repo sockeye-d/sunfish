@@ -30,73 +30,65 @@ grow_vertical = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="BoxContainer" type="BoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 
-[node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/VBoxContainer/BoxContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="MainMenu" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer2" instance=ExtResource("2_fc3ap")]
+[node name="MainMenu" parent="MarginContainer/VBoxContainer/BoxContainer/VBoxContainer/PanelContainer2" instance=ExtResource("2_fc3ap")]
 layout_mode = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/BoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 3
 
-[node name="ToolContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PanelContainer" node_paths=PackedStringArray("whiteboard") instance=ExtResource("1_t6oic")]
+[node name="ToolContainer" parent="MarginContainer/VBoxContainer/BoxContainer/VBoxContainer/PanelContainer" node_paths=PackedStringArray("whiteboard") instance=ExtResource("1_t6oic")]
 layout_mode = 2
 whiteboard = NodePath("../../../SplitContainer/VBoxContainer/Whiteboard")
 
-[node name="SplitContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="SplitContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/SplitContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BoxContainer/SplitContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Whiteboard" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer/SplitContainer/VBoxContainer" node_paths=PackedStringArray("color_picker")]
+[node name="Whiteboard" type="Control" parent="MarginContainer/VBoxContainer/BoxContainer/SplitContainer/VBoxContainer" node_paths=PackedStringArray("color_picker")]
 clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 focus_mode = 2
 script = ExtResource("1_ig7tw")
-color_picker = NodePath("../../SplitContainer/ColorContainer/NiceColorPicker")
+color_picker = NodePath("../../SplitContainer/NiceColorPicker")
 metadata/_custom_type_script = "uid://byygqcqk1nokj"
 
-[node name="MarginContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/SplitContainer/VBoxContainer"]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="StatusBox" parent="MarginContainer/VBoxContainer/HBoxContainer/SplitContainer/VBoxContainer/MarginContainer" node_paths=PackedStringArray("whiteboard") instance=ExtResource("3_t6oic")]
-layout_mode = 2
-size_flags_vertical = 8
-whiteboard = NodePath("../../Whiteboard")
-
-[node name="SplitContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/SplitContainer"]
+[node name="SplitContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BoxContainer/SplitContainer"]
 layout_mode = 2
 
-[node name="ColorContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/SplitContainer/SplitContainer"]
-layout_mode = 2
-
-[node name="NiceColorPicker" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/SplitContainer/SplitContainer/ColorContainer"]
+[node name="NiceColorPicker" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BoxContainer/SplitContainer/SplitContainer"]
 layout_mode = 2
 script = ExtResource("3_loxbi")
 color = Color(1, 1, 1, 1)
 metadata/_custom_type_script = "uid://bwc2gp0rut4nn"
 
-[node name="Inspector" parent="MarginContainer/VBoxContainer/HBoxContainer/SplitContainer/SplitContainer" node_paths=PackedStringArray("whiteboard") instance=ExtResource("7_06s8x")]
+[node name="Inspector" parent="MarginContainer/VBoxContainer/BoxContainer/SplitContainer/SplitContainer" node_paths=PackedStringArray("whiteboard") instance=ExtResource("7_06s8x")]
 layout_mode = 2
 whiteboard = NodePath("../../VBoxContainer/Whiteboard")
 
-[node name="LayerContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/SplitContainer/SplitContainer"]
-visible = false
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="StatusBox" parent="MarginContainer/VBoxContainer/PanelContainer" node_paths=PackedStringArray("whiteboard") instance=ExtResource("3_t6oic")]
+layout_mode = 2
+size_flags_vertical = 8
+whiteboard = NodePath("../../BoxContainer/SplitContainer/VBoxContainer/Whiteboard")

@@ -180,8 +180,10 @@ func _on_line_edit_input(event: InputEvent) -> void:
 			if not e.pressed and dragging_state == DraggingStates.DRAGGING:
 				dragging_state = DraggingStates.NONE
 				line_edit.editable = true
-				Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-				Input.warp_mouse(drag_mouse_pos)
+				#print("warping to ", drag_mouse_pos)
+				#Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+				#DisplayServer.warp_mouse(Vector2i.ZERO)
+				#Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 				changed_ended.emit()
 		
 		if event is InputEventMouseMotion:
@@ -190,7 +192,7 @@ func _on_line_edit_input(event: InputEvent) -> void:
 			if e.button_mask & MOUSE_BUTTON_MASK_LEFT and abs(e.global_position.x - drag_mouse_pos.x) > mouse_threshold and dragging_state == DraggingStates.CLICKED:
 				dragging_state = DraggingStates.DRAGGING
 				drag_mouse_pos = e.global_position
-				Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+				#Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN
 				line_edit.editable = false
 				changed_begun.emit()
 			

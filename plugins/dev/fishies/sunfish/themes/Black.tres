@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="ThemeColors" load_steps=2 format=3 uid="uid://cpv23srtkvujm"]
+
+[ext_resource type="Script" uid="uid://54gqboo3cmcx" path="res://scripts/resources/theme_colors.gd" id="1_cwckk"]
+
+[resource]
+script = ExtResource("1_cwckk")
+background_0 = Color(0.05, 0.05, 0.05, 1)
+background_2 = Color(0.08, 0.08, 0.08, 1)
+surface = Color(0.15, 0.15, 0.15, 1)
+surface_hover = Color(0.2, 0.2, 0.2, 1)
+surface_press = Color(0.25, 0.25, 0.25, 1)
+overlay = Color(0.4, 0.4, 0.4, 1)
+overlay_hover = Color(0.45, 0.45, 0.45, 1)
+overlay_press = Color(0.5, 0.5, 0.5, 1)
+text = Color(1, 1, 1, 1)
+subtext = Color(0.75, 0.75, 0.75, 1)
+accent_0 = Color(0.79607844, 0.6509804, 0.96862745, 1)
+accent_1 = Color(0.5372549, 0.7058824, 0.98039216, 1)
+error = Color(0.9529412, 0.54509807, 0.65882355, 1)
+warning = Color(0.9764706, 0.8862745, 0.6862745, 1)
+success = Color(0.6509804, 0.8901961, 0.6313726, 1)
+id = "dev.fishies.sunfish.themes.Black"
+name = "Black"
+metadata/_custom_type_script = "uid://54gqboo3cmcx"

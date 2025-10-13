@@ -1,6 +1,7 @@
 shader_type canvas_item;
 
 uniform mat3 xform;
+uniform vec4 text_color;
 
 global uniform float ui_scale;
 
@@ -16,8 +17,8 @@ void fragment() {
 	float ui_pixel = pixel * ui_scale;
 	
 	COLOR = vec4(
-		vec3(1),
-		smoothstep(aa_pixel, 0.0, length(fract(uv) - 0.5) - ui_pixel) * smoothstep(0.15, 0.03, pixel) * smoothstep(0.0015, 0.005, pixel) * 0.1
+		text_color.rgb,
+		smoothstep(aa_pixel, 0.0, length(fract(uv) - 0.5) - ui_pixel) * smoothstep(0.15, 0.03, pixel) * smoothstep(0.0015, 0.005, pixel) * 0.25
 	);
 }
 
