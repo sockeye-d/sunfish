@@ -26,8 +26,8 @@ func _ready() -> void:
 
 
 func _update_tools() -> void:
-	for child in get_children():
-		child.queue_free()
+	for tool in tool_buttons:
+		tool_buttons[tool].queue_free()
 	tool_buttons.clear()
 	for tool in tools:
 		if not tool.is_visible():

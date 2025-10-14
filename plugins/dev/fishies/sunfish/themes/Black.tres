@@ -4,8 +4,7 @@
 
 [resource]
 script = ExtResource("1_cwckk")
-background_0 = Color(0.05, 0.05, 0.05, 1)
-background_2 = Color(0.08, 0.08, 0.08, 1)
+background_2 = Color(0.05, 0.05, 0.05, 1)
 surface = Color(0.15, 0.15, 0.15, 1)
 surface_hover = Color(0.2, 0.2, 0.2, 1)
 surface_press = Color(0.25, 0.25, 0.25, 1)

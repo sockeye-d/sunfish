@@ -34,8 +34,6 @@ var active_theme: ThemeColors
 func _ready() -> void:
 	ui_scale_changed.connect(func(): RenderingServer.global_shader_parameter_set("ui_scale", ui_scale))
 	ui_scale_changed.connect(func(): get_tree().root.content_scale_factor = ui_scale)
-	get_tree().root.focus_entered.connect(func(): reload_theme())
-	get_tree().root.focus_exited.connect(func(): reload_theme())
 
 
 func unregister_theme(id: String) -> void: if id in themes: themes.erase(id)
@@ -54,11 +52,10 @@ func set_theme(new_theme: ThemeColors) -> void:
 		active_theme.changed.disconnect(reload_theme)
 	active_theme = new_theme
 	active_theme.changed.connect(reload_theme)
-	var theme: ThemeColors = new_theme.duplicate(true)
-	if not get_tree().root.has_focus() and not Engine.is_editor_hint():
-		# hehe
-		theme.background_1 = theme.background_0
-	get_tree().root.theme = theme_res
+	var theme: ThemeColors = new_theme.duplicate()
+	RenderingServer.set_default_clear_color(theme.background_1)
+	if Engine.is_editor_hint():
+		ProjectSettings["rendering/environment/defaults/default_clear_color"] = theme.background_1
 	
 	var selection := Color(theme.accent_0, 0.3)
 	var disabled_surface := theme.surface.lerp(theme.background_0, 0.5)
@@ -66,6 +63,7 @@ func set_theme(new_theme: ThemeColors) -> void:
 	var base_font_size := 12 if OS.has_feature("mobile") else 16
 	
 	theme_res.set_block_signals(true)
+	get_tree().root.theme = theme_res
 	theme_res.default_font = SANS
 	theme_res.default_font_size = base_font_size
 	
@@ -95,17 +93,28 @@ func set_theme(new_theme: ThemeColors) -> void:
 	theme_res.set_color("font_color", "Button", theme.text)
 	theme_res.set_color("font_pressed_color", "Button", theme.text)
 	theme_res.set_color("font_hover_pressed_color", "Button", theme.text)
-	theme_res.set_color("font_hover_color", "Button", theme.subtext)
+	theme_res.set_color("font_hover_color", "Button", theme.text)
+	theme_res.set_color("font_disabled_color", "Button", theme.subtext)
 	theme_res.set_stylebox("normal", "Button", new_flat(theme.surface, [base_spacing], [base_spacing]))
 	theme_res.set_stylebox("hover", "Button", new_flat(theme.surface_hover, [base_spacing], [base_spacing]))
 	theme_res.set_stylebox("pressed", "Button", new_flat(theme.surface_press, [base_spacing], [base_spacing]))
 	theme_res.set_stylebox("disabled", "Button", new_flat(disabled_surface, [base_spacing], [base_spacing]))
 	
-	theme_res.set_color("font_color", "PopupMenu", theme.text)
-	theme_res.set_color("font_disabled_color", "PopupMenu", theme.subtext)
-	theme_res.set_color("font_hover_color", "PopupMenu", theme.text)
-	theme_res.set_stylebox("panel", "PopupMenu", new_flat(theme.background_1, [base_spacing], [base_spacing]))
-	theme_res.set_stylebox("hover", "PopupMenu", new_flat(theme.overlay, [base_spacing], [base_spacing]))
+	for clazz in PackedStringArray(["CheckButton", "CheckBox"]):
+		theme_res.set_color("font_color", clazz, theme.text)
+		theme_res.set_color("font_pressed_color", clazz, theme.text)
+		theme_res.set_color("font_hover_pressed_color", clazz, theme.text)
+		theme_res.set_color("font_hover_color", clazz, theme.text)
+		theme_res.set_color("font_disabled_color", clazz, theme.subtext)
+		theme_res.set_stylebox("normal", clazz, new_flat(theme.surface, [base_spacing], [base_spacing]))
+		theme_res.set_stylebox("hover", clazz, new_flat(theme.surface_hover, [base_spacing], [base_spacing]))
+		theme_res.set_stylebox("pressed", clazz, new_flat(theme.surface_press, [base_spacing], [base_spacing]))
+		theme_res.set_stylebox("hover_pressed", clazz, new_flat(theme.surface_press, [base_spacing], [base_spacing]))
+		theme_res.set_stylebox("disabled", clazz, new_flat(disabled_surface, [base_spacing], [base_spacing]))
+	
+	theme_res.set_color("font_color", "ProgressBar", theme.text)
+	theme_res.set_stylebox("background", "ProgressBar", new_flat(theme.surface, [base_spacing], [base_spacing]))
+	theme_res.set_stylebox("fill", "ProgressBar", new_flat(theme.overlay, [base_spacing], [base_spacing]))
 	
 	theme_res.set_stylebox("panel", "PopupPanel", new_flat(theme.background_1, [base_spacing], [base_spacing]))
 	
@@ -125,6 +134,8 @@ func set_theme(new_theme: ThemeColors) -> void:
 	theme_res.set_stylebox("normal", "TextEdit", new_flat(theme.surface, [base_spacing], [base_spacing]))
 	
 	var tab_radii: PackedInt32Array = [base_spacing, base_spacing, 0, 0]
+	theme_res.set_stylebox("panel", "TabContainer", new_flat(theme.background_0, tab_radii, [base_spacing]))
+	theme_res.set_stylebox("tab_disabled", "TabContainer", new_flat(disabled_surface, tab_radii, [base_spacing]))
 	theme_res.set_stylebox("tab_unselected", "TabContainer", new_flat(theme.surface, tab_radii, [base_spacing]))
 	theme_res.set_stylebox("tab_selected", "TabContainer", new_flat(theme.surface_press, tab_radii, [base_spacing], [0, 0, 0, 2], theme.accent_0))
 	theme_res.set_stylebox("tab_hovered", "TabContainer", new_flat(theme.surface_hover, tab_radii, [base_spacing]))
@@ -155,13 +166,31 @@ func set_theme(new_theme: ThemeColors) -> void:
 	theme_res.set_stylebox("grabber_pressed", "VScrollBar", new_flat(theme.overlay_press, [base_spacing / 2], [base_spacing / 2, 0]))
 	theme_res.set_stylebox("scroll", "VScrollBar", new_flat(theme.surface, [base_spacing / 2], [base_spacing / 2, 0]))
 	
-	theme_res.set_stylebox("separator", "VSeparator", new_flat(theme.surface.lerp(theme.background_0, 0.5), [1], [1, 0], [0, 0]))
-	theme_res.set_stylebox("separator", "HSeparator", new_flat(theme.surface.lerp(theme.background_0, 0.5), [1], [0, 1], [0, 0]))
+	theme_res.set_stylebox("separator", "VSeparator", new_flat(disabled_surface, [1], [1, 0], [0, 0]))
+	theme_res.set_stylebox("separator", "HSeparator", new_flat(disabled_surface, [1], [0, 1], [0, 0]))
 	
+	theme_res.set_color("font_color", "PopupMenu", theme.text)
+	theme_res.set_color("font_disabled_color", "PopupMenu", theme.subtext)
+	theme_res.set_color("font_hover_color", "PopupMenu", theme.text)
+	theme_res.set_color("font_separator_color", "PopupMenu", theme.subtext)
+	
+	theme_res.set_stylebox("panel", "PopupMenu", new_flat(theme.background_1, [base_spacing * 2], [base_spacing]))
+	theme_res.set_stylebox("hover", "PopupMenu", new_flat(theme.overlay, [base_spacing], [base_spacing]))
+	theme_res.set_stylebox("separator", "PopupMenu", new_flat(theme.surface, [1], [0, 1], [0, 0]))
+	theme_res.set_stylebox("labeled_separator_left", "PopupMenu", new_flat(theme.surface, [1], [0, 1], [0, 0]))
+	theme_res.set_stylebox("labeled_separator_right", "PopupMenu", new_flat(theme.surface, [1], [0, 1], [0, 0]))
+	for prefix in PackedStringArray(["", "radio_"]):
+		for icon in PackedStringArray(["checked", "unchecked"]):
+			for suffix in PackedStringArray(["", "_disabled"]):
+				var icon_name := prefix + icon + suffix
+				theme_res.set_icon(icon_name, "PopupMenu", theme_res.get_icon(icon_name, "CheckBox"))
+	
+	# is this wasteful?  yes
+	# does it work? also yes
 	for prop in theme_res.get_property_list():
-		if prop.class_name == "Texture2D":
-			var val = theme_res.get(prop.name)
-			if val is IconTexture2D:
+		if prop.class_name == "Texture2D" and prop.name.match("?Slider/icons/grabber*"):
+			var val := theme_res.get(prop.name) as IconTexture2D
+			if val:
 				val.secondary_icon_scale = base_spacing / 4.0
 	
 	theme_res.set_block_signals(false)

@@ -43,7 +43,7 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 				if last_draw_element == null:
 					last_draw_element = BrushElement.new()
 				var el := last_draw_element
-				el.append_point(mm_pos)
+				el.append_point(mm_pos, mm.pressure if mm.pressure > 0.0 else 1.0)
 				el.color = color
 				el.width = draw_width
 				display.elements = [el]
@@ -56,6 +56,7 @@ class BrushElement extends WhiteboardTool.Element:
 		WhiteboardTools.register_deserializer(BrushElement)
 	
 	var points: PackedVector2Array
+	var pressures: PackedFloat32Array
 	var color: Color
 	var width: float
 	
@@ -64,13 +65,18 @@ class BrushElement extends WhiteboardTool.Element:
 	
 	static func get_id() -> String: return "dev.fishies.sunfish.BrushElement"
 	
-	func append_point(point: Vector2) -> void:
+	func append_point(point: Vector2, pressure: float) -> void:
 		min_p = min_p.min(point)
 		max_p = max_p.max(point)
-		if points.size() >= 2 and points[-2].distance_squared_to(point) < width * width:
+		var tolerance := width * width
+		if DebugManager.giant_brush_deadzone:
+			tolerance *= 1000.0
+		if points.size() >= 2 and points[-2].distance_squared_to(point) < tolerance:
 			points[-1] = point
+			pressures[-1] = pressure
 		else:
 			points.append(point)
+			pressures.append(pressure)
 	
 	
 	func _falloff(x: float) -> float: return max(0.0, 2.0 - 1.0 / x if x <= 1.0 else x)
@@ -85,26 +91,15 @@ class BrushElement extends WhiteboardTool.Element:
 			var real_size: int = 0
 			var last_point: Vector2 = points[0]
 			for i in points.size() - 1:
-				if last_point.distance_to(points[i]) < 4.0 / wb.draw_scale and (i != points.size() - 2 and real_points.size() % 2 == 0) and i != 0:
+				if last_point.distance_to(points[i]) < 4.0 / wb.draw_scale and i != 0:
 					continue
-				wb.draw_circle(last_point, real_width * 0.5, color)
-				real_points[real_size] = last_point
-				real_points[real_size + 1] = points[i]
+				real_points[real_size] = points[i]
 				last_point = points[i]
-				real_size += 2
-			if real_points[real_size] != points[-1]:
-				real_points[real_size] = last_point
-				real_points[real_size + 1] = points[-1]
-				real_size += 2
-			real_points.resize(real_size)
-			wb.draw_circle(points[-1], real_width * 0.5, color)
-			wb.draw_multiline(real_points, color, real_width)
+				real_size += 1
+			real_points[real_size] = points[-1]
+			real_points.resize(real_size + 1)
+			DrawingUtil.draw_round_polyline(wb.get_canvas_item(), real_points, color, real_width, pressures)
 	
-	
-	func should_draw(at_pos: Vector2, threshold: float = width) -> bool:
-		if points.is_empty():
-			return false
-		return points[-1].distance_squared_to(at_pos) > threshold * threshold
 	
 	func get_bounding_box() -> Rect2:
 		return Rect2(min_p, max_p - min_p).grow(width * 0.5).abs()

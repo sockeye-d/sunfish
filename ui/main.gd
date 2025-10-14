@@ -41,12 +41,12 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	Util.unused(delta)
 	if DisplayServer.has_feature(DisplayServer.FEATURE_VIRTUAL_KEYBOARD):
 		container.offset_bottom = -DisplayServer.virtual_keyboard_get_height() / get_tree().root.content_scale_factor
 
 
 func update_theme() -> void:
-	print("hi")
 	if current_theme in ThemeManager.themes:
 		ThemeManager.set_theme_id(current_theme)
 		propagate_notification(NOTIFICATION_THEME_CHANGED)
