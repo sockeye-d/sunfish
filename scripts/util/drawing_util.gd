@@ -1,6 +1,9 @@
 class_name DrawingUtil
 
 
+const CIRCLE_RESOLUTION = 90
+
+
 static var rs := RenderingServer
 static var quad_uvs: PackedVector2Array = [Vector2(0, 0), Vector2(1, 0), Vector2(1, 1), Vector2(0, 1)]
 static var tri_uvs: PackedVector2Array = [Vector2(0, 0), Vector2(1, 0), Vector2(1, 1)]
@@ -12,8 +15,8 @@ static var half_circle_indices: PackedInt32Array
 static func _static_init() -> void:
 	half_circle_tris = [Vector2.ZERO]
 	half_circle_uvs = [Vector2.ZERO]
-	for angle_index in 182:
-		var angle := (angle_index) / 360.0 * TAU - PI * 0.5
+	for angle_index in CIRCLE_RESOLUTION + 2:
+		var angle := (angle_index) / float(CIRCLE_RESOLUTION) * PI - PI * 0.5
 		var point := Vector2.from_angle(angle)
 		half_circle_tris.append(point)
 		half_circle_uvs.append(Vector2.ZERO)
@@ -40,20 +43,33 @@ static func draw_round_polyline(canvas_item: RID, points: PackedVector2Array, co
 		rs.canvas_item_add_primitive(canvas_item, [a + normal_a, b + normal * b_width, b - normal * b_width, a - normal_a], quad_colors, quad_uvs, RID())
 		if point_index > 0:
 			var c := points[point_index - 1]
-			var b_normal = (a - c).normalized().orthogonal() * half_width * a_width
-			rs.canvas_item_add_primitive(canvas_item, [a, a + b_normal, a + normal_a], tri_colors, tri_uvs, RID())
-			rs.canvas_item_add_primitive(canvas_item, [a, a - b_normal, a - normal_a], tri_colors, tri_uvs, RID())
+			var ca_norm := (a - c).normalized()
+			var angle := ab_norm.angle_to(ca_norm)
+			if ca_norm.dot(ab_norm) < 0.7:
+				var normal_b := ca_norm.orthogonal()
+				var normal_b_scaled := normal_b * half_width * a_width
+				var normal_c := (ca_norm - ab_norm).normalized() * half_width * a_width
+				if angle < 0.0:
+					rs.canvas_item_add_primitive(canvas_item, [a, a + normal_c, a + normal_a], tri_colors, tri_uvs, RID())
+					rs.canvas_item_add_primitive(canvas_item, [a, a + normal_c, a + normal_b_scaled], tri_colors, tri_uvs, RID())
+				else:
+					rs.canvas_item_add_primitive(canvas_item, [a, a + normal_c, a - normal_a], tri_colors, tri_uvs, RID())
+					rs.canvas_item_add_primitive(canvas_item, [a, a + normal_c, a - normal_b_scaled], tri_colors, tri_uvs, RID())
+			else:
+				var b_normal = ca_norm.orthogonal() * half_width * a_width
+				if angle < 0.0:
+					rs.canvas_item_add_primitive(canvas_item, [a, a + b_normal, a + normal_a], tri_colors, tri_uvs, RID())
+				else:
+					rs.canvas_item_add_primitive(canvas_item, [a, a - b_normal, a - normal_a], tri_colors, tri_uvs, RID())
+				
 	var color_array := _create_color_array(half_circle_tris.size(), color)
 	_add_endcap(canvas_item, points[0], points[1], color_array, width * pressures[0])
 	_add_endcap(canvas_item, points[-1], points[-2], color_array, width * pressures[-1])
 
 
 static func _add_endcap(canvas_item: RID, point_a: Vector2, point_b: Vector2, color: PackedColorArray, width: float) -> void:
-	var rotated_half_circle_tris := PackedVector2Array()
-	rotated_half_circle_tris.resize(half_circle_tris.size())
-	var start_angle := (point_a - point_b).angle()
-	for i in half_circle_tris.size():
-		rotated_half_circle_tris[i] = half_circle_tris[i].rotated(start_angle) * width * 0.5 + point_a
+	var start_angle := (point_a - point_b).normalized() * width * 0.5
+	var rotated_half_circle_tris := Transform2D(start_angle, start_angle.orthogonal(), point_a) * half_circle_tris
 	rs.canvas_item_add_triangle_array(
 		canvas_item,
 		half_circle_indices,

@@ -26,7 +26,8 @@ var draw_origin: Vector2
 
 var elements: Array[WhiteboardTool.Element]
 var preview_elements: Array[WhiteboardTool.PreviewElement]
-var active_tools: Array[WhiteboardTool] = [PanTool.new()]
+var active_tools: Array[WhiteboardTool] = []
+var passive_tools: Array[WhiteboardTool] = [PanTool.new()]
 
 var active_element_count: int
 var visible_element_count: int
@@ -81,13 +82,12 @@ func _ready() -> void:
 		primary_color = color_picker.color
 	var fd := FileAccess.open("user://save.sunfish", FileAccess.READ)
 	if fd:
-		var json_size := fd.get_64()
-		var json_compressed := fd.get_buffer(FileAccess.get_size("user://save.sunfish") - fd.get_position())
-		elements = WhiteboardTools.deserialize(bytes_to_var(json_compressed.decompress(json_size, FileAccess.COMPRESSION_ZSTD)))
+		var stream := StreamPeerBuffer.new()
+		stream.data_array = fd.get_buffer(FileAccess.get_size(fd.get_path_absolute()))
+		deserialize(stream)
 
 
 func _draw() -> void:
-	#get_tree().root.msaa_2d = Viewport.MSAA_4X
 	var new_element_count := elements.size()
 	var new_visible_element_count := 0
 	draw_set_transform_matrix(draw_xform)
@@ -112,18 +112,15 @@ func _gui_input(e: InputEvent) -> void:
 	if e.is_action_pressed("ui_undo", true):
 		undo()
 	if e.is_action_pressed("save"):
-		var json := var_to_bytes(WhiteboardTools.serialize(elements))
-		var json_compressed := json.compress(FileAccess.COMPRESSION_ZSTD)
+		var stream := StreamPeerBuffer.new()
+		serialize(stream)
 		var fd := FileAccess.open("user://save.sunfish", FileAccess.WRITE)
-		fd.store_64(json.size())
-		fd.store_buffer(json_compressed)
-		print(json_compressed.size())
-		elements = WhiteboardTools.deserialize(bytes_to_var(json_compressed.decompress(json.size(), FileAccess.COMPRESSION_ZSTD)))
-		queue_redraw()
+		if fd:
+			fd.store_buffer(stream.data_array)
 	if e is InputEventMouseMotion and not has_focus():
 		grab_focus()
 	var new_preview_elements: Array[WhiteboardTool.PreviewElement]
-	for tool in active_tools:
+	for tool in active_tools + passive_tools:
 		@warning_ignore("redundant_await") # I don't know why it thinks this isn't a coroutine
 		var tool_output := await tool.receive_input(self, e.xformed_by((draw_xform).affine_inverse()))
 		if tool_output == null:
@@ -163,6 +160,24 @@ func set_active_tools(new_active_tools: Array[WhiteboardTool]) -> void:
 		tool.activated(self)
 	active_tools = new_tools
 	active_tools_changed.emit()
+
+
+func serialize(stream: StreamPeer) -> void:
+	var json := var_to_bytes({
+		"xform": draw_xform,
+		"elements": WhiteboardTools.serialize(elements),
+	})
+	var json_compressed := json.compress(FileAccess.COMPRESSION_ZSTD)
+	stream.put_u64(json.size())
+	stream.put_data(json_compressed)
+
+
+func deserialize(stream: StreamPeer) -> void:
+	var json_size := stream.get_u64()
+	var json_compressed: PackedByteArray =  stream.get_data(stream.get_available_bytes())[1]
+	var data = bytes_to_var(json_compressed.decompress(json_size, FileAccess.COMPRESSION_ZSTD))
+	elements = WhiteboardTools.deserialize(data.elements)
+	draw_xform = data.xform
 
 
 class PreviewControl extends Control:

@@ -70,7 +70,7 @@ class BrushElement extends WhiteboardTool.Element:
 		max_p = max_p.max(point)
 		var tolerance := width * width
 		if DebugManager.giant_brush_deadzone:
-			tolerance *= 1000.0
+			tolerance *= 100.0
 		if points.size() >= 2 and points[-2].distance_squared_to(point) < tolerance:
 			points[-1] = point
 			pressures[-1] = pressure
@@ -107,6 +107,7 @@ class BrushElement extends WhiteboardTool.Element:
 	func serialize() -> Dictionary:
 		return {
 			"points": points,
+			"pressures": pressures,
 			"color": color,
 			"width": width,
 		}
@@ -115,6 +116,12 @@ class BrushElement extends WhiteboardTool.Element:
 	static func deserialize(data: Dictionary) -> Element:
 		var el := BrushElement.new()
 		el.points = data.points
+		el.pressures = data.get("pressures", [])
+		if el.pressures.size() != el.points.size():
+			var old_size := el.pressures.size()
+			el.pressures.resize(el.points.size())
+			for i in range(old_size, el.pressures.size()):
+				el.pressures[i] = 1.0
 		el.color = data.color
 		el.width = data.width
 		var new_min_p: Vector2 = Vector2(+INF, +INF)

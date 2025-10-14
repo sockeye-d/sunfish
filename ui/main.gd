@@ -20,6 +20,7 @@ const ANDROID = preload("res://android.png")
 		current_theme = value
 		update_theme.call_deferred()
 
+
 func _validate_property(property: Dictionary) -> void:
 	if property.name == "current_theme":
 		property.hint = PROPERTY_HINT_ENUM

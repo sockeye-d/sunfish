@@ -97,7 +97,8 @@ class ImageElement extends WhiteboardTool.Element:
 	static func get_id() -> String: return "dev.fishies.sunfish.ImageTool"
 	
 	func draw(wb: Whiteboard):
-		wb.draw_texture_rect(image_texture, rect, false)
+		if image_texture:
+			wb.draw_texture_rect(image_texture, rect, false)
 	
 	func get_bounding_box() -> Rect2:
 		return rect

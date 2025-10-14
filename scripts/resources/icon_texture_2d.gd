@@ -29,23 +29,6 @@ var text_color: Color = Color.WHITE:
 var _is_connected: bool = false
 
 
-#static var _res_fs_script: Script:
-	#get:
-		#if not _res_fs_script:
-			#_res_fs_script = GDScript.new()
-			#_res_fs_script.source_code = """
-#static func connect_resource_filesystem(to_func) -> void:
-	#EditorInterface.get_resource_filesystem().resources_reimported.connect(to_func, CONNECT_DEFERRED)
-#"""
-			#_res_fs_script.reload()
-		#return _res_fs_script
-
-
-#func _init() -> void:
-	#if Engine.is_editor_hint():
-		#_res_fs_script.connect_resource_filesystem(func(resources: PackedStringArray): if _get_svg_path() in resources: _update_image())
-
-
 func _update_image() -> void:
 	var paths := _get_svg_path()
 	var svg: String
