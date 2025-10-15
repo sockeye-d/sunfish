@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://78r8qgrrm8sv"]
+[gd_scene load_steps=10 format=3 uid="uid://78r8qgrrm8sv"]
 
 [ext_resource type="Script" uid="uid://cg1d5ghvrv5un" path="res://scripts/resources/icon_texture_2d.gd" id="1_0dkrt"]
 [ext_resource type="Script" uid="uid://duwys366t42it" path="res://ui/main_menu.gd" id="2_wk0pr"]
@@ -41,6 +41,24 @@ script = ExtResource("1_0dkrt")
 icon = "new"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
+[sub_resource type="DPITexture" id="DPITexture_0dkrt"]
+_source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"m3.5 11.5h9\" stroke=\"#fff\" stroke-linecap=\"round\"/><path d=\"m3.5 4.5h9\" stroke=\"#fff\" stroke-linecap=\"round\"/><path d=\"M4.5 10.5v2\" stroke=\"#fff\" stroke-linecap=\"round\"/><path d=\"M10.5 3.5v2\" stroke=\"#fff\" stroke-linecap=\"round\"/></svg>"
+color_map = {
+Color(1, 1, 1, 1): Color(1, 1, 1, 1)
+}
+script = ExtResource("1_0dkrt")
+icon = "config"
+metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
+
+[sub_resource type="DPITexture" id="DPITexture_wk0pr"]
+_source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><circle r=\"2\" cx=\"8\" cy=\"5\" fill=\"#fff\"/><circle r=\"4\" cx=\"8\" cy=\"10\" fill=\"#fff\"/><g><path d=\"M10 8Q11.5 5 14 5\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\"/><path d=\"M10 10Q12.5 7.5 14.5 8.5\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\"/><path d=\"M10 11Q12.5 10 14.5 12\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\"/></g><g transform=\"matrix(-1 0 0 1 16 0)\"><path d=\"M10 8Q11.5 5 14 5\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\"/><path d=\"M10 10Q12.5 7.5 14.5 8.5\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\"/><path d=\"M10 11Q12.5 10 14.5 12\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\"/></g></svg>"
+color_map = {
+Color(1, 1, 1, 1): Color(1, 1, 1, 1)
+}
+script = ExtResource("1_0dkrt")
+icon = "bug"
+metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
+
 [sub_resource type="GDScript" id="GDScript_0dkrt"]
 script/source = "extends PopupMenu
 
@@ -63,7 +81,7 @@ func _ready() -> void:
 icon = SubResource("DPITexture_06s8x")
 flat = false
 icon_alignment = 1
-item_count = 4
+item_count = 5
 popup/item_0/text = "Open"
 popup/item_0/icon = SubResource("DPITexture_04ebt")
 popup/item_0/id = 0
@@ -73,8 +91,12 @@ popup/item_1/id = 1
 popup/item_2/text = "New"
 popup/item_2/icon = SubResource("DPITexture_ar4ev")
 popup/item_2/id = 2
-popup/item_3/text = "Debug"
-popup/item_3/id = 3
+popup/item_3/text = "Preferences"
+popup/item_3/icon = SubResource("DPITexture_0dkrt")
+popup/item_3/id = 4
+popup/item_4/text = "Debug"
+popup/item_4/icon = SubResource("DPITexture_wk0pr")
+popup/item_4/id = 3
 script = ExtResource("2_wk0pr")
 
 [node name="Debug" type="PopupMenu" parent="."]

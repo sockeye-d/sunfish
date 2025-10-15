@@ -130,7 +130,7 @@ class ColorWheel extends Control:
 	
 	
 	func _get_minimum_size() -> Vector2:
-		return Vector2(100, size.x)
+		return Vector2(150, size.x)
 
 
 class ColorDisplay extends Button:

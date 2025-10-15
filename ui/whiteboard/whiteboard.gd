@@ -73,12 +73,22 @@ func _init() -> void:
 	focus_mode = Control.FOCUS_ALL
 	
 	theme_changed.connect(func(): if ThemeManager.active_theme: mat.set_shader_parameter("text_color", ThemeManager.active_theme.text))
+	
+	mouse_entered.connect(func():
+		if active_tools.any(func(e: WhiteboardTool): return e.should_hide_mouse()):
+			Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+	)
+	mouse_exited.connect(func(): Input.mouse_mode = Input.MOUSE_MODE_VISIBLE)
 
 
 func _ready() -> void:
 	if color_picker:
 		color_picker.color_changed.connect(func(new_color: Color): primary_color = new_color)
 		primary_color = color_picker.color
+	if ThemeManager.active_theme:
+		(func():
+			background_shader.material.set_shader_parameter("text_color", ThemeManager.active_theme.text)
+		).call_deferred()
 	var fd := FileAccess.open("user://save.sunfish", FileAccess.READ)
 	if fd:
 		deserialize(StreamPeerFile.from(fd))

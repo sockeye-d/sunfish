@@ -1,7 +1,23 @@
 class_name Inspector extends PanelContainer
 
+enum {
+	PROPERTY_HINT_EXT_PRETTY_RDNS_ENUM = 256,
+}
 
-static var _hint_delegates: Dictionary[PropertyHint, Callable] = {
+## [codeblock]
+## Dictionary[PropertyHint, Callable[prop: Dictionary, intitial_value: Variant, set_prop: Callable[new_value: Variant]]]
+##
+## var delegate: Control = hint_delegates[property.hint].call(
+## 	property, tool.get(property.name),
+## 	func(new_value): tool.set(property.name, convert(new_value, property.type))
+## )
+## [/codeblock]
+static var hint_delegates: Dictionary[int, Callable] = {
+	PROPERTY_HINT_NONE: func(prop: Dictionary, initial_value, set_prop: Callable) -> Control:
+		var line_edit := LineEdit.new()
+		line_edit.text = str(initial_value)
+		line_edit.text_submitted.connect(func(new_text: String): set_prop.call(convert(new_text, prop.type)))
+		return line_edit,
 	PROPERTY_HINT_RANGE: func(prop: Dictionary, initial_value, set_prop: Callable) -> Control:
 		assert(prop.type in [TYPE_INT, TYPE_FLOAT])
 		var data := (prop.hint_string as String).split(",", true, 4)
@@ -37,6 +53,27 @@ static var _hint_delegates: Dictionary[PropertyHint, Callable] = {
 			btn.selected = initial_value
 		elif prop.type == TYPE_STRING:
 			btn.selected = options.find(initial_value)
+		return btn,
+	PROPERTY_HINT_EXT_PRETTY_RDNS_ENUM: func(prop: Dictionary, initial_value, set_prop: Callable) -> Control:
+		assert(prop.type in [TYPE_INT, TYPE_STRING])
+		var options := (prop.hint_string as String).split(",")
+		var btn := OptionButton.new()
+		btn.fit_to_longest_item = false
+		for op in options:
+			btn.add_item(ReverseDNSUtil.pretty_print(op))
+		btn.item_selected.connect(func(index: int) -> void:
+			if prop.type == TYPE_INT:
+				set_prop.call(index)
+			elif prop.type == TYPE_STRING:
+				set_prop.call(options[index])
+			btn.tooltip_text = options[index]
+		)
+		if prop.type == TYPE_INT:
+			btn.selected = initial_value
+		elif prop.type == TYPE_STRING:
+			btn.selected = options.find(initial_value)
+		if btn.selected != -1:
+			btn.tooltip_text = options[btn.selected]
 		return btn
 }
 
@@ -79,17 +116,15 @@ func _update_inspector() -> void:
 		outer_prop_container.add_child(prop_container)
 		for property: Dictionary in properties:
 			var label := Label.new()
-			label.text = property.name
+			label.text = String(property.name).capitalize().to_lower()
 			prop_container.add_child(label)
-			var delegate: Control = _hint_delegates[property.hint].call(
+			var delegate: Control = create_delegate(
 				property, tool.get(property.name),
 				func(new_value): tool.set(property.name, convert(new_value, property.type))
 			)
 			delegate.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			prop_container.add_child(delegate)
-	if inner_container.get_child_count() == 0:
-		inner_container.queue_free()
-		inner_container = null
-		#hide()
-	else:
-		show()
+
+
+static func create_delegate(prop: Dictionary, initial_value, set_prop: Callable) -> Control:
+	return hint_delegates[prop.hint].call(prop, initial_value, set_prop)

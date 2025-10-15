@@ -1,7 +1,7 @@
 extends WhiteboardTool
 
 
-var width: float = 5.0
+@export_range(1.0, 5.0, 0.0, "or_greater") var width: float = 5.0
 var color: Color
 
 var is_drawing: bool
@@ -14,9 +14,9 @@ static func get_id() -> String: return "dev.fishies.sunfish.LineTool"
 
 
 func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
-	width = 5.0 / wb.draw_scale
+	var draw_width := width / wb.draw_scale
 	color = wb.primary_color
-	preview.width = width
+	preview.width = draw_width
 	preview.color = color
 	var display := Display.new([], [preview])
 	var mb := event as InputEventMouseButton
@@ -27,7 +27,7 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 					start_pos = mb.position
 					last_draw_element = LineElement.new()
 					last_draw_element.color = color
-					last_draw_element.width = width
+					last_draw_element.width = draw_width
 					last_draw_element.start_pos = mb.position
 				else:
 					last_draw_element = null

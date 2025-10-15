@@ -10,6 +10,9 @@
 [ext_resource type="Script" uid="uid://dld8u4kvtftjr" path="res://plugins/dev/fishies/sunfish/TextTool.gd" id="9_7pgks"]
 [ext_resource type="Script" uid="uid://bi24rbhujoj7e" path="res://plugins/dev/fishies/sunfish/ImageTool.gd" id="9_gmbhn"]
 
-[node name="ToolContainer" type="VFlowContainer"]
+[node name="ToolContainer" type="VBoxContainer"]
+offset_right = 32.0
+offset_bottom = 284.0
+size_flags_horizontal = 0
 script = ExtResource("1_tpjp1")
-tools = Array[Script]([ExtResource("2_4tnpy"), ExtResource("3_vdal4"), ExtResource("5_vdal4"), ExtResource("7_l6jjv"), ExtResource("6_oca4x"), ExtResource("8_l6jjv"), ExtResource("9_gmbhn"), ExtResource("9_7pgks")])
+tools = Array[Script]([ExtResource("2_4tnpy"), ExtResource("3_vdal4"), ExtResource("6_oca4x"), ExtResource("8_l6jjv"), ExtResource("5_vdal4"), ExtResource("7_l6jjv"), ExtResource("9_gmbhn"), ExtResource("9_7pgks")])

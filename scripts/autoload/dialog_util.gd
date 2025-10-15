@@ -18,15 +18,14 @@ func open_file_dialog(filters: PackedStringArray, mode: FileDialog.FileMode) -> 
 	return handle.selected
 
 
-func open_text_dialog(default_text: String = "") -> Signal:
+func open_text_dialog(default_text: String = "", font: Font = null) -> Signal:
 	var handle := TextDialogHandle.new()
 	var popup := AcceptDialog.new()
-	var le := TextEdit.new()
+	popup.title = "Enter text"
+	var le := ConfirmingTextEdit.new()
+	if font:
+		le.add_theme_font_override("font", font)
 	le.text = default_text
-	#le.text_submitted.connect(func(text: String):
-		#handle.confirmed.emit(text)
-		#popup.queue_free()
-	#)
 	popup.confirmed.connect(func():
 		handle.confirmed.emit(le.text)
 		popup.queue_free()
@@ -35,10 +34,14 @@ func open_text_dialog(default_text: String = "") -> Signal:
 		handle.confirmed.emit("")
 		popup.queue_free()
 	)
+	le.confirmed.connect(func():
+		handle.confirmed.emit(le.text)
+		popup.queue_free()
+	)
 	add_child(popup)
 	popup.add_child(le)
-	popup.popup_centered(Vector2i(int(ThemeManager.ui_scale * 500), int(ThemeManager.ui_scale * 200)))
-	le.grab_focus.call_deferred()
+	popup.popup_centered(Vector2i(300, 175))
+	le.grab_focus.call_deferred(true)
 	return handle.confirmed
 
 
@@ -47,3 +50,10 @@ class FileDialogHandle:
 
 class TextDialogHandle:
 	signal confirmed(text: String)
+
+class ConfirmingTextEdit extends TextEdit:
+	signal confirmed
+	func _gui_input(event: InputEvent) -> void:
+		if event.is_action_pressed("text_edit_confirm"):
+			accept_event()
+			confirmed.emit()

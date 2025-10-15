@@ -2,7 +2,7 @@
 extends WhiteboardTool
 
 
-var width: float = 5.0
+@export_range(1.0, 5.0, 0.0, "or_greater") var width: float = 5.0
 var color: Color
 
 var is_drawing: bool

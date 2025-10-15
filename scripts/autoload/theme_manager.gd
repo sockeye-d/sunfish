@@ -19,6 +19,7 @@ const SERIF = preload("uid://dyte8f36cqfjo")
 @onready var theme_res: Theme = load("res://main_theme.tres")
 
 
+signal themes_changed
 signal ui_scale_changed
 signal background_color_changed(new_color: Color)
 
@@ -34,10 +35,13 @@ var active_theme: ThemeColors
 func _ready() -> void:
 	ui_scale_changed.connect(func(): RenderingServer.global_shader_parameter_set("ui_scale", ui_scale))
 	ui_scale_changed.connect(func(): get_tree().root.content_scale_factor = ui_scale)
-	ui_scale = 1.0
+	ui_scale = get_tree().root.content_scale_factor
 
 
-func unregister_theme(id: String) -> void: if id in themes: themes.erase(id)
+func unregister_theme(id: String) -> void:
+	if id in themes:
+		themes.erase(id)
+		themes_changed.emit()
 
 
 func register_theme(theme: ThemeColors) -> void:
@@ -45,14 +49,12 @@ func register_theme(theme: ThemeColors) -> void:
 	for theme_key in themes:
 		if not is_instance_valid(themes[theme_key]):
 			themes.erase(theme_key)
+	themes_changed.emit()
 
 
 @warning_ignore_start("integer_division")
 func set_theme(new_theme: ThemeColors) -> void:
-	if active_theme and active_theme.changed.is_connected(reload_theme):
-		active_theme.changed.disconnect(reload_theme)
 	active_theme = new_theme
-	active_theme.changed.connect(reload_theme)
 	var theme: ThemeColors = new_theme.duplicate()
 	RenderingServer.set_default_clear_color(theme.background_1)
 	if Engine.is_editor_hint():
@@ -60,8 +62,12 @@ func set_theme(new_theme: ThemeColors) -> void:
 	
 	var selection := Color(theme.accent_0, 0.3)
 	var disabled_surface := theme.surface.lerp(theme.background_0, 0.5)
+	var darkest_bg := get_darkest(theme.background_0, theme.background_1, theme.background_2)
+	var shadow_color := Color(darkest_bg, 0.5)
 	var base_spacing := 8 if OS.has_feature("mobile") else 4
 	var base_font_size := 12 if OS.has_feature("mobile") else 16
+	var shadow := func(sb: StyleBoxFlat) -> StyleBoxFlat:
+		return shadowed(sb, shadow_color, 2, 0, base_spacing / 2)
 	
 	theme_res.set_block_signals(true)
 	get_tree().root.theme = theme_res
@@ -87,6 +93,24 @@ func set_theme(new_theme: ThemeColors) -> void:
 	theme_res.set_stylebox("panel", "PanelContainer", new_flat(theme.background_0, [base_spacing], [base_spacing]))
 	theme_res.set_stylebox("panel", "Panel", new_flat(theme.background_0, [base_spacing], [base_spacing]))
 	
+	theme_res.set_constant("scrollbar_h_separation", "Tree", base_spacing)
+	
+	theme_res.set_color("font_color", "Tree", theme.text)
+	theme_res.set_color("font_disabled_color", "Tree", theme.subtext)
+	theme_res.set_color("font_hovered_color", "Tree", theme.text)
+	theme_res.set_color("font_hovered_dimmed_color", "Tree", theme.text)
+	theme_res.set_color("font_hovered_selected_color", "Tree", theme.text)
+	theme_res.set_color("font_selected_color", "Tree", theme.text)
+	theme_res.set_color("children_hl_line_color", "Tree", theme.surface_hover)
+	theme_res.set_color("parent_hl_line_color", "Tree", theme.overlay)
+	theme_res.set_color("relationship_line_color", "Tree", theme.surface)
+	
+	theme_res.set_stylebox("panel", "Tree", new_flat(theme.background_0, [base_spacing], [base_spacing]))
+	theme_res.set_stylebox("hovered", "Tree", new_flat(theme.surface_hover, [base_spacing], [base_spacing]))
+	theme_res.set_stylebox("selected", "Tree", new_flat(theme.surface_hover, [base_spacing], [base_spacing]))
+	theme_res.set_stylebox("hovered_dimmed", "Tree", new_flat(theme.surface, [base_spacing], [base_spacing]))
+	theme_res.set_stylebox("hovered_selected", "Tree", new_flat(theme.surface_press, [base_spacing], [base_spacing]))
+	
 	theme_res.set_color("font_color", "Label", theme.text)
 	
 	theme_res.set_color("font_color", "SubtextLabel", theme.subtext)
@@ -98,7 +122,7 @@ func set_theme(new_theme: ThemeColors) -> void:
 	theme_res.set_color("font_disabled_color", "Button", theme.subtext)
 	theme_res.set_stylebox("normal", "Button", new_flat(theme.surface, [base_spacing], [base_spacing]))
 	theme_res.set_stylebox("hover", "Button", new_flat(theme.surface_hover, [base_spacing], [base_spacing]))
-	theme_res.set_stylebox("pressed", "Button", new_flat(theme.surface_press, [base_spacing], [base_spacing]))
+	theme_res.set_stylebox("pressed", "Button", shadow.call(new_flat(theme.surface_press, [base_spacing], [base_spacing])))
 	theme_res.set_stylebox("disabled", "Button", new_flat(disabled_surface, [base_spacing], [base_spacing]))
 	
 	for clazz in PackedStringArray(["CheckButton", "CheckBox"]):
@@ -109,15 +133,15 @@ func set_theme(new_theme: ThemeColors) -> void:
 		theme_res.set_color("font_disabled_color", clazz, theme.subtext)
 		theme_res.set_stylebox("normal", clazz, new_flat(theme.surface, [base_spacing], [base_spacing]))
 		theme_res.set_stylebox("hover", clazz, new_flat(theme.surface_hover, [base_spacing], [base_spacing]))
-		theme_res.set_stylebox("pressed", clazz, new_flat(theme.surface_press, [base_spacing], [base_spacing]))
-		theme_res.set_stylebox("hover_pressed", clazz, new_flat(theme.surface_press, [base_spacing], [base_spacing]))
+		theme_res.set_stylebox("pressed", clazz, shadow.call(new_flat(theme.surface_press, [base_spacing], [base_spacing])))
+		theme_res.set_stylebox("hover_pressed", clazz, shadow.call(new_flat(theme.surface_press, [base_spacing], [base_spacing])))
 		theme_res.set_stylebox("disabled", clazz, new_flat(disabled_surface, [base_spacing], [base_spacing]))
 	
 	theme_res.set_color("font_color", "ProgressBar", theme.text)
 	theme_res.set_stylebox("background", "ProgressBar", new_flat(theme.surface, [base_spacing], [base_spacing]))
 	theme_res.set_stylebox("fill", "ProgressBar", new_flat(theme.overlay, [base_spacing], [base_spacing]))
 	
-	theme_res.set_stylebox("panel", "PopupPanel", new_flat(theme.background_1, [base_spacing], [base_spacing]))
+	theme_res.set_stylebox("panel", "PopupPanel", shadow.call(new_flat(theme.background_1, [base_spacing], [base_spacing])))
 	
 	theme_res.set_stylebox("panel", "AcceptDialog", new_flat(theme.background_1, [base_spacing], [base_spacing]))
 	
@@ -175,8 +199,8 @@ func set_theme(new_theme: ThemeColors) -> void:
 	theme_res.set_color("font_hover_color", "PopupMenu", theme.text)
 	theme_res.set_color("font_separator_color", "PopupMenu", theme.subtext)
 	
-	theme_res.set_stylebox("panel", "PopupMenu", new_flat(theme.background_1, [base_spacing * 2], [base_spacing]))
-	theme_res.set_stylebox("hover", "PopupMenu", new_flat(theme.overlay, [base_spacing], [base_spacing]))
+	theme_res.set_stylebox("panel", "PopupMenu", shadow.call(new_flat(theme.background_1, [base_spacing * 2], [base_spacing])))
+	theme_res.set_stylebox("hover", "PopupMenu", shadow.call(new_flat(theme.overlay, [base_spacing], [base_spacing])))
 	theme_res.set_stylebox("separator", "PopupMenu", new_flat(theme.surface, [1], [0, 1], [0, 0]))
 	theme_res.set_stylebox("labeled_separator_left", "PopupMenu", new_flat(theme.surface, [1], [0, 1], [0, 0]))
 	theme_res.set_stylebox("labeled_separator_right", "PopupMenu", new_flat(theme.surface, [1], [0, 1], [0, 0]))
@@ -197,7 +221,7 @@ func set_theme(new_theme: ThemeColors) -> void:
 	theme_res.set_block_signals(false)
 	theme_res.emit_changed()
 	background_color_changed.emit(theme.background_1)
-	(IconTexture2D as Script).emit_signal.call_deferred("change_text_color", theme.text)
+	(IconTexture2D as Script).emit_signal("change_text_color", theme.text, theme.background_0)
 	
 	if Engine.is_editor_hint():
 		ResourceSaver.save(theme_res, theme_res.resource_path)
@@ -275,3 +299,18 @@ func change_content_margins(sb: StyleBox, margins: PackedInt32Array = [0]) -> St
 	sb.content_margin_right = int(margins[-2 % margins.size()])
 	sb.content_margin_bottom = int(margins[-1 % margins.size()])
 	return sb
+
+
+func shadowed(sb: StyleBoxFlat, color: Color, size: int, x_offset: float, y_offset: float) -> StyleBoxFlat:
+	sb.shadow_color = color
+	sb.shadow_size = size
+	sb.shadow_offset = Vector2(x_offset, y_offset)
+	return sb
+
+
+func get_darkest(...colors: Array) -> Color:
+	var darkest := Color.WHITE
+	for color: Color in colors:
+		if color.get_luminance() < darkest.get_luminance():
+			darkest = color
+	return darkest

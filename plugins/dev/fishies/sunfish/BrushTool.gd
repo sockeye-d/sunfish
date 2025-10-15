@@ -12,6 +12,9 @@ var preview := PlainPreviewElement.new()
 static func get_id() -> String: return "dev.fishies.sunfish.BrushTool"
 
 
+func should_hide_mouse() -> bool: return true
+
+
 func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 	var draw_width := width / wb.draw_scale
 	color = wb.primary_color

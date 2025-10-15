@@ -5,20 +5,17 @@ const SUNFISH = preload("uid://d0ovrms2e78nv")
 const ANDROID = preload("res://android.png")
 
 @onready var container: Control = %MarginContainer
+@onready var tool_scroll_container: ScrollContainer = %ToolScrollContainer
+@onready var tool_scrollbar_separator: VSeparator = %ToolScrollbarSeparator
 
-@warning_ignore("unused_private_class_variable")
-@export_tool_button("Scan plugins", "Search") var __ := func():
-	PluginManager.scan_plugins()
-	print(ThemeManager.themes)
-	notify_property_list_changed()
-@warning_ignore("unused_private_class_variable")
-@export_tool_button("Reload theme", "Search") var ___ := func():
-	ThemeManager.reload_theme()
-
-@export var current_theme: String:
-	set(value):
-		current_theme = value
-		update_theme.call_deferred()
+#@warning_ignore("unused_private_class_variable")
+#@export_tool_button("Scan plugins", "Search") var __ := func():
+	#PluginManager.scan_plugins()
+	#print(ThemeManager.themes)
+	#notify_property_list_changed()
+#@warning_ignore("unused_private_class_variable")
+#@export_tool_button("Reload theme", "Search") var ___ := func():
+	#ThemeManager.reload_theme()
 
 
 func _validate_property(property: Dictionary) -> void:
@@ -36,18 +33,14 @@ func _ready() -> void:
 		container.offset_top = (safe_area.position.y) / get_tree().root.content_scale_factor
 		container.offset_right = (display_area.x - safe_area.size.x - safe_area.position.x) / get_tree().root.content_scale_factor
 		container.offset_bottom = (display_area.y - safe_area.size.y - safe_area.position.y) / get_tree().root.content_scale_factor
-	PluginManager.scan_plugins()
 	ThemeManager.background_color_changed.connect(func(color: Color): self.color = color)
-	current_theme = current_theme
+	tool_scroll_container.get_v_scroll_bar().visibility_changed.connect(func():
+		tool_scrollbar_separator.visible = tool_scroll_container.get_v_scroll_bar().is_visible_in_tree()
+	)
+	ThemeManager.set_theme_id("dev.fishies.sunfish.themes.CatppuccinMocha")
 
 
 func _process(delta: float) -> void:
 	Util.unused(delta)
 	if DisplayServer.has_feature(DisplayServer.FEATURE_VIRTUAL_KEYBOARD):
 		container.offset_bottom = -DisplayServer.virtual_keyboard_get_height() / get_tree().root.content_scale_factor
-
-
-func update_theme() -> void:
-	if current_theme in ThemeManager.themes:
-		ThemeManager.set_theme_id(current_theme)
-		propagate_notification(NOTIFICATION_THEME_CHANGED)

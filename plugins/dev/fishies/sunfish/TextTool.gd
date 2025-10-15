@@ -10,7 +10,7 @@ var last_found_element: TextElement
 func _validate_property(property: Dictionary) -> void:
 	if property.name == "font_name":
 		property.hint = PROPERTY_HINT_ENUM
-		property.hint_string = ",".join(PackedStringArray(["sans", "serif"]) + OS.get_system_fonts())
+		property.hint_string = ",".join(PackedStringArray(Inner.BUILTIN_FONT_MAP.keys()) + OS.get_system_fonts())
 
 
 static func get_id() -> String: return "dev.fishies.sunfish.TextTool"
@@ -19,6 +19,8 @@ static func get_id() -> String: return "dev.fishies.sunfish.TextTool"
 func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 	Util.unused(wb)
 	var display := Display.new()
+	if event.is_action_pressed("ui_cancel"):
+		preview = null
 	var mb := event as InputEventMouseButton
 	if mb:
 		if mb.button_index == MOUSE_BUTTON_LEFT and mb.pressed:
@@ -33,12 +35,12 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 				preview = null
 			else:
 				if last_found_element:
-					var text = await DialogUtil.open_text_dialog(last_found_element.text)
+					var text = await DialogUtil.open_text_dialog(last_found_element.text, last_found_element.font)
 					if text:
 						last_found_element.text = text
 						wb.redraw_canvas()
 				else:
-					var text = await DialogUtil.open_text_dialog()
+					var text = await DialogUtil.open_text_dialog("", Inner.create_font(font_name))
 					if text:
 						preview = TextPreviewElement.new()
 						preview.text = text
@@ -126,18 +128,27 @@ class TextElement extends WhiteboardTool.Element:
 
 
 class Inner:
+	const BUILTIN_FONT_MAP: Dictionary[String, Font] = {
+		"sans": ThemeManager.SANS,
+		"sans-bold": ThemeManager.SANS_BOLD,
+		"sans-italic": ThemeManager.SANS_ITALIC,
+		"sans-bold-italic": ThemeManager.SANS_BOLD_ITALIC,
+		"serif": ThemeManager.SERIF,
+		"serif-bold": ThemeManager.SERIF_BOLD,
+		"serif-italic": ThemeManager.SERIF_ITALIC,
+		"serif-bold-italic": ThemeManager.SERIF_BOLD_ITALIC,
+		"code": ThemeManager.CODE,
+		"code-bold": ThemeManager.CODE_BOLD,
+		"code-italic": ThemeManager.CODE_ITALIC,
+		"code-bold-italic": ThemeManager.CODE_BOLD_ITALIC,
+	}
 	static var font_cache: Dictionary[String, Font]
 
 	static func create_font(name: String) -> Font:
 		if name in font_cache:
 			return font_cache[name]
-		if name == "sans":
-			var font := ThemeManager.SANS.duplicate()
-			font.multichannel_signed_distance_field = true
-			font_cache[name] = font
-			return font
-		if name == "serif":
-			var font := ThemeManager.SERIF.duplicate()
+		if name in BUILTIN_FONT_MAP:
+			var font := BUILTIN_FONT_MAP[name].duplicate()
 			font.multichannel_signed_distance_field = true
 			font_cache[name] = font
 			return font

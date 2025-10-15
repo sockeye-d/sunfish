@@ -26,6 +26,10 @@ var text_color: Color = Color.WHITE:
 	set(value):
 		text_color = value
 		_update_image()
+var bg_color: Color = Color.BLACK:
+	set(value):
+		bg_color = value
+		_update_image()
 var _is_connected: bool = false
 
 
@@ -37,7 +41,7 @@ func _update_image() -> void:
 		if svg:
 			set_source(svg)
 			base_scale = icon_scale * secondary_icon_scale
-			color_map = { Color.WHITE: text_color * modulate }
+			color_map = { Color.WHITE: text_color * modulate, Color.BLACK: bg_color * modulate }
 			emit_changed()
 			return
 
@@ -55,12 +59,19 @@ func setup_signals() -> void:
 	if not _is_connected:
 		var scr := get_script() as Script
 		if not scr.has_signal("change_text_color"):
-			scr.add_user_signal("change_text_color", [{
-				"name": "new_color",
-				"type": TYPE_COLOR,
-			}])
-		scr.connect("change_text_color", func(new_color: Color):
-			text_color = new_color
+			scr.add_user_signal("change_text_color", [
+				{
+					"name": "new_text_color",
+					"type": TYPE_COLOR,
+				},
+				{
+					"name": "new_bg_color",
+					"type": TYPE_COLOR,
+				},
+			])
+		scr.connect("change_text_color", func(new_text_color: Color, new_bg_color: Color):
+			text_color = new_text_color
+			bg_color = new_bg_color
 		)
 		_is_connected = true 
 		

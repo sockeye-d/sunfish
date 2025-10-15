@@ -2,6 +2,9 @@
 class_name PluginManager
 
 
+static var configurations: Array[Configuration]
+
+
 const PLUGIN_PREFIX := "res://plugins/"
 
 
@@ -12,3 +15,7 @@ static func scan_plugins(path := PLUGIN_PREFIX) -> void:
 			scan_plugins(full_path)
 		else:
 			load(full_path)
+
+
+static func register_configuration(config: Configuration) -> void:
+	configurations.append(config)

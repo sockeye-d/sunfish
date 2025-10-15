@@ -1,5 +1,5 @@
 @tool
-class_name ToolContainer extends VFlowContainer
+class_name ToolContainer extends Control
 
 
 signal active_tool_changed(new_tool: Script)
@@ -30,8 +30,13 @@ func _ready() -> void:
 
 func _update_tools() -> void:
 	for tool in tool_buttons:
-		tool_buttons[tool].queue_free()
+		if tool in tool_buttons:
+			tool_buttons[tool].queue_free()
+		else:
+			tool_buttons.erase(tool)
 	tool_buttons.clear()
+	if tools.is_empty():
+		return
 	for tool in tools:
 		if not tool.is_visible():
 			continue

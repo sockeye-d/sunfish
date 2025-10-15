@@ -1,6 +1,9 @@
 extends WhiteboardTool
 
 
+@export_range(0.0, 1.0, 0.0) var opacity: float = 1.0
+
+
 var current_image: Image
 var image_preview_element: ImagePreviewElement
 
@@ -29,7 +32,6 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 	if event.is_action_pressed("ui_cancel"):
 		current_image = null
 		image_preview_element = null
-		wb.redraw_all()
 	var mm := event as InputEventMouseMotion
 	if mm:
 		if current_image and image_preview_element:
@@ -40,6 +42,7 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 		if mb.button_index == MOUSE_BUTTON_LEFT and mb.pressed:
 			if current_image:
 				var image_element := ImageElement.new()
+				image_element.opacity = opacity
 				image_element.image = current_image
 				image_element.rect = ImagePreviewElement.get_rect(current_image, mb.position, wb.draw_scale)
 				display.elements = [image_element]
@@ -59,11 +62,13 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 						image_preview_element.image = current_image
 						image_preview_element.center_position = wb.draw_xform * wb.get_local_mouse_position()
 	if image_preview_element:
+		image_preview_element.opacity = opacity
 		display.preview_elements = [image_preview_element]
 	return display
 
 
 class ImagePreviewElement extends WhiteboardTool.PreviewElement:
+	var opacity: float
 	var image: Image:
 		set(value):
 			image = value
@@ -73,7 +78,7 @@ class ImagePreviewElement extends WhiteboardTool.PreviewElement:
 	
 	func draw(control: Control, wb: Whiteboard):
 		var rect := get_rect(image, center_position, wb.draw_scale)
-		control.draw_texture_rect(image_texture, rect, false, Color(1.0, 1.0, 1.0, 0.5))
+		control.draw_texture_rect(image_texture, rect, false, Color(1.0, 1.0, 1.0, 0.5 * opacity))
 	
 	static func get_rect(_image: Image, _center_position: Vector2, draw_scale: float) -> Rect2:
 		var rect := Rect2(0, 0, _image.get_width() / draw_scale, _image.get_height() / draw_scale)
@@ -86,6 +91,7 @@ class ImageElement extends WhiteboardTool.Element:
 		WhiteboardManager.register_deserializer(ImageElement)
 	
 	var rect: Rect2
+	var opacity: float
 	var image: Image:
 		set(value):
 			image = value
@@ -98,7 +104,7 @@ class ImageElement extends WhiteboardTool.Element:
 	
 	func draw(wb: Whiteboard):
 		if image_texture:
-			wb.draw_texture_rect(image_texture, rect, false)
+			wb.draw_texture_rect(image_texture, rect, false, Color(1, 1, 1, opacity))
 	
 	func get_bounding_box() -> Rect2:
 		return rect

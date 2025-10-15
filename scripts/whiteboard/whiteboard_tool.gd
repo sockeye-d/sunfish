@@ -18,6 +18,9 @@ func create_configuration_display() -> Control: return null
 func activated(wb: Whiteboard) -> void: Util.unused(wb)
 
 
+func should_hide_mouse() -> bool: return false
+
+
 static func is_visible() -> bool: return true
 
 
