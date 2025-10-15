@@ -12,7 +12,7 @@ func create_element() -> ShapeElement:
 
 class FilledCircleElement extends ShapeTool.ShapeElement:
 	static func _static_init() -> void:
-		WhiteboardTools.register_deserializer(FilledCircleElement)
+		WhiteboardManager.register_deserializer(FilledCircleElement)
 	
 	static func get_id() -> String: return "dev.fishies.sunfish.FilledCircleElement"
 	

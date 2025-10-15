@@ -83,7 +83,7 @@ class ImagePreviewElement extends WhiteboardTool.PreviewElement:
 
 class ImageElement extends WhiteboardTool.Element:
 	static func _static_init() -> void:
-		WhiteboardTools.register_deserializer(ImageElement)
+		WhiteboardManager.register_deserializer(ImageElement)
 	
 	var rect: Rect2
 	var image: Image:

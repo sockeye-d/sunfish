@@ -50,7 +50,7 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 
 class LineElement extends WhiteboardTool.Element:
 	static func _static_init() -> void:
-		WhiteboardTools.register_deserializer(LineElement)
+		WhiteboardManager.register_deserializer(LineElement)
 	
 	var color: Color
 	var width: float

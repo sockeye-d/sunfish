@@ -1,4 +1,4 @@
-class_name DrawingUtil
+class_name DrawingUtil2
 
 
 const CIRCLE_RESOLUTION = 90

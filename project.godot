@@ -29,6 +29,10 @@ FileDialogUtil="*res://scripts/autoload/file_dialog_util.gd"
 ThemeManager="*res://scripts/autoload/theme_manager.gd"
 DebugManager="*res://scripts/autoload/debug_manager.gd"
 
+[debug]
+
+gdscript/warnings/static_called_on_instance=0
+
 [display]
 
 window/size/transparent=true
@@ -66,7 +70,7 @@ renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
 shader_compiler/shader_cache/enabled=false
 anti_aliasing/quality/msaa_2d=2
-environment/defaults/default_clear_color=Color(0.1764706, 0.1764706, 0.1764706, 1)
+environment/defaults/default_clear_color=Color(0.09411765, 0.09411765, 0.14509805, 1)
 
 [shader_globals]
 

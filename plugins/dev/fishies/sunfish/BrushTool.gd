@@ -53,7 +53,7 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 
 class BrushElement extends WhiteboardTool.Element:
 	static func _static_init() -> void:
-		WhiteboardTools.register_deserializer(BrushElement)
+		WhiteboardManager.register_deserializer(BrushElement)
 	
 	var points: PackedVector2Array
 	var pressures: PackedFloat32Array
@@ -86,19 +86,8 @@ class BrushElement extends WhiteboardTool.Element:
 		if real_width < 0.0:
 			return
 		if points.size() >= 2:
-			var real_points: PackedVector2Array
-			real_points.resize(points.size() * 2 + 2)
-			var real_size: int = 0
-			var last_point: Vector2 = points[0]
-			for i in points.size() - 1:
-				if last_point.distance_to(points[i]) < 4.0 / wb.draw_scale and i != 0:
-					continue
-				real_points[real_size] = points[i]
-				last_point = points[i]
-				real_size += 1
-			real_points[real_size] = points[-1]
-			real_points.resize(real_size + 1)
-			DrawingUtil.draw_round_polyline(wb.get_canvas_item(), real_points, color, real_width, pressures)
+			var merged_points := DrawingUtil.merge_close_points(points, pressures, 2.0 / wb.draw_scale)
+			DrawingUtil.draw_round_polyline(wb.get_canvas_item(), merged_points[0], color, real_width, merged_points[1])
 	
 	
 	func get_bounding_box() -> Rect2:
@@ -136,7 +125,7 @@ class BrushElement extends WhiteboardTool.Element:
 
 class BrushDotElement extends WhiteboardTool.Element:
 	static func _static_init() -> void:
-		WhiteboardTools.register_deserializer(BrushDotElement)
+		WhiteboardManager.register_deserializer(BrushDotElement)
 	
 	var position: Vector2
 	var color: Color

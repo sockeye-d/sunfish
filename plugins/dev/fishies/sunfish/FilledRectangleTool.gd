@@ -12,7 +12,7 @@ func create_element() -> ShapeElement:
 
 class FilledRectangleElement extends ShapeTool.ShapeElement:
 	static func _static_init() -> void:
-		WhiteboardTools.register_deserializer(FilledRectangleElement)
+		WhiteboardManager.register_deserializer(FilledRectangleElement)
 	
 	static func get_id() -> String: return "dev.fishies.sunfish.FilledRectangleElement"
 	

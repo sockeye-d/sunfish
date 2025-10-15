@@ -3,6 +3,11 @@ extends WhiteboardTool
 var is_dragging: bool = false
 var drag_start_pos: Vector2
 
+
+static func _static_init() -> void:
+	WhiteboardManager.register_passive_tool(new())
+
+
 static func get_id() -> String: return "dev.fishies.sunfish.PanTool"
 
 

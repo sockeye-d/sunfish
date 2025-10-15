@@ -27,7 +27,6 @@ var draw_origin: Vector2
 var elements: Array[WhiteboardTool.Element]
 var preview_elements: Array[WhiteboardTool.PreviewElement]
 var active_tools: Array[WhiteboardTool] = []
-var passive_tools: Array[WhiteboardTool] = [PanTool.new()]
 
 var active_element_count: int
 var visible_element_count: int
@@ -82,9 +81,7 @@ func _ready() -> void:
 		primary_color = color_picker.color
 	var fd := FileAccess.open("user://save.sunfish", FileAccess.READ)
 	if fd:
-		var stream := StreamPeerBuffer.new()
-		stream.data_array = fd.get_buffer(FileAccess.get_size(fd.get_path_absolute()))
-		deserialize(stream)
+		deserialize(StreamPeerFile.from(fd))
 
 
 func _draw() -> void:
@@ -120,7 +117,10 @@ func _gui_input(e: InputEvent) -> void:
 	if e is InputEventMouseMotion and not has_focus():
 		grab_focus()
 	var new_preview_elements: Array[WhiteboardTool.PreviewElement]
-	for tool in active_tools + passive_tools:
+	var tools: Array[WhiteboardTool]
+	tools.append_array(WhiteboardManager.passive_tools.values())
+	tools.append_array(active_tools)
+	for tool in tools:
 		@warning_ignore("redundant_await") # I don't know why it thinks this isn't a coroutine
 		var tool_output := await tool.receive_input(self, e.xformed_by((draw_xform).affine_inverse()))
 		if tool_output == null:
@@ -151,21 +151,16 @@ func redraw_all() -> void:
 
 
 func set_active_tools(new_active_tools: Array[WhiteboardTool]) -> void:
-	var new_tools: Array[WhiteboardTool]
-	for tool in active_tools:
-		if not tool.get_script().is_visible():
-			new_tools.append(tool)
-	new_tools.append_array(new_active_tools)
 	for tool in new_active_tools:
 		tool.activated(self)
-	active_tools = new_tools
+	active_tools = new_active_tools
 	active_tools_changed.emit()
 
 
 func serialize(stream: StreamPeer) -> void:
 	var json := var_to_bytes({
 		"xform": draw_xform,
-		"elements": WhiteboardTools.serialize(elements),
+		"elements": WhiteboardManager.serialize(elements),
 	})
 	var json_compressed := json.compress(FileAccess.COMPRESSION_ZSTD)
 	stream.put_u64(json.size())
@@ -176,7 +171,7 @@ func deserialize(stream: StreamPeer) -> void:
 	var json_size := stream.get_u64()
 	var json_compressed: PackedByteArray =  stream.get_data(stream.get_available_bytes())[1]
 	var data = bytes_to_var(json_compressed.decompress(json_size, FileAccess.COMPRESSION_ZSTD))
-	elements = WhiteboardTools.deserialize(data.elements)
+	elements = WhiteboardManager.deserialize(data.elements)
 	draw_xform = data.xform
 
 

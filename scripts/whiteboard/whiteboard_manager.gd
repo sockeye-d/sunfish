@@ -1,7 +1,18 @@
-class_name WhiteboardTools
+class_name WhiteboardManager
 
+
+static var passive_tools: Dictionary[String, WhiteboardTool]
 
 static var _deserializers: Dictionary[String, Callable]
+
+
+static func register_passive_tool(tool: WhiteboardTool) -> void:
+	_register_passive_tool.call_deferred(tool)
+
+
+static func _register_passive_tool(tool: WhiteboardTool) -> void:
+	if tool.get_id() not in passive_tools:
+		passive_tools[tool.get_id()] = tool
 
 
 static func register_deserializer(script: Script) -> void:
