@@ -89,9 +89,9 @@ func _ready() -> void:
 		(func():
 			background_shader.material.set_shader_parameter("text_color", ThemeManager.active_theme.text)
 		).call_deferred()
-	var fd := FileAccess.open("user://save.sunfish", FileAccess.READ)
-	if fd:
-		deserialize(StreamPeerFile.from(fd))
+	var peer := StreamPeerFile.open("user://save.sunfish", FileAccess.READ)
+	if peer:
+		deserialize(peer)
 
 
 func _draw() -> void:

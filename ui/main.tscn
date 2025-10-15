@@ -22,7 +22,6 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.09411765, 0.09411765, 0.14509805, 1)
 script = ExtResource("1_fc3ap")
-current_theme = "dev.fishies.sunfish.themes.CatppuccinMocha"
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 unique_name_in_owner = true

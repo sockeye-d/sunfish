@@ -26,10 +26,10 @@ boot_splash/image.android="uid://cpaseabjoyjv3"
 [autoload]
 
 TreeEvents="*res://scripts/autoload/tree_events.gd"
+Settings="*res://scripts/autoload/settings.tscn"
 DialogUtil="*res://scripts/autoload/dialog_util.gd"
 ThemeManager="*res://scripts/autoload/theme_manager.gd"
 DebugManager="*res://scripts/autoload/debug_manager.gd"
-Settings="*res://scripts/autoload/settings.tscn"
 
 [debug]
 

@@ -36,6 +36,8 @@ func _ready() -> void:
 	ui_scale_changed.connect(func(): RenderingServer.global_shader_parameter_set("ui_scale", ui_scale))
 	ui_scale_changed.connect(func(): get_tree().root.content_scale_factor = ui_scale)
 	ui_scale = get_tree().root.content_scale_factor
+	
+	set_theme_id(Settings["dev.fishies.sunfish.config.general/theme"])
 
 
 func unregister_theme(id: String) -> void:
