@@ -3,6 +3,7 @@ class_name Inspector extends PanelContainer
 
 static var _hint_delegates: Dictionary[PropertyHint, Callable] = {
 	PROPERTY_HINT_RANGE: func(prop: Dictionary, initial_value, set_prop: Callable) -> Control:
+		assert(prop.type in [TYPE_INT, TYPE_FLOAT])
 		var data := (prop.hint_string as String).split(",", true, 4)
 		var min_value := float(data[0])
 		var max_value := float(data[1])
@@ -18,7 +19,25 @@ static var _hint_delegates: Dictionary[PropertyHint, Callable] = {
 		slider.allow_lesser = "or_less" in extra_hints
 		slider.changed.emit()
 		slider.slider_value_changed.connect(set_prop)
-		return slider
+		return slider,
+	PROPERTY_HINT_ENUM: func(prop: Dictionary, initial_value, set_prop: Callable) -> Control:
+		assert(prop.type in [TYPE_INT, TYPE_STRING])
+		var options := (prop.hint_string as String).split(",")
+		var btn := OptionButton.new()
+		btn.fit_to_longest_item = false
+		for op in options:
+			btn.add_item(op)
+		btn.item_selected.connect(func(index: int) -> void:
+			if prop.type == TYPE_INT:
+				set_prop.call(index)
+			elif prop.type == TYPE_STRING:
+				set_prop.call(options[index])
+		)
+		if prop.type == TYPE_INT:
+			btn.selected = initial_value
+		elif prop.type == TYPE_STRING:
+			btn.selected = options.find(initial_value)
+		return btn
 }
 
 

@@ -34,6 +34,7 @@ var active_theme: ThemeColors
 func _ready() -> void:
 	ui_scale_changed.connect(func(): RenderingServer.global_shader_parameter_set("ui_scale", ui_scale))
 	ui_scale_changed.connect(func(): get_tree().root.content_scale_factor = ui_scale)
+	ui_scale = 1.0
 
 
 func unregister_theme(id: String) -> void: if id in themes: themes.erase(id)
@@ -118,7 +119,7 @@ func set_theme(new_theme: ThemeColors) -> void:
 	
 	theme_res.set_stylebox("panel", "PopupPanel", new_flat(theme.background_1, [base_spacing], [base_spacing]))
 	
-	theme_res.set_stylebox("panel", "PopupPanel", new_flat(theme.background_1, [base_spacing], [base_spacing]))
+	theme_res.set_stylebox("panel", "AcceptDialog", new_flat(theme.background_1, [base_spacing], [base_spacing]))
 	
 	theme_res.set_color("font_color", "LineEdit", theme.text)
 	theme_res.set_color("font_selected_color", "LineEdit", theme.text)

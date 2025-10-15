@@ -6,6 +6,7 @@ signal active_tool_changed(new_tool: Script)
 
 
 var tool_button_group := ButtonGroup.new()
+var tool_instances: Dictionary[Script, WhiteboardTool]
 
 
 @export var tools: Array[Script]
@@ -20,7 +21,9 @@ var tool_buttons: Dictionary[Script, Button]
 func _ready() -> void:
 	active_tool_changed.connect(func(new_tool: Script):
 		if whiteboard:
-			whiteboard.set_active_tools([new_tool.new()])
+			if new_tool not in tool_instances:
+				tool_instances[new_tool] = new_tool.new()
+			whiteboard.set_active_tools([tool_instances[new_tool]])
 	)
 	_update_tools.call_deferred()
 

@@ -8,7 +8,7 @@ signal changed_begun
 signal changed_ended
 
 
-enum DraggingStates {
+enum DraggingState {
 	NONE,
 	CLICKED,
 	DRAGGING,
@@ -55,6 +55,7 @@ var _slider_value: float:
 	get:
 		return _slider_value
 
+var float_slider_value: float
 
 var line_edit: LineEdit
 var slider: Slider
@@ -62,7 +63,7 @@ var outer_container: PanelContainer
 var margin_container: MarginContainer
 var container: VBoxContainer
 
-var dragging_state: DraggingStates = DraggingStates.NONE
+var dragging_state: DraggingState = DraggingState.NONE
 var drag_mouse_pos: Vector2
 
 
@@ -174,30 +175,25 @@ func _on_line_edit_input(event: InputEvent) -> void:
 			var e = event as InputEventMouseButton
 			
 			if e.pressed:
-				dragging_state = DraggingStates.CLICKED
+				dragging_state = DraggingState.CLICKED
 				drag_mouse_pos = e.global_position
 			
-			if not e.pressed and dragging_state == DraggingStates.DRAGGING:
-				dragging_state = DraggingStates.NONE
+			if not e.pressed and dragging_state == DraggingState.DRAGGING:
+				dragging_state = DraggingState.NONE
 				line_edit.editable = true
-				#print("warping to ", drag_mouse_pos)
-				#Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
-				#DisplayServer.warp_mouse(Vector2i.ZERO)
-				#Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 				changed_ended.emit()
 		
 		if event is InputEventMouseMotion:
-			var e = event as InputEventMouseMotion
-			
-			if e.button_mask & MOUSE_BUTTON_MASK_LEFT and abs(e.global_position.x - drag_mouse_pos.x) > mouse_threshold and dragging_state == DraggingStates.CLICKED:
-				dragging_state = DraggingStates.DRAGGING
-				drag_mouse_pos = e.global_position
-				#Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN
+			var e := event as InputEventMouseMotion
+			if dragging_state == DraggingState.CLICKED and e.button_mask & MOUSE_BUTTON_MASK_LEFT and abs(e.global_position.x - drag_mouse_pos.x) > mouse_threshold:
+				dragging_state = DraggingState.DRAGGING
+				float_slider_value = slider_value
 				line_edit.editable = false
 				changed_begun.emit()
 			
-			if dragging_state == DraggingStates.DRAGGING:
-				slider_value += e.relative.x * mouse_drag_scale * (max_value - min_value)
+			if dragging_state == DraggingState.DRAGGING:
+				float_slider_value += e.relative.x * mouse_drag_scale * (max_value - min_value)
+				slider_value = float_slider_value
 				slider_value_changed_without_set.emit(slider_value)
 
 

@@ -47,7 +47,7 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 				current_image = null
 				wb.redraw_all()
 			else:
-				var img_path: PackedStringArray = await FileDialogUtil.open_file_dialog([], FileDialog.FILE_MODE_OPEN_FILE).selected
+				var img_path: PackedStringArray = await DialogUtil.open_file_dialog([], FileDialog.FILE_MODE_OPEN_FILE)
 				if img_path:
 					var img := Image.new()
 					var err := img.load(img_path[0])

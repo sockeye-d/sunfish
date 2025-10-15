@@ -30,8 +30,7 @@ func _update_text() -> void:
 	zoom_label.text = "Zoom: %.f%%" % (Util.round_sig_figs(whiteboard.draw_scale, 3) * 100.0)
 	tool_label.text = "Active tool: %s" % ", ".join(
 		whiteboard.active_tools
-			.filter(func(it: WhiteboardTool): return it.get_script().is_visible())
-			.map(func(it: WhiteboardTool): return ReverseDNSUtil.tail(it.get_script().get_id()))
+			.map(func(it: WhiteboardTool): return ReverseDNSUtil.pretty_print(it.get_script().get_id()).trim_suffix("Tool").strip_edges())
 	)
 	stroke_label.text = "%s strokes (%s visible)" % [
 		whiteboard.active_element_count,

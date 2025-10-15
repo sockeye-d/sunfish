@@ -105,6 +105,7 @@ func _draw() -> void:
 		element_count_changed.emit()
 
 
+var _preview_draw_twice := false
 func _gui_input(e: InputEvent) -> void:
 	if e.is_action_pressed("ui_undo", true):
 		undo()
@@ -135,7 +136,8 @@ func _gui_input(e: InputEvent) -> void:
 			new_preview_elements.append_array(tool_output.preview_elements)
 	
 	preview_elements = new_preview_elements
-	if not preview_elements.is_empty():
+	if not preview_elements.is_empty() or _preview_draw_twice:
+		_preview_draw_twice = not preview_elements.is_empty()
 		preview.queue_redraw()
 
 
@@ -148,6 +150,15 @@ func redraw_all() -> void:
 	queue_redraw()
 	if preview:
 		preview.queue_redraw()
+
+
+func redraw_preview() -> void:
+	if preview:
+		preview.queue_redraw()
+
+
+func redraw_canvas() -> void:
+	queue_redraw()
 
 
 func set_active_tools(new_active_tools: Array[WhiteboardTool]) -> void:

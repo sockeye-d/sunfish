@@ -25,7 +25,7 @@ boot_splash/image.android="uid://cpaseabjoyjv3"
 
 [autoload]
 
-FileDialogUtil="*res://scripts/autoload/file_dialog_util.gd"
+DialogUtil="*res://scripts/autoload/dialog_util.gd"
 ThemeManager="*res://scripts/autoload/theme_manager.gd"
 DebugManager="*res://scripts/autoload/debug_manager.gd"
 
