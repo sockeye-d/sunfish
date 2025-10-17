@@ -1,0 +1,13 @@
+[gd_resource type="DPITexture" script_class="IconTexture2D" load_steps=2 format=3 uid="uid://dmah5fp6rgtqt"]
+
+[ext_resource type="Script" uid="uid://cg1d5ghvrv5un" path="res://scripts/resources/icon_texture_2d.gd" id="1_3cu3b"]
+
+[resource]
+_source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M8 12A1 1 0 008 4 4 4 0 004 8\" stroke=\"#fff\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M2 6l2 2 2-2\" stroke=\"#fff\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\" transform=\"rotate(15 4 8)\"/></svg>"
+color_map = {
+Color(1, 1, 1, 1): Color(0.8039216, 0.8392157, 0.95686275, 1),
+Color(0, 0, 0, 1): Color(0.11764706, 0.11764706, 0.18039216, 1)
+}
+script = ExtResource("1_3cu3b")
+icon = "reload"
+metadata/_custom_type_script = "uid://cg1d5ghvrv5un"

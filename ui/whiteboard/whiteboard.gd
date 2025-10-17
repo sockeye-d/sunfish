@@ -31,8 +31,8 @@ var elements: Array[WhiteboardTool.Element]
 var preview_elements: Array[WhiteboardTool.PreviewElement]
 var active_tools: Array[WhiteboardTool] = []
 
-var active_element_count: int
-var visible_element_count: int
+var active_element_count: int:
+	get: return elements.size()
 
 @export var color_picker: NiceColorPicker
 

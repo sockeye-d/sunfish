@@ -15,6 +15,11 @@ func open_file_dialog(filters: PackedStringArray, mode: FileDialog.FileMode) -> 
 	fd.canceled.connect(handle.selected.emit.bind([]))
 	handle.selected.connect(func(_x): fd.queue_free())
 	fd.popup_centered()
+	var cover := Control.new()
+	cover.mouse_filter = Control.MOUSE_FILTER_STOP
+	cover.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	get_tree().root.add_child(cover)
+	handle.selected.connect(func(__): cover.queue_free())
 	return handle.selected
 
 

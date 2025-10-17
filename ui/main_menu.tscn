@@ -1,13 +1,14 @@
 [gd_scene load_steps=10 format=3 uid="uid://78r8qgrrm8sv"]
 
 [ext_resource type="Script" uid="uid://cg1d5ghvrv5un" path="res://scripts/resources/icon_texture_2d.gd" id="1_0dkrt"]
-[ext_resource type="Script" uid="uid://duwys366t42it" path="res://ui/main_menu.gd" id="2_wk0pr"]
+[ext_resource type="Script" uid="uid://duwys366t42it" path="res://ui/main/main_menu.gd" id="2_wk0pr"]
 
 [sub_resource type="DPITexture" id="DPITexture_06s8x"]
 _source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M5.90165 3.770324C5.016594 3.882602 3.614248 1.453672 3.184542 1.467214 2.754839 1.480756 2.483299 1.651061 2.567601 1.976763 2.651904 2.302467 3.387586 4.534363 4.261595 5.331085\" id=\"path22\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M12.925703 4.512431C13.45014 7.349494 11.445356 8.921427 10.909997 9.230517 10.374641 9.539603 9.92219 9.819201 9.093535 10.040644 8.264888 10.262094 7.707672 10.483873 7.258415 10.843182 6.380517 10.336426 3.712727 8.460385 4.261595 5.331085c.717204-.275188 1.375609-1.179667 1.640055-1.560761.575313-.289342 2.56609-1.587225 4.490751-1.060929.473621.129513 1.704614.244063 1.704614.244063L11.391297 4.439535Z\" id=\"path21\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M9.270459 9.990849C10.081267 12.1705 10.808713 13.676526 10.649409 13.99977 10.490106 14.323019 10.206271 14.215075 10.024831 14.072749 9.843383 13.930412 8.58763 13.025048 7.76932 11.693293 7.507297 11.266894 7.258426 10.843175 7.258426 10.843175\" id=\"path23\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M4.023579 5.678284C2.035905 5.587254 2.511596 7.726075 4.30467 7.321034 2.289439 8.674661 4.276815 10.924219 5.776551 9.814847 4.52485 11.762281 6.494178 12.624407 7.25843 10.843175\" id=\"path24\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle id=\"path25\" cx=\"-6.145384\" cy=\"8.605107\" r=\".500002\" transform=\"matrix(-.866025.5.5.866025 0 0)\" fill=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M10.084804 6.176622C9.514511 6.384734 9.131588 6.146295 8.732522 6.524588 8.305711 6.929176 8.353469 7.392263 8.62956 7.775897 9.105766 8.437594 9.749174 7.716346 10.286325 7.297782\" id=\"path26\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
 base_scale = 1.5
 color_map = {
-Color(1, 1, 1, 1): Color(0.8039216, 0.8392157, 0.95686275, 1)
+Color(1, 1, 1, 1): Color(0.8039216, 0.8392157, 0.95686275, 1),
+Color(0, 0, 0, 1): Color(0.11764706, 0.11764706, 0.18039216, 1)
 }
 script = ExtResource("1_0dkrt")
 icon = "sunfish"
@@ -17,7 +18,8 @@ metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 [sub_resource type="DPITexture" id="DPITexture_04ebt"]
 _source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg5\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"m3.233206 5.5c0 0 .125667-1.885.204533-3.067C3.472406 1.908 3.909206 1.5 4.435273 1.5h3.264735c.552067 0 1.000134.448 1.000134 1v1c0 .552.4472 1 1.000134 1h4.799869l-1.000134 10\" id=\"path2\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"m1.599538 6.590463c-.026-.2794.0676-.557333.2574-.764866C2.045872 5.618063 2.313672 5.499996 2.595339 5.499996h3.004735c.292067 0 .571133.115867.7774.321933.206267.2068.3224.4862.3224.778066 0 .6072.492267 1.1 1.0998 1.1H11.499877L13.50001 14.499992H2.500005c0 0-.648267-5.130197-.900467-7.909529z\" id=\"path3\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
 color_map = {
-Color(1, 1, 1, 1): Color(0.8039216, 0.8392157, 0.95686275, 1)
+Color(1, 1, 1, 1): Color(0.8039216, 0.8392157, 0.95686275, 1),
+Color(0, 0, 0, 1): Color(0.11764706, 0.11764706, 0.18039216, 1)
 }
 script = ExtResource("1_0dkrt")
 icon = "open"
@@ -26,7 +28,8 @@ metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 [sub_resource type="DPITexture" id="DPITexture_7nk2m"]
 _source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12.5 7.5V2.5H5.5L3.5 4.5V7.5M3.5 12.5V13.5H12.5V12.5\" id=\"path1\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M8 4.5V11.5\" id=\"path3\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M5 9 8 11.5 11 9\" id=\"path4\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
 color_map = {
-Color(1, 1, 1, 1): Color(0.8039216, 0.8392157, 0.95686275, 1)
+Color(1, 1, 1, 1): Color(0.8039216, 0.8392157, 0.95686275, 1),
+Color(0, 0, 0, 1): Color(0.11764706, 0.11764706, 0.18039216, 1)
 }
 script = ExtResource("1_0dkrt")
 icon = "save"
@@ -35,25 +38,28 @@ metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 [sub_resource type="DPITexture" id="DPITexture_ar4ev"]
 _source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12.5 7V2.5H5L3.5 4V13.500011H5.000005\" id=\"path1\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M8 5 9 6.78648 10.853179 7.072953 9.426591 8.463533 9.763363 10.42706 8 9.5 6.236649 10.42706 6.57342 8.463533 5.146832 7.072953 7.118326 6.78648Z\" transform=\"translate(2 3)\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
 color_map = {
-Color(1, 1, 1, 1): Color(0.8039216, 0.8392157, 0.95686275, 1)
+Color(1, 1, 1, 1): Color(0.8039216, 0.8392157, 0.95686275, 1),
+Color(0, 0, 0, 1): Color(0.11764706, 0.11764706, 0.18039216, 1)
 }
 script = ExtResource("1_0dkrt")
 icon = "new"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_0dkrt"]
-_source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"m3.5 11.5h9\" stroke=\"#fff\" stroke-linecap=\"round\"/><path d=\"m3.5 4.5h9\" stroke=\"#fff\" stroke-linecap=\"round\"/><path d=\"M4.5 10.5v2\" stroke=\"#fff\" stroke-linecap=\"round\"/><path d=\"M10.5 3.5v2\" stroke=\"#fff\" stroke-linecap=\"round\"/></svg>"
+_source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"m3.5 11.5h9\" stroke=\"#fff\" stroke-linecap=\"round\"/><path d=\"m3.5 4.5h9\" stroke=\"#fff\" stroke-linecap=\"round\"/><path d=\"M5.5 10.5v2\" stroke=\"#fff\" stroke-linecap=\"round\"/><path d=\"M10.5 3.5v2\" stroke=\"#fff\" stroke-linecap=\"round\"/></svg>"
 color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1)
+Color(1, 1, 1, 1): Color(0.8039216, 0.8392157, 0.95686275, 1),
+Color(0, 0, 0, 1): Color(0.11764706, 0.11764706, 0.18039216, 1)
 }
 script = ExtResource("1_0dkrt")
 icon = "config"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_wk0pr"]
-_source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><circle r=\"2\" cx=\"8\" cy=\"5\" fill=\"#fff\"/><circle r=\"4\" cx=\"8\" cy=\"10\" fill=\"#fff\"/><g><path d=\"M10 8Q11.5 5 14 5\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\"/><path d=\"M10 10Q12.5 7.5 14.5 8.5\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\"/><path d=\"M10 11Q12.5 10 14.5 12\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\"/></g><g transform=\"matrix(-1 0 0 1 16 0)\"><path d=\"M10 8Q11.5 5 14 5\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\"/><path d=\"M10 10Q12.5 7.5 14.5 8.5\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\"/><path d=\"M10 11Q12.5 10 14.5 12\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\"/></g></svg>"
+_source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><rect width=\"1\" height=\"2\" x=\"10\" y=\"10\" fill=\"#fff\" transform=\"rotate(-80 10 10)\"/><rect width=\"1\" height=\"2\" x=\"8\" y=\"12\" fill=\"#fff\" transform=\"rotate(-50 8 12)\"/><path d=\"M3.5 12.5C8 13 8.5 10.5 9 8.5S10 3.5 12 3.5\" stroke=\"#fff\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"3\"/><rect width=\"1\" height=\"2\" x=\"6\" y=\"13\" fill=\"#fff\" transform=\"rotate(-12 6 13)\"/><rect width=\"1\" height=\"1\" x=\"4\" y=\"14\" fill=\"#fff\"/><circle r=\"2\" cx=\"12\" cy=\"3.5\" fill=\"#fff\"/><circle r=\"1\" cx=\"11.5\" cy=\"2.5\" fill=\"#000\"/></svg>"
 color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1)
+Color(1, 1, 1, 1): Color(0.8039216, 0.8392157, 0.95686275, 1),
+Color(0, 0, 0, 1): Color(0.11764706, 0.11764706, 0.18039216, 1)
 }
 script = ExtResource("1_0dkrt")
 icon = "bug"
@@ -93,10 +99,10 @@ popup/item_2/icon = SubResource("DPITexture_ar4ev")
 popup/item_2/id = 2
 popup/item_3/text = "Preferences"
 popup/item_3/icon = SubResource("DPITexture_0dkrt")
-popup/item_3/id = 4
+popup/item_3/id = 3
 popup/item_4/text = "Debug"
 popup/item_4/icon = SubResource("DPITexture_wk0pr")
-popup/item_4/id = 3
+popup/item_4/id = 4
 script = ExtResource("2_wk0pr")
 
 [node name="Debug" type="PopupMenu" parent="."]

@@ -17,7 +17,7 @@ func activated(wb: Whiteboard) -> void:
 		current_image = img
 		image_preview_element = ImagePreviewElement.new()
 		image_preview_element.image = current_image
-		wb.redraw_all()
+		wb.redraw_preview()
 
 
 func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
@@ -36,7 +36,7 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 	if mm:
 		if current_image and image_preview_element:
 			image_preview_element.center_position = mm.position
-			wb.redraw_all()
+			wb.redraw_preview()
 	var mb := event as InputEventMouseButton
 	if mb:
 		if mb.button_index == MOUSE_BUTTON_LEFT and mb.pressed:
@@ -48,7 +48,7 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 				display.elements = [image_element]
 				image_preview_element = null
 				current_image = null
-				wb.redraw_all()
+				wb.redraw_preview()
 			else:
 				var img_path: PackedStringArray = await DialogUtil.open_file_dialog([], FileDialog.FILE_MODE_OPEN_FILE)
 				if img_path:
@@ -100,7 +100,7 @@ class ImageElement extends WhiteboardTool.Element:
 			image_texture = ImageTexture.create_from_image(value)
 	var image_texture: ImageTexture
 	
-	static func get_id() -> String: return "dev.fishies.sunfish.ImageTool"
+	static func get_id() -> String: return "dev.fishies.sunfish.ImageElement"
 	
 	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard):
 		Util.unused(wb)
@@ -116,6 +116,7 @@ class ImageElement extends WhiteboardTool.Element:
 		var image_data_compressed := image_data.compress(FileAccess.COMPRESSION_ZSTD)
 		return {
 			"rect": rect,
+			"opacity": opacity,
 			"image_data_length": image_data.size(),
 			"image_data": image_data_compressed,
 			"image_width": image.get_width(),
@@ -127,6 +128,7 @@ class ImageElement extends WhiteboardTool.Element:
 	static func deserialize(data: Dictionary) -> Element:
 		var el := ImageElement.new()
 		el.rect = data.rect
+		el.opacity = data.opacity
 		var image_data = data.image_data.decompress(data.image_data_length, FileAccess.COMPRESSION_ZSTD)
 		var new_image := Image.create_from_data(data.image_width, data.image_height, true, data.image_format, image_data)
 		el.image = new_image

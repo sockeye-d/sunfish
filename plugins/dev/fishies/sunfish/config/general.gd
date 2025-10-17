@@ -32,8 +32,3 @@ func _validate_property(property: Dictionary) -> void:
 
 
 func get_id() -> String: return "dev.fishies.sunfish.config.general"
-
-
-class Subconfiguration extends Configuration:
-	@export var hi: String = "hi"
-	func get_id() -> String: return "dev.fishies.sunfish.config.general.subgeneral"

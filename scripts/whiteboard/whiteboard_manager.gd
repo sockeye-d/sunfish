@@ -23,7 +23,7 @@ static func register_passive_tool(tool: WhiteboardTool) -> void:
 
 static func register_tool(tool_script: Script) -> void:
 	tools[tool_script.get_id()] = tool_script
-	instance.tools_changed.emit()
+	instance.tools_changed.emit.call_deferred()
 
 
 static func _register_passive_tool(tool: WhiteboardTool) -> void:
@@ -32,7 +32,11 @@ static func _register_passive_tool(tool: WhiteboardTool) -> void:
 
 
 static func register_deserializer(script: Script) -> void:
-	_deserializers[script.get_id()] = script.deserialize
+	register_deserializer_for_id(script.get_id(), script.deserialize)
+
+
+static func register_deserializer_for_id(id: String, deserializer: Callable) -> void:
+	_deserializers[id] = deserializer
 
 
 static func serialize(elements: Array[WhiteboardTool.Element]) -> Dictionary:

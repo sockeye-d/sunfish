@@ -22,7 +22,6 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	Util.unused(delta)
 	fps_label.text = "FPS: %d" % Engine.get_frames_per_second()
-	#print(Engine.max_fps)
 
 
 func _update_text() -> void:
@@ -32,7 +31,6 @@ func _update_text() -> void:
 		whiteboard.active_tools
 			.map(func(it: WhiteboardTool): return ReverseDNSUtil.pretty_print(it.get_script().get_id()).trim_suffix("Tool").strip_edges())
 	)
-	stroke_label.text = "%s strokes (%s visible)" % [
+	stroke_label.text = "%s strokes" % [
 		whiteboard.active_element_count,
-		whiteboard.visible_element_count,
 	]

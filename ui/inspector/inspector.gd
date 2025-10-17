@@ -14,10 +14,18 @@ enum {
 ## [/codeblock]
 static var hint_delegates: Dictionary[int, Callable] = {
 	PROPERTY_HINT_NONE: func(prop: Dictionary, initial_value, set_prop: Callable) -> Control:
-		var line_edit := LineEdit.new()
-		line_edit.text = str(initial_value)
-		line_edit.text_submitted.connect(func(new_text: String): set_prop.call(convert(new_text, prop.type)))
-		return line_edit,
+		match prop.type as Variant.Type:
+			TYPE_BOOL:
+				var checkbox := CheckBox.new()
+				checkbox.button_pressed = initial_value
+				checkbox.toggled.connect(set_prop)
+				return checkbox
+			_:
+				var line_edit := LineEdit.new()
+				line_edit.text = str(initial_value)
+				line_edit.text_submitted.connect(func(new_text: String): set_prop.call(convert(new_text, prop.type)))
+				return line_edit
+		,
 	PROPERTY_HINT_RANGE: func(prop: Dictionary, initial_value, set_prop: Callable) -> Control:
 		assert(prop.type in [TYPE_INT, TYPE_FLOAT])
 		var data := (prop.hint_string as String).split(",", true, 4)
@@ -116,7 +124,7 @@ func _update_inspector() -> void:
 		outer_prop_container.add_child(prop_container)
 		for property: Dictionary in properties:
 			var label := Label.new()
-			label.text = String(property.name).capitalize().to_lower()
+			label.text = Util.pretty_print_property(property.name)
 			prop_container.add_child(label)
 			var delegate: Control = create_delegate(
 				property, tool.get(property.name),

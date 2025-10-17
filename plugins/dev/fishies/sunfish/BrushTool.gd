@@ -1,7 +1,7 @@
 extends WhiteboardTool
 
 
-@export_range(1.0, 5.0, 0.0, "or_greater") var width: float = 5.0
+@export_range(1.0, 5.0, 0.0, "or_greater") var width: float = _get_default_width()
 var color: Color
 
 var is_drawing: bool
@@ -13,6 +13,13 @@ static func get_id() -> String: return "dev.fishies.sunfish.BrushTool"
 
 
 func should_hide_mouse() -> bool: return true
+
+
+func create_brush_element() -> BrushElement: return BrushElement.new()
+func create_dot_element() -> BrushDotElement: return BrushDotElement.new()
+
+
+func _get_default_width() -> float: return 5.0
 
 
 func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
@@ -32,7 +39,7 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 					if last_draw_element:
 						display.elements = [last_draw_element]
 					else:
-						var dot = BrushDotElement.new()
+						var dot = create_dot_element()
 						dot.position = mb.position
 						dot.color = color
 						dot.width = draw_width
@@ -44,7 +51,7 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 		if mm.button_mask & MOUSE_BUTTON_MASK_LEFT and not mm.relative.is_zero_approx():
 			if is_drawing:
 				if last_draw_element == null:
-					last_draw_element = BrushElement.new()
+					last_draw_element = create_brush_element()
 				var el := last_draw_element
 				el.append_point(mm_pos, mm.pressure if mm.pressure > 0.0 else 1.0)
 				el.color = color

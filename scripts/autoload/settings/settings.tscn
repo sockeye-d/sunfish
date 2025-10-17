@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cx6dyh7jcf7hi"]
 
-[ext_resource type="Script" uid="uid://bm64ce6hhghy" path="res://scripts/autoload/settings.gd" id="1_nlfgh"]
+[ext_resource type="Script" uid="uid://bm64ce6hhghy" path="res://scripts/autoload/settings/settings.gd" id="1_nlfgh"]
 
 [node name="Settings" type="Window"]
 oversampling_override = 1.0
