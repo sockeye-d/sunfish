@@ -161,6 +161,7 @@ func _gui_input(e: InputEvent) -> void:
 
 func undo() -> void:
 	elements.pop_back()
+	viewport.remove_child(viewport.get_child(viewport.get_child_count() - 1))
 	queue_redraw()
 
 

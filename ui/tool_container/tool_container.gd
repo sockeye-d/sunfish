@@ -26,6 +26,7 @@ func _ready() -> void:
 			whiteboard.set_active_tools([tool_instances[new_tool]])
 	)
 	WhiteboardManager.instance.tools_changed.connect(_update_tools)
+	selected_tool_id = Settings["dev.fishies.sunfish.config.general/default_tool"]
 	_update_tools.call_deferred()
 
 
@@ -52,6 +53,7 @@ func _update_tools() -> void:
 		
 		if selected_tool_id == tool_id:
 			btn.button_pressed = true
+			active_tool_changed.emit(tool)
 		
 		tool_buttons[tool] = btn
 		btn.pressed.connect(func():

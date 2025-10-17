@@ -6,7 +6,7 @@ extends Configuration
 	set(value):
 		theme = value
 		update_theme.call_deferred()
-@export var sub := Subconfiguration.new()
+@export var default_tool: String = "dev.fishies.sunfish.BrushTool"
 
 
 static func _static_init() -> void:
@@ -26,6 +26,9 @@ func _validate_property(property: Dictionary) -> void:
 	if property.name == "theme":
 		property.hint = Inspector.PROPERTY_HINT_EXT_PRETTY_RDNS_ENUM
 		property.hint_string = ",".join(ThemeManager.themes.keys())
+	if property.name == "default_tool":
+		property.hint = Inspector.PROPERTY_HINT_EXT_PRETTY_RDNS_ENUM
+		property.hint_string = ",".join(WhiteboardManager.tools.keys())
 
 
 func get_id() -> String: return "dev.fishies.sunfish.config.general"
