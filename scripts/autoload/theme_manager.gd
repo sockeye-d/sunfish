@@ -223,7 +223,9 @@ func set_theme(new_theme: ThemeColors) -> void:
 	theme_res.set_block_signals(false)
 	theme_res.emit_changed()
 	background_color_changed.emit(theme.background_1)
-	(IconTexture2D as Script).emit_signal("change_text_color", theme.text, theme.background_0)
+	IconTexture2D.text_color = theme.text
+	IconTexture2D.bg_color = theme.background_0
+	IconTexture2D.SignalBus.instance.update.emit()
 	
 	if Engine.is_editor_hint():
 		ResourceSaver.save(theme_res, theme_res.resource_path)

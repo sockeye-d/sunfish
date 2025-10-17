@@ -99,9 +99,10 @@ class TextElement extends WhiteboardTool.Element:
 	
 	static func get_id() -> String: return "dev.fishies.sunfish.TextElement"
 	
-	func draw(wb: Whiteboard):
+	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard):
+		Util.unused(wb)
 		var rect := Inner.font_get_rect(font, text, font_size)
-		wb.draw_multiline_string(font, position - rect.get_center(), text, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size, -1, color)
+		canvas.draw_multiline_string(font, position - rect.get_center(), text, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size, -1, color)
 	
 	func get_bounding_box() -> Rect2:
 		var rect := Inner.font_get_rect(font, text, font_size)

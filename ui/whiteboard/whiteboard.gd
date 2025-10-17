@@ -1,6 +1,7 @@
 @tool
 class_name Whiteboard extends Control
 
+const OVERSAMPLE = 1.0
 const PanTool = preload("uid://ios48ehu0i7f")
 const WHITEBOARD_BACKGROUND = preload("uid://h1qiidxtgcs0")
 
@@ -19,7 +20,9 @@ var draw_xform: Transform2D:
 		draw_scale = draw_xform.get_scale().length() / sqrt(2.0)
 		draw_origin = draw_xform.get_origin()
 		xform_changed.emit()
-		redraw_all()
+		if viewport:
+			viewport.canvas_transform = draw_xform * OVERSAMPLE
+		redraw_preview()
 var inv_draw_xform: Transform2D
 var draw_scale: float
 var draw_origin: Vector2
@@ -38,6 +41,10 @@ var primary_color: Color
 var background: Panel
 var background_shader: ColorRect
 var preview: PreviewControl
+
+
+var viewport_container: Control
+var viewport: Viewport
 
 
 func _init() -> void:
@@ -79,6 +86,22 @@ func _init() -> void:
 			Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 	)
 	mouse_exited.connect(func(): Input.mouse_mode = Input.MOUSE_MODE_VISIBLE)
+	
+	viewport_container = SubViewportContainer.new()
+	viewport_container.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	viewport_container.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	viewport = SubViewport.new()
+	viewport.transparent_bg = true
+	viewport.msaa_2d = Viewport.MSAA_4X
+	resized.connect(func(): viewport.size = size * OVERSAMPLE)
+	var render_mat := ShaderMaterial.new()
+	render_mat.shader = preload("whiteboard_render.gdshader")
+	render_mat["shader_parameter/canvas_texture"] = viewport.get_texture()
+	viewport_container.material = render_mat
+	
+	viewport_container.add_child(viewport)
+	
+	add_child(viewport_container)
 
 
 func _ready() -> void:
@@ -92,27 +115,6 @@ func _ready() -> void:
 	var peer := StreamPeerFile.open("user://save.sunfish", FileAccess.READ)
 	if peer:
 		deserialize(peer)
-
-
-func _draw() -> void:
-	var new_element_count := elements.size()
-	var new_visible_element_count := 0
-	draw_set_transform_matrix(draw_xform)
-	var self_bounds = (inv_draw_xform * Rect2(Vector2.ZERO, size)).abs()
-	var draw_scale_cache := draw_scale
-	for element in elements:
-		var bounds := element.get_bounding_box()
-		var screen_size := bounds.size[bounds.size.max_axis_index()] * draw_scale_cache
-		if DebugManager.show_bounds:
-			draw_rect(bounds, Color.RED, false, 2.0 / draw_scale_cache)
-		if screen_size > 2.0 and self_bounds.intersects(bounds):
-			new_visible_element_count += 1
-			element.draw(self)
-	
-	if new_visible_element_count != visible_element_count or new_element_count != active_element_count:
-		active_element_count = elements.size()
-		visible_element_count = new_visible_element_count
-		element_count_changed.emit()
 
 
 var _preview_draw_twice := false
@@ -139,8 +141,14 @@ func _gui_input(e: InputEvent) -> void:
 		
 		if not tool_output.elements.is_empty():
 			if elements.slice(elements.size() - tool_output.elements.size()) != tool_output.elements:
+				var old_element_size := elements.size()
 				elements.append_array(tool_output.elements)
-			queue_redraw()
+				for element_index in range(old_element_size, elements.size()):
+					viewport.add_child(create_layer(element_index))
+				element_count_changed.emit()
+			else:
+				for layer_index in range(elements.size() - tool_output.elements.size(), elements.size()):
+					(viewport.get_child(layer_index) as ElementLayer).queue_redraw()
 		
 		if not tool_output.preview_elements.is_empty():
 			new_preview_elements.append_array(tool_output.preview_elements)
@@ -156,19 +164,9 @@ func undo() -> void:
 	queue_redraw()
 
 
-func redraw_all() -> void:
-	queue_redraw()
-	if preview:
-		preview.queue_redraw()
-
-
 func redraw_preview() -> void:
 	if preview:
 		preview.queue_redraw()
-
-
-func redraw_canvas() -> void:
-	queue_redraw()
 
 
 func set_active_tools(new_active_tools: Array[WhiteboardTool]) -> void:
@@ -193,7 +191,16 @@ func deserialize(stream: StreamPeer) -> void:
 	var json_compressed: PackedByteArray =  stream.get_data(stream.get_available_bytes())[1]
 	var data = bytes_to_var(json_compressed.decompress(json_size, FileAccess.COMPRESSION_ZSTD))
 	elements = WhiteboardManager.deserialize(data.elements)
+	for element_index in elements.size():
+		viewport.add_child(create_layer(element_index))
 	draw_xform = data.xform
+
+
+func create_layer(index: int) -> ElementLayer:
+	var layer := ElementLayer.new()
+	layer.index = index
+	layer.whiteboard = self
+	return layer
 
 
 class PreviewControl extends Control:
@@ -207,3 +214,16 @@ class PreviewControl extends Control:
 		draw_set_transform_matrix(wb.draw_xform)
 		for preview_element in wb.preview_elements:
 			preview_element.draw(self, wb)
+
+
+class ElementLayer extends Node2D:
+	var whiteboard: Whiteboard
+	var index: int
+	
+	func _draw() -> void:
+		var element := whiteboard.elements[index]
+		if DebugManager.show_bounds:
+			var bounds := element.get_bounding_box()
+			var draw_scale_cache := whiteboard.draw_scale
+			draw_rect(bounds, Color.RED, false, 2.0 / draw_scale_cache)
+		element.draw(self, whiteboard)

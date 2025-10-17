@@ -22,15 +22,12 @@ var secondary_icon_scale: float = 1.0:
 	set(value):
 		modulate = value
 		_update_image()
-var text_color: Color = Color.WHITE:
-	set(value):
-		text_color = value
-		_update_image()
-var bg_color: Color = Color.BLACK:
-	set(value):
-		bg_color = value
-		_update_image()
-var _is_connected: bool = false
+static var text_color: Color = Color.WHITE
+static var bg_color: Color = Color.BLACK
+
+
+func _init() -> void:
+	SignalBus.instance.update.connect(_update_image)
 
 
 func _update_image() -> void:
@@ -56,29 +53,18 @@ func _attempt_path(path: String) -> String:
 
 
 func setup_signals() -> void:
-	if not _is_connected:
-		var scr := get_script() as Script
-		if not scr.has_signal("change_text_color"):
-			scr.add_user_signal("change_text_color", [
-				{
-					"name": "new_text_color",
-					"type": TYPE_COLOR,
-				},
-				{
-					"name": "new_bg_color",
-					"type": TYPE_COLOR,
-				},
-			])
-		scr.connect("change_text_color", func(new_text_color: Color, new_bg_color: Color):
-			text_color = new_text_color
-			bg_color = new_bg_color
-		)
-		_is_connected = true 
-		
-
-
-#func svg_color(color: Color) -> 
+	if not SignalBus.instance.update.is_connected(_update_image):
+		SignalBus.instance.update.connect(_update_image)
 
 
 func _get_svg_path() -> PackedStringArray:
 	return ["res://assets/%s.svg" % icon, "res://plugins/%s.svg" % ReverseDNSUtil.id_to_path(icon)]
+
+
+class SignalBus:
+	signal update
+	static var instance: SignalBus:
+		get:
+			if not instance:
+				instance = SignalBus.new()
+			return instance

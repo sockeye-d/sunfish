@@ -35,7 +35,7 @@ func _ready() -> void:
 		container.offset_bottom = (display_area.y - safe_area.size.y - safe_area.position.y) / get_tree().root.content_scale_factor
 	ThemeManager.background_color_changed.connect(func(new_color: Color): color = new_color)
 	if ThemeManager.active_theme:
-		color = ThemeManager.active_theme.background_0
+		color = ThemeManager.active_theme.background_1
 	tool_scroll_container.get_v_scroll_bar().visibility_changed.connect(func():
 		tool_scrollbar_separator.visible = tool_scroll_container.get_v_scroll_bar().is_visible_in_tree()
 	)

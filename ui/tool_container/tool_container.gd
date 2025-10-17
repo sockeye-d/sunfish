@@ -9,13 +9,13 @@ var tool_button_group := ButtonGroup.new()
 var tool_instances: Dictionary[Script, WhiteboardTool]
 
 
-@export var tools: Array[Script]
 @export var whiteboard: Whiteboard
 @warning_ignore("unused_private_class_variable")
 @export_tool_button("Update tools") var __ := _update_tools
 
 
 var tool_buttons: Dictionary[Script, Button]
+var selected_tool_id: String
 
 
 func _ready() -> void:
@@ -25,6 +25,7 @@ func _ready() -> void:
 				tool_instances[new_tool] = new_tool.new()
 			whiteboard.set_active_tools([tool_instances[new_tool]])
 	)
+	WhiteboardManager.instance.tools_changed.connect(_update_tools)
 	_update_tools.call_deferred()
 
 
@@ -35,9 +36,10 @@ func _update_tools() -> void:
 		else:
 			tool_buttons.erase(tool)
 	tool_buttons.clear()
-	if tools.is_empty():
+	if WhiteboardManager.tools.is_empty():
 		return
-	for tool in tools:
+	for tool_id in WhiteboardManager.tools:
+		var tool := WhiteboardManager.tools[tool_id]
 		if not tool.is_visible():
 			continue
 		var btn := Button.new()
@@ -48,9 +50,12 @@ func _update_tools() -> void:
 		btn.icon = icon
 		btn.button_group = tool_button_group
 		
+		if selected_tool_id == tool_id:
+			btn.button_pressed = true
+		
 		tool_buttons[tool] = btn
-		btn.pressed.connect(active_tool_changed.emit.bind(tool))
+		btn.pressed.connect(func():
+			selected_tool_id = tool_id
+			active_tool_changed.emit(tool)
+		)
 		add_child(btn)
-	
-	active_tool_changed.emit(tools.front())
-	tool_buttons[tools.front()].button_pressed = true

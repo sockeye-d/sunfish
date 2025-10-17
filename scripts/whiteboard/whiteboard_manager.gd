@@ -1,13 +1,29 @@
+@tool
 class_name WhiteboardManager
 
 
-static var passive_tools: Dictionary[String, WhiteboardTool]
+signal tools_changed
 
+
+static var instance: WhiteboardManager:
+	get:
+		if not instance:
+			instance = WhiteboardManager.new()
+		return instance
+
+
+static var tools: Dictionary[String, Script]
+static var passive_tools: Dictionary[String, WhiteboardTool]
 static var _deserializers: Dictionary[String, Callable]
 
 
 static func register_passive_tool(tool: WhiteboardTool) -> void:
 	_register_passive_tool.call_deferred(tool)
+
+
+static func register_tool(tool_script: Script) -> void:
+	tools[tool_script.get_id()] = tool_script
+	instance.tools_changed.emit()
 
 
 static func _register_passive_tool(tool: WhiteboardTool) -> void:

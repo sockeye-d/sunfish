@@ -38,11 +38,14 @@ int32_t StreamPeerFile::_get_available_bytes() const { return m_fd->get_length()
 StreamPeerFile* StreamPeerFile::open(const String& p_path, const FileAccess::ModeFlags p_mode) {
 	StreamPeerFile* const stream_peer = memnew(StreamPeerFile);
 	stream_peer->m_fd = FileAccess::open(p_path, p_mode);
-	ERR_FAIL_NULL_V(stream_peer->m_fd, nullptr);
+	if (stream_peer->m_fd == nullptr) {
+	    return nullptr;
+	}
 	return stream_peer;
 }
 
 StreamPeerFile* StreamPeerFile::from(const Ref<FileAccess>& p_fd) {
+
 	StreamPeerFile* const stream_peer = memnew(StreamPeerFile);
 	stream_peer->m_fd = p_fd;
 	return stream_peer;

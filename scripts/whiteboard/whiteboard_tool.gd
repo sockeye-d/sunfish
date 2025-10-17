@@ -33,7 +33,7 @@ class Element:
 	
 	
 	@abstract
-	func draw(wb: Whiteboard)
+	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard) -> void
 	
 	
 	@abstract

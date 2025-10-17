@@ -71,9 +71,6 @@ class ShapeElement extends WhiteboardTool.Element:
 	
 	func _falloff(x: float) -> float: return max(0.0, 2.0 - 1.0 / x if x <= 1.0 else x)
 	
-	@abstract
-	func draw(wb: Whiteboard) -> void
-	
 	func get_bounding_box() -> Rect2:
 		return rect.abs().grow(width)
 	

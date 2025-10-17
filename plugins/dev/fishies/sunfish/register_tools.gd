@@ -1,0 +1,10 @@
+static func _static_init() -> void:
+	(WhiteboardManager as Script).set_block_signals(true)
+	WhiteboardManager.register_tool(preload("BrushTool.gd"))
+	WhiteboardManager.register_tool(preload("LineTool.gd"))
+	WhiteboardManager.register_tool(preload("CircleTool.gd"))
+	WhiteboardManager.register_tool(preload("FilledCircleTool.gd"))
+	WhiteboardManager.register_tool(preload("RectangleTool.gd"))
+	WhiteboardManager.register_tool(preload("FilledRectangleTool.gd"))
+	(WhiteboardManager as Script).set_block_signals(false)
+	WhiteboardManager.register_tool(preload("TextTool.gd"))

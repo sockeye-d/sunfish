@@ -84,13 +84,13 @@ class BrushElement extends WhiteboardTool.Element:
 	
 	func _falloff(x: float) -> float: return max(0.0, 2.0 - 1.0 / x if x <= 1.0 else x)
 	
-	func draw(wb: Whiteboard) -> void:
+	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard) -> void:
 		var real_width := _falloff(width * wb.draw_scale) / wb.draw_scale
 		if real_width < 0.0:
 			return
 		if points.size() >= 2:
 			var merged_points := DrawingUtil.merge_close_points(points, pressures, 2.0 / wb.draw_scale)
-			DrawingUtil.draw_round_polyline(wb.get_canvas_item(), merged_points[0], color, real_width, merged_points[1])
+			DrawingUtil.draw_round_polyline(canvas.get_canvas_item(), merged_points[0], color, real_width, merged_points[1])
 	
 	
 	func get_bounding_box() -> Rect2:
@@ -136,8 +136,9 @@ class BrushDotElement extends WhiteboardTool.Element:
 	
 	static func get_id() -> String: return "dev.fishies.sunfish.BrushDotElement"
 	
-	func draw(wb: Whiteboard) -> void:
-		wb.draw_circle(position, width * 0.5, color)
+	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard) -> void:
+		Util.unused(wb)
+		canvas.draw_circle(position, width * 0.5, color)
 	
 	func get_bounding_box() -> Rect2:
 		return Rect2(position, Vector2.ZERO).grow(width)
