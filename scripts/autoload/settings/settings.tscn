@@ -7,30 +7,58 @@ oversampling_override = 1.0
 title = "Settings"
 position = Vector2i(176, 74)
 size = Vector2i(800, 500)
-visible = false
 transient = true
 exclusive = true
 popup_window = true
 script = ExtResource("1_nlfgh")
 
-[node name="HSplitContainer" type="HSplitContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-split_offset = 300
 
-[node name="Tree" type="Tree" parent="HSplitContainer"]
+[node name="TabContainer" type="TabContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_type_variation = &"FlatTabContainer"
+current_tab = 1
+
+[node name="General" type="HSplitContainer" parent="MarginContainer/TabContainer"]
+visible = false
+layout_mode = 2
+split_offset = 300
+metadata/_tab_index = 0
+
+[node name="Tree" type="Tree" parent="MarginContainer/TabContainer/General"]
 unique_name_in_owner = true
 layout_mode = 2
 hide_root = true
 
-[node name="PanelContainer" type="PanelContainer" parent="HSplitContainer"]
-layout_mode = 2
-
-[node name="SettingsContainer" type="MarginContainer" parent="HSplitContainer/PanelContainer"]
+[node name="SettingsContainer" type="PanelContainer" parent="MarginContainer/TabContainer/General"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[connection signal="item_selected" from="HSplitContainer/Tree" to="." method="_on_tree_item_selected"]
+[node name="Shortcuts" type="PanelContainer" parent="MarginContainer/TabContainer"]
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="ShortcutContainer" type="GridContainer" parent="MarginContainer/TabContainer/Shortcuts"]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 2
+
+[node name="NameLabel" type="Label" parent="MarginContainer/TabContainer/Shortcuts/ShortcutContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Name"
+
+[node name="BindingLabel" type="Label" parent="MarginContainer/TabContainer/Shortcuts/ShortcutContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Binding"
+horizontal_alignment = 1
+
+[connection signal="item_selected" from="MarginContainer/TabContainer/General/Tree" to="." method="_on_tree_item_selected"]
