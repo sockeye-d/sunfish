@@ -6,7 +6,7 @@ signal any_setting_changed(property: String, new_value)
 const RESET_ICON = preload("uid://dmah5fp6rgtqt")
 const SettingsResource = preload("uid://dat0ps77q50u2")
 
-static var config_path := OS.get_config_dir().path_join("sunfish/settings.tres")
+var config_path := OS.get_config_dir().path_join("sunfish/settings.tres")
 
 
 @onready var tree: Tree = %Tree
@@ -17,8 +17,7 @@ static var config_path := OS.get_config_dir().path_join("sunfish/settings.tres")
 
 var config_data: Dictionary[String, ConfigurationData]
 var signals: Dictionary[String, Signal]
-var serializers: Dictionary[Variant, Dictionary]
-var deserializers: Dictionary[String, Variant]
+var has_deserialized := false
 
 
 func _ready() -> void:
@@ -26,15 +25,9 @@ func _ready() -> void:
 	if OS.has_feature("mobile"):
 		size = Vector2i(500, 275)
 		position = (get_tree().root.size / 2 / get_tree().root.content_scale_factor - size / 2.0)
-	#var peer := StreamPeerFile.open(config_path, FileAccess.READ)
-	#var serialized_data = JSON.parse_string(peer.get_utf8_string(peer.get_available_bytes())) if peer else {}
-	var obj = ResourceLoader.load(config_path, "", ResourceLoader.CACHE_MODE_IGNORE_DEEP)
-	if obj:
-		obj.obj = self
-	else:
-		print("couldn't load settings")
-		obj = {}
+	var obj: SettingsResource = ResourceLoader.load(config_path, "", ResourceLoader.CACHE_MODE_IGNORE_DEEP)
 	reload_settings(obj)
+	has_deserialized = true
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -42,7 +35,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		hide()
 
 
-func reload_settings(serialized_data) -> void:
+func reload_settings(serialized_data: SettingsResource) -> void:
 	for key in config_data:
 		var data := config_data[key]
 		data.control.queue_free()
@@ -57,7 +50,7 @@ func reload_settings(serialized_data) -> void:
 		create_settings_for(root, config, serialized_data)
 
 
-func create_settings_for(parent: TreeItem, config: Configuration, serialized_data) -> void:
+func create_settings_for(parent: TreeItem, config: Configuration, serialized_data: SettingsResource) -> void:
 	var id := config.get_id()
 	var tree_item := parent.create_child()
 	var grid_container := GridContainer.new()
@@ -78,8 +71,8 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 		else:
 			var initial_value = value
 			var default_value = initial_value
-			if id in serialized_data and property_name in serialized_data[id]:
-				initial_value = serialized_data[id][property_name]
+			if serialized_data and serialized_data.has(property_key):
+				initial_value = serialized_data.get_safe(property_key)
 				config.set(property_name, initial_value)
 
 			if property.usage & PROPERTY_USAGE_EDITOR:
@@ -151,12 +144,18 @@ class ConfigurationData:
 
 
 func _get(property: StringName) -> Variant:
+	var safe := get_safe(property)
+	if not safe: return null
+	return safe[0]
+
+
+func get_safe(property: StringName) -> Array[Variant]:
 	var data := property.split("/", true, 2)
 	if data.size() != 2:
-		return null
+		return []
 	if data[0] in config_data:
-		return config_data[data[0]].config.get(data[1])
-	return null
+		return [config_data[data[0]].config.get(data[1])]
+	return []
 
 
 func _set(property: StringName, value: Variant) -> bool:
@@ -169,6 +168,13 @@ func _set(property: StringName, value: Variant) -> bool:
 		any_setting_changed.emit(property, value)
 		return true
 	return false
+
+
+func has(property_id: String) -> bool:
+	var data := property_id.split("/", true, 2)
+	if data.size() != 2:
+		return false
+	return data[0] in config_data and data[1] in config_data[data[0]].config
 
 
 func _emit_value_changed(property_key: String, new_value) -> void:
@@ -186,13 +192,5 @@ func _on_tree_item_selected() -> void:
 
 func serialize(path: String = config_path) -> void:
 	var res := SettingsResource.new()
-	res.obj = self
-	res.save(path)
-
-
-func register_serializer(type, serializer: Dictionary[String, Variant]) -> void:
-	serializers[type] = serializer
-
-
-func register_deserializer(type, serializer: Dictionary[String, Variant]) -> void:
-	serializers[type] = serializer
+	res.generate_values()
+	ResourceSaver.save(res, path)

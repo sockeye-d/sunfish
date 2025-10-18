@@ -102,8 +102,7 @@ static var hint_delegates: Dictionary[int, Callable] = {
 						event_btn.focus_exited.disconnect(btn_lost_input)
 				)
 				clear_btn.pressed.connect(func():
-					var value = null
-					set_prop.call(value)
+					set_prop.call(null)
 					event_btn.text = "(Unset)"
 				)
 				return container
