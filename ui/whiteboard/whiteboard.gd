@@ -47,7 +47,15 @@ var viewport_container: Control
 var viewport: Viewport
 
 
+var save_timer: Timer
+
+
 func _init() -> void:
+	save_timer = Timer.new()
+	save_timer.wait_time = 0.5
+	save_timer.one_shot = true
+	add_child(save_timer)
+	
 	clip_contents = true
 	draw_xform = Transform2D.IDENTITY
 	background = Panel.new()
@@ -104,6 +112,11 @@ func _init() -> void:
 	add_child(viewport_container)
 
 
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		serialize_or_new()
+
+
 func _ready() -> void:
 	if color_picker:
 		color_picker.color_changed.connect(func(new_color: Color): primary_color = new_color)
@@ -112,21 +125,36 @@ func _ready() -> void:
 		(func():
 			background_shader.material.set_shader_parameter("text_color", ThemeManager.active_theme.text)
 		).call_deferred()
-	var peer := StreamPeerFile.open("user://save.sunfish", FileAccess.READ)
-	if peer:
-		deserialize(peer)
+	if Settings["state/last_opened_filepath"]:
+		var peer := StreamPeerFile.open(Settings["state/last_opened_filepath"], FileAccess.READ)
+		if peer:
+			deserialize(peer)
+		else:
+			serialize_or_new()
+	else:
+		serialize_or_new()
+	
+	DataManager.file_save.connect(func(filepath: String):
+		Util.unused(filepath)
+		serialize()
+	)
+	
+	DataManager.file_load.connect(func(filepath: String):
+		deserialize(StreamPeerFile.open(filepath, FileAccess.READ))
+	)
+	
+	DataManager.file_new.connect(func():
+		reset()
+		serialize_or_new()
+	)
+	
+	save_timer.timeout.connect(serialize_or_new)
 
 
 var _preview_draw_twice := false
 func _gui_input(e: InputEvent) -> void:
 	if e.is_action_pressed("ui_undo", true):
 		undo()
-	if e.is_action_pressed("save"):
-		var stream := StreamPeerBuffer.new()
-		serialize(stream)
-		var fd := FileAccess.open("user://save.sunfish", FileAccess.WRITE)
-		if fd:
-			fd.store_buffer(stream.data_array)
 	if e is InputEventMouseMotion and not has_focus():
 		grab_focus()
 	var new_preview_elements: Array[WhiteboardTool.PreviewElement]
@@ -146,9 +174,11 @@ func _gui_input(e: InputEvent) -> void:
 				for element_index in range(old_element_size, elements.size()):
 					viewport.add_child(create_layer(element_index))
 				element_count_changed.emit()
+				save()
 			else:
 				for layer_index in range(elements.size() - tool_output.elements.size(), elements.size()):
 					(viewport.get_child(layer_index) as ElementLayer).queue_redraw()
+				save()
 		
 		if not tool_output.preview_elements.is_empty():
 			new_preview_elements.append_array(tool_output.preview_elements)
@@ -162,6 +192,7 @@ func _gui_input(e: InputEvent) -> void:
 func undo() -> void:
 	elements.pop_back()
 	viewport.remove_child(viewport.get_child(viewport.get_child_count() - 1))
+	save()
 	queue_redraw()
 
 
@@ -177,7 +208,24 @@ func set_active_tools(new_active_tools: Array[WhiteboardTool]) -> void:
 	active_tools_changed.emit()
 
 
-func serialize(stream: StreamPeer) -> void:
+func save() -> void:
+	save_timer.start()
+
+
+func serialize_or_new() -> void:
+	var filepath: String = Settings["state/last_opened_filepath"]
+	if not filepath:
+		filepath = DataManager.get_default_save_path()
+		Settings["state/last_opened_filepath"] = filepath
+	serialize(StreamPeerFile.open(filepath, FileAccess.WRITE))
+
+
+func serialize(
+		stream: StreamPeer = StreamPeerFile.open(
+			Settings["state/last_opened_filepath"],
+			FileAccess.WRITE
+		)
+	) -> void:
 	var json := var_to_bytes({
 		"xform": draw_xform,
 		"elements": WhiteboardManager.serialize(elements),
@@ -191,10 +239,20 @@ func deserialize(stream: StreamPeer) -> void:
 	var json_size := stream.get_u64()
 	var json_compressed: PackedByteArray =  stream.get_data(stream.get_available_bytes())[1]
 	var data = bytes_to_var(json_compressed.decompress(json_size, FileAccess.COMPRESSION_ZSTD))
+	reset()
 	elements = WhiteboardManager.deserialize(data.elements)
 	for element_index in elements.size():
 		viewport.add_child(create_layer(element_index))
 	draw_xform = data.xform
+
+
+func reset() -> void:
+	draw_xform = Transform2D()
+	elements.clear()
+	preview_elements.clear()
+	redraw_preview()
+	for child in viewport.get_children():
+		child.queue_free()
 
 
 func create_layer(index: int) -> ElementLayer:

@@ -18,3 +18,9 @@ static func pretty_print_property(property_name: String) -> String:
 	if property_name.length() == 1: return property_name.to_upper()
 	property_name = property_name.capitalize().to_lower()
 	return property_name.substr(0, 1).to_upper() + property_name.substr(1)
+
+
+static func default(value, default_value):
+	if value:
+		return value
+	return default_value

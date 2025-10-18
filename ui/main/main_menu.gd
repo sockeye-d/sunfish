@@ -19,13 +19,14 @@ func _ready() -> void:
 	
 	get_popup().set_item_shortcut(OPEN, Shortcuts.create("open"))
 	get_popup().set_item_shortcut(SAVE, Shortcuts.create("save"))
+	get_popup().set_item_shortcut(NEW, Shortcuts.create("new"))
 	get_popup().set_item_shortcut(PREFERENCES, Shortcuts.create("show_preferences"))
 	get_popup().id_pressed.connect(func(id: int):
 		match id:
 			OPEN:
 				DataManager.load_file()
 			SAVE:
-				DataManager.save_file()
+				DataManager.save_file_as()
 			NEW:
 				DataManager.create_new_file()
 			PREFERENCES:

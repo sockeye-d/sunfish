@@ -1,11 +1,12 @@
 extends Node
 
 
-func open_file_dialog(filters: PackedStringArray, mode: FileDialog.FileMode) -> Signal:
+func open_file_dialog(filters: PackedStringArray, mode: FileDialog.FileMode, start_path: String = "") -> Signal:
 	var fd := FileDialog.new()
 	var handle := FileDialogHandle.new()
 	add_child(fd)
 	fd.use_native_dialog = true
+	fd.current_dir = start_path
 	fd.file_mode = mode
 	fd.access = FileDialog.ACCESS_FILESYSTEM
 	fd.filters = filters

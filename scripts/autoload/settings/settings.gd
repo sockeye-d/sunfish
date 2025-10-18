@@ -1,13 +1,11 @@
 @tool
 extends Window
 
+signal any_setting_changed(property: String, new_value)
+
 const RESET_ICON = preload("uid://dmah5fp6rgtqt")
 
 static var config_path := OS.get_config_dir().path_join("sunfish/settings.json")
-
-
-@warning_ignore("unused_private_class_variable")
-@export_tool_button("Reload settings", "Reload") var __ := reload_settings
 
 
 @onready var tree: Tree = %Tree
@@ -15,6 +13,7 @@ static var config_path := OS.get_config_dir().path_join("sunfish/settings.json")
 
 
 var config_data: Dictionary[String, ConfigurationData]
+var signals: Dictionary[String, Signal]
 
 
 func _ready() -> void:
@@ -67,7 +66,8 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 			
 			if property.usage & PROPERTY_USAGE_EDITOR:
 				var label := Label.new()
-				label.tooltip_text = id + "/" + property_name
+				var property_key := id + "/" + property_name
+				label.tooltip_text = property_key
 				label.mouse_filter = Control.MOUSE_FILTER_PASS
 				label.text = Util.pretty_print_property(property_name)
 				label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -83,6 +83,8 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 						property, prop_value,
 						func(new_value):
 							config.set(property_name, new_value)
+							any_setting_changed.emit(property_key, default_value)
+							signals[property_key].emit(new_value)
 							update_reset_button.call()
 							serialize.call_deferred()
 					)
@@ -94,6 +96,8 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 				reset_button.pressed.connect(func():
 					edit_container.remove_child(control[0])
 					config.set(property_name, default_value)
+					signals[property_key].emit(default_value)
+					any_setting_changed.emit(property_key, default_value)
 					control[0] = create_control.call(default_value)
 					edit_container.add_child(control[0])
 					update_reset_button.call()
@@ -105,6 +109,15 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 	data.config = config
 	data.control = grid_container
 	config_data[id] = data
+
+
+func setting_changed(setting_id: String) -> Signal:
+	if setting_id in signals:
+		return signals[setting_id]
+	add_user_signal(setting_id, [{ "name": "new_value" }])
+	var s := Signal(self, setting_id)
+	signals[setting_id] = s
+	return s
 
 
 class ConfigurationData:
@@ -128,6 +141,7 @@ func _set(property: StringName, value: Variant) -> bool:
 	if data[0] in config_data:
 		config_data[data[0]].config.set(data[1], value)
 		serialize.call_deferred()
+		any_setting_changed.emit(property, value)
 		return true
 	return false
 

@@ -198,6 +198,7 @@ func set_theme(new_theme: ThemeColors) -> void:
 	
 	theme_res.set_color("font_color", "PopupMenu", theme.text)
 	theme_res.set_color("font_disabled_color", "PopupMenu", theme.subtext)
+	theme_res.set_color("font_accelerator_color", "PopupMenu", theme.subtext)
 	theme_res.set_color("font_hover_color", "PopupMenu", theme.text)
 	theme_res.set_color("font_separator_color", "PopupMenu", theme.subtext)
 	
