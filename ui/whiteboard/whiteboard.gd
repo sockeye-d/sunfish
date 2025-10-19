@@ -45,6 +45,7 @@ var preview: PreviewControl
 
 var viewport_container: Control
 var viewport: Viewport
+var layer_container: Node2D
 
 
 var save_timer: Timer
@@ -72,11 +73,6 @@ func _init() -> void:
 	background_shader.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	background_shader.material = mat
 	background.add_child(background_shader)
-	
-	preview = PreviewControl.new()
-	preview.wb = self
-	preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(preview)
 	
 	xform_changed.connect(func():
 		var x := Vector3(inv_draw_xform[0][0], inv_draw_xform[0][1], 0.0)
@@ -107,7 +103,13 @@ func _init() -> void:
 	render_mat["shader_parameter/canvas_texture"] = viewport.get_texture()
 	viewport_container.material = render_mat
 	
+	layer_container = Node2D.new()
 	viewport_container.add_child(viewport)
+	viewport.add_child(layer_container)
+	
+	preview = PreviewControl.new()
+	preview.wb = self
+	viewport.add_child(preview)
 	
 	add_child(viewport_container)
 
@@ -172,12 +174,12 @@ func _gui_input(e: InputEvent) -> void:
 				var old_element_size := elements.size()
 				elements.append_array(tool_output.elements)
 				for element_index in range(old_element_size, elements.size()):
-					viewport.add_child(create_layer(element_index))
+					layer_container.add_child(create_layer(element_index))
 				element_count_changed.emit()
 				save()
 			else:
 				for layer_index in range(elements.size() - tool_output.elements.size(), elements.size()):
-					(viewport.get_child(layer_index) as ElementLayer).queue_redraw()
+					(layer_container.get_child(layer_index) as ElementLayer).queue_redraw()
 				save()
 		
 		if not tool_output.preview_elements.is_empty():
@@ -191,7 +193,7 @@ func _gui_input(e: InputEvent) -> void:
 
 func undo() -> void:
 	elements.pop_back()
-	viewport.remove_child(viewport.get_child(viewport.get_child_count() - 1))
+	layer_container.remove_child(layer_container.get_child(layer_container.get_child_count() - 1))
 	save()
 	queue_redraw()
 
@@ -242,7 +244,7 @@ func deserialize(stream: StreamPeer) -> void:
 	reset()
 	elements = WhiteboardManager.deserialize(data.elements)
 	for element_index in elements.size():
-		viewport.add_child(create_layer(element_index))
+		layer_container.add_child(create_layer(element_index))
 	draw_xform = data.xform
 
 
@@ -251,7 +253,7 @@ func reset() -> void:
 	elements.clear()
 	preview_elements.clear()
 	redraw_preview()
-	for child in viewport.get_children():
+	for child in layer_container.get_children():
 		child.queue_free()
 
 
@@ -262,15 +264,10 @@ func create_layer(index: int) -> ElementLayer:
 	return layer
 
 
-class PreviewControl extends Control:
+class PreviewControl extends Node2D:
 	var wb: Whiteboard
 	
-	func _init() -> void:
-		mouse_filter = Control.MOUSE_FILTER_IGNORE
-		set_anchors_preset(Control.PRESET_FULL_RECT)
-	
 	func _draw() -> void:
-		draw_set_transform_matrix(wb.draw_xform)
 		for preview_element in wb.preview_elements:
 			preview_element.draw(self, wb)
 

@@ -1,21 +1,16 @@
 @tool
 extends ColorRect
 
-const SUNFISH = preload("uid://d0ovrms2e78nv")
-const ANDROID = preload("res://android.png")
-
 @onready var container: Control = %MarginContainer
 @onready var tool_scroll_container: ScrollContainer = %ToolScrollContainer
 @onready var tool_scrollbar_separator: VSeparator = %ToolScrollbarSeparator
 
-#@warning_ignore("unused_private_class_variable")
-#@export_tool_button("Scan plugins", "Search") var __ := func():
-	#PluginManager.scan_plugins()
-	#print(ThemeManager.themes)
-	#notify_property_list_changed()
-#@warning_ignore("unused_private_class_variable")
-#@export_tool_button("Reload theme", "Search") var ___ := func():
-	#ThemeManager.reload_theme()
+@warning_ignore("unused_private_class_variable")
+@export_tool_button("Reload theme", "Search") var ___ := func():
+	if not ThemeManager.active_theme:
+		ThemeManager.set_theme_id("dev.fishies.sunfish.themes.CatppuccinMocha")
+	else:
+		ThemeManager.reload_theme()
 
 
 func _validate_property(property: Dictionary) -> void:

@@ -8,15 +8,19 @@ def main [sizes: list<int> = [16, 32, 48, 64, 96, 128, 256, 512]] {
     let temp_dir = mktemp --directory
     $sizes | each {|size|
         print $"Rasterizing ($size)"
-        inkscape -w $size -h $size assets/sunfish.svg -o ($temp_dir)/($size).png e+o> (null-device)
+        inkscape -w $size -h $size assets/sunfish.svg -o ($temp_dir)/($size).png
     }
     print "Converting to icons"
-    magick ($temp_dir)/*.png sunfish.ico
-    magick ($temp_dir)/*.png sunfish.icns
-    mv ($temp_dir)/($sizes | last).png sunfish.png
-    inkscape -w 192 -h 192 sunfish_android.svg -o android.png e+o> (null-device)
-    inkscape -w 192 -h 192 sunfish_android.svg -o android.svg e+o> (null-device)
-    inkscape -w 108 -h 108 sunfish_android.svg -o android_432dp.png e+o> (null-device)
+    rm icons/*
+    mkdir icons
+    magick ($temp_dir)/*.png icons/sunfish.ico
+    magick ($temp_dir)/*.png icons/sunfish.icns
+    mv ($temp_dir)/64.png icons/sunfish.png
+    inkscape -w 256 -h 256 assets/sunfish_large.svg -o icons/sunfish_hq_svg.svg
+    inkscape -w 192 -h 192 assets/sunfish_legacy.svg -o icons/android_legacy.png
+    inkscape -w 432 -h 432 assets/sunfish_adaptive_fg.svg -o icons/android_adaptive_fg.png
+    inkscape -w 432 -h 432 assets/sunfish_adaptive_bg.svg -o icons/android_adaptive_bg.png
+    cp assets/sunfish_adaptive_fg_mono.svg icons/android_adaptive_fg_mono.svg
     print "Done"
 
     rm -rf $temp_dir

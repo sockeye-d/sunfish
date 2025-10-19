@@ -6,6 +6,7 @@
 .sconsign*.dblite
 
 *.afdesign\~lock\~
+*.kate-swp
 .vscode/
 
 # godot-cpp stuff

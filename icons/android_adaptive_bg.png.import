@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d0ovrms2e78nv"
-path="res://.godot/imported/sunfish.png-0a743f8bf86d3b50496f3d7bcaeb3c51.ctex"
+uid="uid://b2b5eh28ip03h"
+path="res://.godot/imported/android_adaptive_bg.png-6424ce7aafe5bb0ba81236e4090736f0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sunfish.png"
-dest_files=["res://.godot/imported/sunfish.png-0a743f8bf86d3b50496f3d7bcaeb3c51.ctex"]
+source_file="res://icons/android_adaptive_bg.png"
+dest_files=["res://.godot/imported/android_adaptive_bg.png-6424ce7aafe5bb0ba81236e4090736f0.ctex"]
 
 [params]
 

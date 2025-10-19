@@ -76,9 +76,9 @@ class ImagePreviewElement extends WhiteboardTool.PreviewElement:
 	var image_texture: ImageTexture
 	var center_position: Vector2
 	
-	func draw(control: Control, wb: Whiteboard):
+	func draw(canvas: CanvasItem, wb: Whiteboard):
 		var rect := get_rect(image, center_position, wb.draw_scale)
-		control.draw_texture_rect(image_texture, rect, false, Color(1.0, 1.0, 1.0, 0.5 * opacity))
+		canvas.draw_texture_rect(image_texture, rect, false, Color(1.0, 1.0, 1.0, 0.5 * opacity))
 	
 	static func get_rect(_image: Image, _center_position: Vector2, draw_scale: float) -> Rect2:
 		var rect := Rect2(0, 0, _image.get_width() / draw_scale, _image.get_height() / draw_scale)

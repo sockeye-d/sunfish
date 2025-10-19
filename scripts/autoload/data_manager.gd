@@ -11,7 +11,7 @@ func _ready() -> void:
 		Util.unused(v)
 		update_window_title()
 	)
-	update_window_title() 
+	update_window_title.call_deferred() 
 
 
 func load_file() -> void:

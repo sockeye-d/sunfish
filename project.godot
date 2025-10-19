@@ -17,10 +17,11 @@ config/custom_user_dir_name="sunfish"
 config/features=PackedStringArray("4.6")
 run/low_processor_mode=true
 boot_splash/bg_color=Color(0, 0, 0, 1)
-boot_splash/show_image=false
-config/icon="uid://dnclcms20swyj"
-config/macos_native_icon="res://sunfish.icns"
-config/windows_native_icon="res://sunfish.ico"
+boot_splash/fullsize=false
+boot_splash/image="uid://d4jy62w8mq88p"
+config/icon="uid://ca266m7f8m5oi"
+config/macos_native_icon="res://icons/sunfish.icns"
+config/windows_native_icon="res://icons/sunfish.ico"
 
 [autoload]
 

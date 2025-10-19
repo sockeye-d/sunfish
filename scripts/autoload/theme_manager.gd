@@ -92,8 +92,9 @@ func set_theme(new_theme: ThemeColors) -> void:
 	theme_res.set_constant("margin_left", "MarginContainer", base_spacing)
 	theme_res.set_constant("margin_right", "MarginContainer", base_spacing)
 	
-	theme_res.set_stylebox("panel", "PanelContainer", new_flat(theme.background_0, [base_spacing], [base_spacing]))
-	theme_res.set_stylebox("panel", "Panel", new_flat(theme.background_0, [base_spacing], [base_spacing]))
+	theme_res.set_stylebox("panel", "PanelContainer", new_flat(theme.background_0, [base_spacing * 2], [base_spacing]))
+	theme_res.set_stylebox("panel", "SettingsPanelContainer", new_flat(theme.background_0, [0, base_spacing * 2, base_spacing * 2, base_spacing * 2], [base_spacing]))
+	theme_res.set_stylebox("panel", "Panel", new_flat(theme.background_0, [base_spacing * 2], [base_spacing]))
 	
 	theme_res.set_constant("scrollbar_h_separation", "Tree", base_spacing)
 	
@@ -148,8 +149,10 @@ func set_theme(new_theme: ThemeColors) -> void:
 	theme_res.set_stylebox("panel", "AcceptDialog", new_flat(theme.background_1, [base_spacing], [base_spacing]))
 	
 	theme_res.set_color("font_color", "LineEdit", theme.text)
+	theme_res.set_color("caret_color", "LineEdit", theme.text)
 	theme_res.set_color("font_selected_color", "LineEdit", theme.text)
 	theme_res.set_color("font_uneditable_color", "LineEdit", theme.subtext)
+	theme_res.set_color("font_placeholder_color", "LineEdit", Color(theme.subtext, 0.5))
 	theme_res.set_color("selection_color", "LineEdit", selection)
 	theme_res.set_stylebox("normal", "LineEdit", new_flat(theme.surface, [base_spacing], [base_spacing]))
 	theme_res.set_stylebox("read_only", "LineEdit", new_flat(disabled_surface, [base_spacing], [base_spacing]))
@@ -162,10 +165,10 @@ func set_theme(new_theme: ThemeColors) -> void:
 	
 	var tab_radii: PackedInt32Array = [base_spacing, base_spacing, 0, 0]
 	theme_res.set_stylebox("panel", "TabContainer", new_flat(theme.background_0, tab_radii, [base_spacing]))
-	theme_res.set_stylebox("tab_disabled", "TabContainer", new_flat(disabled_surface, tab_radii, [base_spacing]))
-	theme_res.set_stylebox("tab_unselected", "TabContainer", new_flat(theme.surface, tab_radii, [base_spacing]))
-	theme_res.set_stylebox("tab_selected", "TabContainer", new_flat(theme.surface_press, tab_radii, [base_spacing], [0, 0, 0, 2], theme.accent_0))
-	theme_res.set_stylebox("tab_hovered", "TabContainer", new_flat(theme.surface_hover, tab_radii, [base_spacing]))
+	theme_res.set_stylebox("tab_disabled", "TabContainer", blended(new_flat(theme.background_1, tab_radii, [base_spacing], [0, 0, 0, 8], theme.background_0)))
+	theme_res.set_stylebox("tab_unselected", "TabContainer", blended(new_flat(theme.surface, tab_radii, [base_spacing], [0, 0, 0, 8], theme.background_0)))
+	theme_res.set_stylebox("tab_selected", "TabContainer", new_flat(theme.surface_press, tab_radii, [base_spacing], [0, 0, 0, base_spacing / 2], theme.accent_0))
+	theme_res.set_stylebox("tab_hovered", "TabContainer", blended(new_flat(theme.surface_hover, tab_radii, [base_spacing], [0, 0, 0, 8], theme.background_0)))
 	theme_res.set_color("font_disabled_color", "TabContainer", theme.subtext)
 	theme_res.set_color("font_hovered_color", "TabContainer", theme.text)
 	theme_res.set_color("font_selected_color", "TabContainer", theme.text)
@@ -215,11 +218,15 @@ func set_theme(new_theme: ThemeColors) -> void:
 	
 	# is this wasteful?  yes
 	# does it work? also yes
+	var focus_sb := new_flat(Color.TRANSPARENT, [base_spacing + 1], [base_spacing], [base_spacing / 2], theme.subtext, [base_spacing / 2])
 	for prop in theme_res.get_property_list():
 		if prop.class_name == "Texture2D" and prop.name.match("?Slider/icons/grabber*"):
 			var val := theme_res.get(prop.name) as IconTexture2D
 			if val:
 				val.secondary_icon_scale = base_spacing / 4.0
+	for prop in ThemeDB.get_default_theme().get_property_list():
+		if prop.class_name == "StyleBox" and prop.name.match("*/focus"):
+			theme_res.set(prop.name, focus_sb)
 	
 	theme_res.set_block_signals(false)
 	theme_res.emit_changed()
@@ -310,6 +317,11 @@ func shadowed(sb: StyleBoxFlat, color: Color, size: int, x_offset: float, y_offs
 	sb.shadow_color = color
 	sb.shadow_size = size
 	sb.shadow_offset = Vector2(x_offset, y_offset)
+	return sb
+
+
+func blended(sb: StyleBoxFlat, blend := true) -> StyleBoxFlat:
+	sb.border_blend = blend
 	return sb
 
 

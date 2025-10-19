@@ -3,6 +3,8 @@ extends Window
 
 signal any_setting_changed(property: String, new_value)
 
+signal _shortcut_search_changed(text_filter: String, event_filter: InputEvent)
+
 const RESET_ICON = preload("uid://dmah5fp6rgtqt")
 const SettingsResource = preload("uid://dat0ps77q50u2")
 
@@ -12,7 +14,8 @@ var config_path := OS.get_config_dir().path_join("sunfish/settings.tres")
 @onready var tree: Tree = %Tree
 @onready var settings_container: Container = %SettingsContainer
 @onready var shortcut_container: GridContainer = %ShortcutContainer
-@onready var keep: Array[Node] = [%NameLabel, %BindingLabel]
+@onready var shortcut_search_text: LineEdit = %ShortcutSearchText
+@onready var shortcut_search_event: EventInput = %ShortcutSearchEvent
 
 
 var config_data: Dictionary[String, ConfigurationData]
@@ -28,6 +31,12 @@ func _ready() -> void:
 	var obj: SettingsResource = ResourceLoader.load(config_path, "", ResourceLoader.CACHE_MODE_IGNORE_DEEP)
 	reload_settings(obj)
 	has_deserialized = true
+	shortcut_search_text.text_changed.connect(_emit_shortcut_search_changed)
+	shortcut_search_event.event_changed.connect(_emit_shortcut_search_changed)
+
+
+func _emit_shortcut_search_changed(_v) -> void:
+	_shortcut_search_changed.emit(shortcut_search_text.text, shortcut_search_event.last_event)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -40,8 +49,6 @@ func reload_settings(serialized_data: SettingsResource) -> void:
 		var data := config_data[key]
 		data.control.queue_free()
 	for child in shortcut_container.get_children():
-		if child in keep:
-			continue
 		child.queue_free()
 	config_data.clear()
 	tree.clear()
@@ -58,7 +65,7 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 	tree_item.set_text(0, ReverseDNSUtil.pretty_print(id))
 	tree_item.set_metadata(0, id)
 	tree_item.set_tooltip_text(0, id)
-	var has_visible_properties := false
+	var has_tree_worthy_properties := false
 	for property in config.get_property_list():
 		if not property.usage & PROPERTY_USAGE_SCRIPT_VARIABLE or not property.usage & PROPERTY_USAGE_STORAGE:
 			continue
@@ -76,7 +83,6 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 				config.set(property_name, initial_value)
 
 			if property.usage & PROPERTY_USAGE_EDITOR:
-				has_visible_properties = true
 				var label := Label.new()
 				label.tooltip_text = property_key
 				label.mouse_filter = Control.MOUSE_FILTER_PASS
@@ -88,12 +94,18 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 				reset_button.icon = RESET_ICON
 				edit_container.add_child(reset_button)
 				var update_reset_button := func():
-					reset_button.visible = config.get(property_name) != default_value
+					var config_value = config.get(property_name)
+					if is_shortcut:
+						reset_button.visible = not (config_value == default_value or config_value != null and (config_value).is_match(default_value))
+					else:
+						reset_button.visible = config_value != default_value
+				var last_value: Array = [initial_value]
 				var create_control := func(prop_value):
 					var ctl := Inspector.create_delegate(
 						property, prop_value,
 						func(new_value):
 							config.set(property_name, new_value)
+							last_value[0] = new_value
 							any_setting_changed.emit(property_key, default_value)
 							_emit_value_changed(property_key, new_value)
 							update_reset_button.call()
@@ -107,6 +119,7 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 				reset_button.pressed.connect(func():
 					edit_container.remove_child(control[0])
 					config.set(property_name, default_value)
+					last_value[0] = default_value
 					_emit_value_changed(property_key, default_value)
 					any_setting_changed.emit(property_key, default_value)
 					control[0] = create_control.call(default_value)
@@ -115,16 +128,26 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 					serialize.call_deferred()
 				)
 				if is_shortcut:
+					_shortcut_search_changed.connect(func(filter_text: String, filter_event: InputEvent):
+						var failed_filter := false
+						if filter_text and not label.text.containsn(filter_text):
+							failed_filter = true
+						if filter_event and last_value[0] is InputEvent and not filter_event.is_match(last_value[0]):
+							failed_filter = true
+						label.visible = not failed_filter
+						edit_container.visible = not failed_filter
+					)
 					shortcut_container.add_child(label)
 					shortcut_container.add_child(edit_container)
 				else:
+					has_tree_worthy_properties = true
 					grid_container.add_child(label)
 					grid_container.add_child(edit_container)
 	var data := ConfigurationData.new()
 	data.config = config
 	data.control = grid_container
 	config_data[id] = data
-	if not has_visible_properties:
+	if not has_tree_worthy_properties:
 		parent.remove_child(tree_item)
 		tree_item.free()
 
@@ -179,7 +202,7 @@ func has(property_id: String) -> bool:
 
 func _emit_value_changed(property_key: String, new_value) -> void:
 	if property_key in signals:
-		signals[property_key] = new_value
+		signals[property_key].emit(new_value)
 
 
 func _on_tree_item_selected() -> void:

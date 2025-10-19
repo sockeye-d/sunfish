@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://doj4pu6lubur3"
-path="res://.godot/imported/android.svg-63db3fe54124766cdd44c9f6d759eb79.ctex"
+uid="uid://dbwfrypgduehx"
+path="res://.godot/imported/sunfish.png-5b668207d6446c6148d890672f73d565.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://android.svg"
-dest_files=["res://.godot/imported/android.svg-63db3fe54124766cdd44c9f6d759eb79.ctex"]
+source_file="res://icons/sunfish.png"
+dest_files=["res://.godot/imported/sunfish.png-5b668207d6446c6148d890672f73d565.ctex"]
 
 [params]
 
@@ -38,6 +38,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

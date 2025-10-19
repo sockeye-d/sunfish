@@ -7,7 +7,6 @@ extends Configuration
 		theme = value
 		update_theme.call_deferred()
 @export var default_tool := "dev.fishies.sunfish.BrushTool"
-@export var shortcut: InputEvent = null
 
 
 static func _static_init() -> void:

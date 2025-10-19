@@ -17,10 +17,10 @@ func _ready() -> void:
 			node.reparent(get_popup())
 			get_popup().set_item_submenu_node(item_index, node)
 	
-	get_popup().set_item_shortcut(OPEN, Shortcuts.create("open"))
-	get_popup().set_item_shortcut(SAVE, Shortcuts.create("save"))
-	get_popup().set_item_shortcut(NEW, Shortcuts.create("new"))
-	get_popup().set_item_shortcut(PREFERENCES, Shortcuts.create("show_preferences"))
+	get_popup().set_item_shortcut(OPEN, Shortcuts.create("shortcuts/open"))
+	get_popup().set_item_shortcut(SAVE, Shortcuts.create("shortcuts/save_as"))
+	get_popup().set_item_shortcut(NEW, Shortcuts.create("shortcuts/new"))
+	get_popup().set_item_shortcut(PREFERENCES, Shortcuts.create("shortcuts/show_preferences"))
 	get_popup().id_pressed.connect(func(id: int):
 		match id:
 			OPEN:

@@ -4,13 +4,6 @@ enum {
 	PROPERTY_HINT_EXT_PRETTY_RDNS_ENUM = 256,
 }
 
-static var clear_icon: IconTexture2D:
-	get:
-		if not clear_icon:
-			clear_icon = IconTexture2D.new()
-			clear_icon.icon = "clear"
-		return clear_icon
-
 ## [codeblock]
 ## Dictionary[PropertyHint, Callable[prop: Dictionary, intitial_value: Variant, set_prop: Callable[new_value: Variant]]]
 ##
@@ -73,39 +66,9 @@ static var hint_delegates: Dictionary[int, Callable] = {
 		var type: String = prop.hint_string
 		match type:
 			"InputEvent":
-				var event_btn := Button.new()
-				var clear_btn := Button.new()
-				clear_btn.icon = clear_icon
-				event_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-				var container := HBoxContainer.new()
-				container.add_child(event_btn)
-				container.add_child(clear_btn)
-				event_btn.text = (initial_value as InputEvent).as_text() if initial_value is InputEvent else "(Unset)"
-				event_btn.toggle_mode = true
-				var last_event: Array[InputEvent] = [null]
-				var btn_gui_input := func(event: InputEvent):
-					if event is InputEventKey and event.is_pressed() and not event.is_echo():
-						last_event[0] = event
-						event_btn.text = event.as_text()
-						event_btn.accept_event()
-				var btn_lost_input := func():
-					event_btn.button_pressed = false
-					event_btn.gui_input.disconnect(btn_gui_input)
-					if last_event[0]:
-						set_prop.call(last_event[0])
-				event_btn.toggled.connect(func(state: bool):
-					if state:
-						event_btn.focus_exited.connect(btn_lost_input, CONNECT_ONE_SHOT)
-						event_btn.gui_input.connect(btn_gui_input)
-					else:
-						btn_lost_input.call()
-						event_btn.focus_exited.disconnect(btn_lost_input)
-				)
-				clear_btn.pressed.connect(func():
-					set_prop.call(null)
-					event_btn.text = "(Unset)"
-				)
-				return container
+				var event_btn := EventInput.new(initial_value)
+				event_btn.event_submitted.connect(func(event: InputEvent): set_prop.call(event))
+				return event_btn
 		return null,
 	PROPERTY_HINT_EXT_PRETTY_RDNS_ENUM: func(prop: Dictionary, initial_value, set_prop: Callable) -> Control:
 		assert(prop.type in [TYPE_INT, TYPE_STRING])

@@ -58,8 +58,8 @@ class LinePreviewElement extends WhiteboardTool.PreviewElement:
 	var color: Color
 	var width: float
 	
-	func draw(control: Control, _wb: Whiteboard):
-		control.draw_circle(position, width * 0.5, color, false, -2.0, false)
+	func draw(canvas: CanvasItem, _wb: Whiteboard):
+		canvas.draw_circle(position, width * 0.5, color, false, -2.0, false)
 
 
 @abstract

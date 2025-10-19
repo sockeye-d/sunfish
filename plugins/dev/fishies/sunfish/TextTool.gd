@@ -77,10 +77,10 @@ class TextPreviewElement extends WhiteboardTool.PreviewElement:
 	var font_size: int
 	var color: Color
 	
-	func draw(control: Control, wb: Whiteboard):
+	func draw(canvas: CanvasItem, wb: Whiteboard):
 		var rect := Inner.font_get_rect(font, text, font_size)
 		Util.unused(wb)
-		control.draw_multiline_string(font, position - rect.get_center(), text, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size, -1, color)
+		canvas.draw_multiline_string(font, position - rect.get_center(), text, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size, -1, color)
 
 
 class TextElement extends WhiteboardTool.Element:
