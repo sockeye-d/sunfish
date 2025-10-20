@@ -18,7 +18,7 @@ config/features=PackedStringArray("4.6")
 run/low_processor_mode=true
 boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/fullsize=false
-boot_splash/image="uid://d4jy62w8mq88p"
+boot_splash/image="uid://dbwfrypgduehx"
 config/icon="uid://s5oyvhejqey"
 config/macos_native_icon="res://icons/sunfish.icns"
 config/windows_native_icon="res://icons/sunfish.ico"
@@ -86,6 +86,7 @@ new={
 [input_devices]
 
 pointing/android/enable_pan_and_scale_gestures=true
+pen_tablet/driver.windows="winink"
 
 [rendering]
 

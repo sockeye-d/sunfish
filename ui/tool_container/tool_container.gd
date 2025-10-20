@@ -44,9 +44,7 @@ func _update_tools() -> void:
 		if not tool.is_visible():
 			continue
 		var btn := Button.new()
-		var icon := IconTexture2D.new()
-		icon.icon = tool.get_id()
-		icon.icon_scale = 1.5
+		var icon := IconTexture2D.create(tool.get_id())
 		btn.toggle_mode = true
 		btn.icon = icon
 		btn.button_group = tool_button_group
