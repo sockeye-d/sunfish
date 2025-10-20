@@ -9,11 +9,13 @@ static var bug_icon: IconTexture2D:
 
 
 enum {
-	OPEN = 0,
-	SAVE = 1,
-	NEW = 2,
-	PREFERENCES = 3,
-	DEBUG = 5,
+	FILE_SPACER,
+	OPEN,
+	SAVE,
+	NEW,
+	PREFERENCES,
+	DEBUG_SPACER,
+	DEBUG,
 }
 
 @onready var debug := $Debug

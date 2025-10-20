@@ -26,7 +26,7 @@ icon = "open"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_7nk2m"]
-_source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12.5 7.5V2.5H5.5L3.5 4.5V7.5M3.5 12.5V13.5H12.5V12.5\" id=\"path1\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M8 4.5V11.5\" id=\"path3\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M5 9 8 11.5 11 9\" id=\"path4\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
+_source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12.5 7V2.5H5.5L3.5 4.5V7M3.5 12.5V13.5H12.5V12.5\" id=\"path1\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M8 4.5V11.5\" id=\"path3\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M5.5 9 8 11.5 10.5 9\" id=\"path4\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
 color_map = {
 Color(1, 1, 1, 1): Color(1, 1, 1, 1),
 Color(0, 0, 0, 1): Color(0, 0, 0, 1)
@@ -77,19 +77,22 @@ func _ready() -> void:
 icon = SubResource("DPITexture_06s8x")
 flat = false
 icon_alignment = 1
-item_count = 4
-popup/item_0/text = "Open"
-popup/item_0/icon = SubResource("DPITexture_04ebt")
+item_count = 5
+popup/item_0/text = "File"
 popup/item_0/id = 0
-popup/item_1/text = "Save as"
-popup/item_1/icon = SubResource("DPITexture_7nk2m")
+popup/item_0/separator = true
+popup/item_1/text = "Open"
+popup/item_1/icon = SubResource("DPITexture_04ebt")
 popup/item_1/id = 1
-popup/item_2/text = "New"
-popup/item_2/icon = SubResource("DPITexture_ar4ev")
+popup/item_2/text = "Save as"
+popup/item_2/icon = SubResource("DPITexture_7nk2m")
 popup/item_2/id = 2
-popup/item_3/text = "Preferences"
-popup/item_3/icon = SubResource("DPITexture_0dkrt")
+popup/item_3/text = "New"
+popup/item_3/icon = SubResource("DPITexture_ar4ev")
 popup/item_3/id = 3
+popup/item_4/text = "Preferences"
+popup/item_4/icon = SubResource("DPITexture_0dkrt")
+popup/item_4/id = 4
 script = ExtResource("2_wk0pr")
 
 [node name="Debug" type="PopupMenu" parent="."]
