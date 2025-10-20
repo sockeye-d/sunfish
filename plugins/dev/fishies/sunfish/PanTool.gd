@@ -8,7 +8,7 @@ static func _static_init() -> void:
 	WhiteboardManager.register_passive_tool(new())
 
 
-static func get_id() -> String: return "dev.fishies.sunfish.PanTool"
+static func get_id() -> StringName: return "dev.fishies.sunfish.PanTool"
 
 
 static func is_visible() -> bool:

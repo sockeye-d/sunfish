@@ -1,7 +1,7 @@
 @tool
 extends Window
 
-signal any_setting_changed(property: String, new_value)
+signal any_setting_changed(property: StringName, new_value)
 
 signal _shortcut_search_changed(text_filter: String, event_filter: InputEvent)
 
@@ -18,8 +18,8 @@ var config_path := OS.get_config_dir().path_join("sunfish/settings.tres")
 @onready var shortcut_search_event: EventInput = %ShortcutSearchEvent
 
 
-var config_data: Dictionary[String, ConfigurationData]
-var signals: Dictionary[String, Signal]
+var config_data: Dictionary[StringName, ConfigurationData]
+var signals: Dictionary[StringName, Signal]
 var has_deserialized := false
 
 
@@ -68,9 +68,9 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 	for property in config.get_property_list():
 		if not property.usage & PROPERTY_USAGE_SCRIPT_VARIABLE or not property.usage & PROPERTY_USAGE_STORAGE:
 			continue
-		var property_name: String = property.name
+		var property_name: StringName = property.name
 		var value = config.get(property_name)
-		var property_key := id + "/" + property_name
+		var property_key := StringName(id + "/" + property_name)
 		var is_shortcut := ClassDB.is_parent_class(property.class_name, "InputEvent")
 		if ClassDB.is_parent_class(property.class_name, "Resource") and value is Configuration:
 			create_settings_for(tree_item, value, serialized_data)
@@ -151,7 +151,7 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 		tree_item.free()
 
 
-func setting_changed(setting_id: String) -> Signal:
+func setting_changed(setting_id: StringName) -> Signal:
 	if setting_id in signals:
 		return signals[setting_id]
 	add_user_signal(setting_id, [{ "name": "new_value" }])
@@ -192,14 +192,14 @@ func _set(property: StringName, value: Variant) -> bool:
 	return false
 
 
-func has(property_id: String) -> bool:
+func has(property_id: StringName) -> bool:
 	var data := property_id.split("/", true, 2)
 	if data.size() != 2:
 		return false
 	return data[0] in config_data and data[1] in config_data[data[0]].config
 
 
-func _emit_value_changed(property_key: String, new_value) -> void:
+func _emit_value_changed(property_key: StringName, new_value) -> void:
 	if property_key in signals:
 		signals[property_key].emit(new_value)
 

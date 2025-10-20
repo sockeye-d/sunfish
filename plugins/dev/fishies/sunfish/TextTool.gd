@@ -13,7 +13,7 @@ func _validate_property(property: Dictionary) -> void:
 		property.hint_string = ",".join(PackedStringArray(Inner.BUILTIN_FONT_MAP.keys()) + OS.get_system_fonts())
 
 
-static func get_id() -> String: return "dev.fishies.sunfish.TextTool"
+static func get_id() -> StringName: return "dev.fishies.sunfish.TextTool"
 
 
 func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
@@ -97,7 +97,7 @@ class TextElement extends WhiteboardTool.Element:
 	var font_size: int
 	var color: Color
 	
-	static func get_id() -> String: return "dev.fishies.sunfish.TextElement"
+	static func get_id() -> StringName: return "dev.fishies.sunfish.TextElement"
 	
 	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard):
 		Util.unused(wb)

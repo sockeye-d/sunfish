@@ -3,7 +3,7 @@ class_name WhiteboardTool
 
 
 ## Get a reverse-DNS (e.g. com.example.Tool) identifier specific to this tool
-static func get_id() -> String:
+static func get_id() -> StringName:
 	assert(false)
 	return ""
 
@@ -27,7 +27,7 @@ static func is_visible() -> bool: return true
 @abstract
 class Element:
 	## Get a reverse-DNS (e.g. com.example.Tool) identifier specific to this tool
-	static func get_id() -> String:
+	static func get_id() -> StringName:
 		assert(false)
 		return ""
 	

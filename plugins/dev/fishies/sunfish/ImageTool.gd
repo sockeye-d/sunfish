@@ -8,7 +8,7 @@ var current_image: Image
 var image_preview_element: ImagePreviewElement
 
 
-static func get_id() -> String: return "dev.fishies.sunfish.ImageTool"
+static func get_id() -> StringName: return "dev.fishies.sunfish.ImageTool"
 
 
 func activated(wb: Whiteboard) -> void:
@@ -100,7 +100,7 @@ class ImageElement extends WhiteboardTool.Element:
 			image_texture = ImageTexture.create_from_image(value)
 	var image_texture: ImageTexture
 	
-	static func get_id() -> String: return "dev.fishies.sunfish.ImageElement"
+	static func get_id() -> StringName: return "dev.fishies.sunfish.ImageElement"
 	
 	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard):
 		Util.unused(wb)

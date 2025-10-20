@@ -13,4 +13,4 @@ static func _static_init() -> void:
 
 @export var text_accept := Shortcuts.key(KEY_ENTER, KEY_MASK_CTRL)
 
-func get_id() -> String: return "shortcuts"
+func get_id() -> StringName: return "shortcuts"

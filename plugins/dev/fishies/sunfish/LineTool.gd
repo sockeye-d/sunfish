@@ -10,7 +10,7 @@ var start_pos: Vector2
 var preview := PlainPreviewElement.new()
 
 
-static func get_id() -> String: return "dev.fishies.sunfish.LineTool"
+static func get_id() -> StringName: return "dev.fishies.sunfish.LineTool"
 
 
 func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
@@ -58,7 +58,7 @@ class LineElement extends WhiteboardTool.Element:
 	var start_pos: Vector2
 	var end_pos: Vector2
 	
-	static func get_id() -> String: return "dev.fishies.sunfish.LineElement"
+	static func get_id() -> StringName: return "dev.fishies.sunfish.LineElement"
 	
 	func _falloff(x: float) -> float: return max(0.0, 2.0 - 1.0 / x if x <= 1.0 else x)
 	

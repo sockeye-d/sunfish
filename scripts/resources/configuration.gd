@@ -2,4 +2,4 @@
 class_name Configuration extends Resource
 
 
-@abstract func get_id() -> String
+@abstract func get_id() -> StringName

@@ -3,7 +3,7 @@ extends ShapeTool
 const ShapeTool = preload("uid://ix2kr7fc4iy8")
 
 
-static func get_id() -> String: return "dev.fishies.sunfish.FilledCircleTool"
+static func get_id() -> StringName: return "dev.fishies.sunfish.FilledCircleTool"
 
 
 func create_element() -> ShapeElement:
@@ -14,7 +14,7 @@ class FilledCircleElement extends ShapeTool.ShapeElement:
 	static func _static_init() -> void:
 		WhiteboardManager.register_deserializer(FilledCircleElement)
 	
-	static func get_id() -> String: return "dev.fishies.sunfish.FilledCircleElement"
+	static func get_id() -> StringName: return "dev.fishies.sunfish.FilledCircleElement"
 	
 	func _falloff(x: float) -> float: return max(0.0, 2.0 - 1.0 / x if x <= 1.0 else x)
 	

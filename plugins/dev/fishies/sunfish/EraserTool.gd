@@ -4,7 +4,7 @@ extends BrushTool
 const BrushTool = preload("BrushTool.gd")
 
 
-static func get_id() -> String: return "dev.fishies.sunfish.EraserTool"
+static func get_id() -> StringName: return "dev.fishies.sunfish.EraserTool"
 
 
 func should_hide_mouse() -> bool: return true
@@ -26,7 +26,7 @@ class EraserElement extends BrushTool.BrushElement:
 	static func _static_init() -> void:
 		WhiteboardManager.register_deserializer(EraserElement)
 	
-	static func get_id() -> String: return "dev.fishies.sunfish.EraserElement"
+	static func get_id() -> StringName: return "dev.fishies.sunfish.EraserElement"
 	
 	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard) -> void:
 		canvas.material = Inner.erase_material
@@ -37,7 +37,7 @@ class EraserDotElement extends BrushTool.BrushDotElement:
 	static func _static_init() -> void:
 		WhiteboardManager.register_deserializer(EraserDotElement)
 	
-	static func get_id() -> String: return "dev.fishies.sunfish.EraserDotElement"
+	static func get_id() -> StringName: return "dev.fishies.sunfish.EraserDotElement"
 	
 	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard) -> void:
 		canvas.material = Inner.erase_material

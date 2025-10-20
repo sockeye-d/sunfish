@@ -2,7 +2,7 @@
 class_name PluginManager
 
 
-static var configurations: Dictionary[String, Configuration]
+static var configurations: Dictionary[StringName, Configuration]
 
 
 const PLUGIN_PREFIX := "res://plugins/"

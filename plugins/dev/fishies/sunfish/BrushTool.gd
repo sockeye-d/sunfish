@@ -9,7 +9,7 @@ var last_draw_element: BrushElement
 var preview := PlainPreviewElement.new()
 
 
-static func get_id() -> String: return "dev.fishies.sunfish.BrushTool"
+static func get_id() -> StringName: return "dev.fishies.sunfish.BrushTool"
 
 
 func should_hide_mouse() -> bool: return true
@@ -73,7 +73,7 @@ class BrushElement extends WhiteboardTool.Element:
 	var min_p: Vector2 = Vector2(+INF, +INF)
 	var max_p: Vector2 = Vector2(-INF, -INF)
 	
-	static func get_id() -> String: return "dev.fishies.sunfish.BrushElement"
+	static func get_id() -> StringName: return "dev.fishies.sunfish.BrushElement"
 	
 	func append_point(point: Vector2, pressure: float, wb: Whiteboard) -> void:
 		min_p = min_p.min(point)
@@ -142,7 +142,7 @@ class BrushDotElement extends WhiteboardTool.Element:
 	var color: Color
 	var width: float
 	
-	static func get_id() -> String: return "dev.fishies.sunfish.BrushDotElement"
+	static func get_id() -> StringName: return "dev.fishies.sunfish.BrushDotElement"
 	
 	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard) -> void:
 		Util.unused(wb)

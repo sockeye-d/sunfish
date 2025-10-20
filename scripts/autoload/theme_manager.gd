@@ -28,7 +28,7 @@ var ui_scale: float:
 	set(value):
 		ui_scale = value
 		ui_scale_changed.emit()
-var themes: Dictionary[String, ThemeColors]
+var themes: Dictionary[StringName, ThemeColors]
 var active_theme: ThemeColors
 
 
@@ -37,10 +37,10 @@ func _ready() -> void:
 	ui_scale_changed.connect(func(): get_tree().root.content_scale_factor = ui_scale)
 	ui_scale = get_tree().root.content_scale_factor
 	
-	set_theme_id(Settings["dev.fishies.sunfish.config.general/theme"])
+	set_theme_id(Settings["core/theme"])
 
 
-func unregister_theme(id: String) -> void:
+func unregister_theme(id: StringName) -> void:
 	if id in themes:
 		themes.erase(id)
 		themes_changed.emit()
@@ -240,7 +240,7 @@ func set_theme(new_theme: ThemeColors) -> void:
 @warning_ignore_restore("integer_division")
 
 
-func set_theme_id(id: String) -> void:
+func set_theme_id(id: StringName) -> void:
 	if id in themes:
 		set_theme(themes[id])
 	else:
