@@ -6,7 +6,7 @@ signal any_setting_changed(property: String, new_value)
 signal _shortcut_search_changed(text_filter: String, event_filter: InputEvent)
 
 const RESET_ICON = preload("uid://dmah5fp6rgtqt")
-const SettingsResource = preload("uid://dat0ps77q50u2")
+const SettingsSerializer = preload("uid://cphoy3o8egue5")
 
 var config_path := OS.get_config_dir().path_join("sunfish/settings.tres")
 
@@ -28,8 +28,7 @@ func _ready() -> void:
 	if OS.has_feature("mobile"):
 		size = Vector2i(500, 275)
 		position = (get_tree().root.size / 2 / get_tree().root.content_scale_factor - size / 2.0)
-	var obj: SettingsResource = ResourceLoader.load(config_path, "", ResourceLoader.CACHE_MODE_IGNORE_DEEP)
-	reload_settings(obj)
+	reload_settings(ResourceLoader.load(config_path, "", ResourceLoader.CACHE_MODE_IGNORE_DEEP) as SettingsSerializer)
 	has_deserialized = true
 	shortcut_search_text.text_changed.connect(_emit_shortcut_search_changed)
 	shortcut_search_event.event_changed.connect(_emit_shortcut_search_changed)
@@ -44,7 +43,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		hide()
 
 
-func reload_settings(serialized_data: SettingsResource) -> void:
+func reload_settings(serialized_data: SettingsSerializer) -> void:
 	for key in config_data:
 		var data := config_data[key]
 		data.control.queue_free()
@@ -54,10 +53,10 @@ func reload_settings(serialized_data: SettingsResource) -> void:
 	tree.clear()
 	var root := tree.create_item()
 	for config in PluginManager.configurations:
-		create_settings_for(root, config, serialized_data)
+		create_settings_for(root, PluginManager.configurations[config], serialized_data)
 
 
-func create_settings_for(parent: TreeItem, config: Configuration, serialized_data: SettingsResource) -> void:
+func create_settings_for(parent: TreeItem, config: Configuration, serialized_data: SettingsSerializer) -> void:
 	var id := config.get_id()
 	var tree_item := parent.create_child()
 	var grid_container := GridContainer.new()
@@ -214,6 +213,6 @@ func _on_tree_item_selected() -> void:
 
 
 func serialize(path: String = config_path) -> void:
-	var res := SettingsResource.new()
+	var res := SettingsSerializer.new()
 	res.generate_values()
 	ResourceSaver.save(res, path)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://78r8qgrrm8sv"]
+[gd_scene load_steps=9 format=3 uid="uid://78r8qgrrm8sv"]
 
 [ext_resource type="Script" uid="uid://cg1d5ghvrv5un" path="res://scripts/resources/icon_texture_2d.gd" id="1_0dkrt"]
 [ext_resource type="Script" uid="uid://duwys366t42it" path="res://ui/main/main_menu.gd" id="2_wk0pr"]
@@ -55,16 +55,6 @@ script = ExtResource("1_0dkrt")
 icon = "config"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
-[sub_resource type="DPITexture" id="DPITexture_wk0pr"]
-_source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><rect width=\"1\" height=\"2\" x=\"10\" y=\"10\" fill=\"#fff\" transform=\"rotate(-80 10 10)\"/><rect width=\"1\" height=\"2\" x=\"8\" y=\"12\" fill=\"#fff\" transform=\"rotate(-50 8 12)\"/><path d=\"M3.5 12.5C8 13 8.5 10.5 9 8.5S10 3.5 12 3.5\" stroke=\"#fff\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"3\"/><rect width=\"1\" height=\"2\" x=\"6\" y=\"13\" fill=\"#fff\" transform=\"rotate(-12 6 13)\"/><rect width=\"1\" height=\"1\" x=\"4\" y=\"14\" fill=\"#fff\"/><circle r=\"2\" cx=\"12\" cy=\"3.5\" fill=\"#fff\"/><circle r=\"1\" cx=\"11.5\" cy=\"2.5\" fill=\"#000\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
-script = ExtResource("1_0dkrt")
-icon = "bug"
-metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
-
 [sub_resource type="GDScript" id="GDScript_0dkrt"]
 script/source = "extends PopupMenu
 
@@ -87,7 +77,7 @@ func _ready() -> void:
 icon = SubResource("DPITexture_06s8x")
 flat = false
 icon_alignment = 1
-item_count = 5
+item_count = 4
 popup/item_0/text = "Open"
 popup/item_0/icon = SubResource("DPITexture_04ebt")
 popup/item_0/id = 0
@@ -100,9 +90,6 @@ popup/item_2/id = 2
 popup/item_3/text = "Preferences"
 popup/item_3/icon = SubResource("DPITexture_0dkrt")
 popup/item_3/id = 3
-popup/item_4/text = "Debug"
-popup/item_4/icon = SubResource("DPITexture_wk0pr")
-popup/item_4/id = 4
 script = ExtResource("2_wk0pr")
 
 [node name="Debug" type="PopupMenu" parent="."]

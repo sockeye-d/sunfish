@@ -53,7 +53,7 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 				if last_draw_element == null:
 					last_draw_element = create_brush_element()
 				var el := last_draw_element
-				el.append_point(mm_pos, mm.pressure if mm.pressure > 0.0 else 1.0)
+				el.append_point(mm_pos, mm.pressure if mm.pressure > 0.0 else 1.0, wb)
 				el.color = color
 				el.width = draw_width
 				display.elements = [el]
@@ -75,12 +75,13 @@ class BrushElement extends WhiteboardTool.Element:
 	
 	static func get_id() -> String: return "dev.fishies.sunfish.BrushElement"
 	
-	func append_point(point: Vector2, pressure: float) -> void:
+	func append_point(point: Vector2, pressure: float, wb: Whiteboard) -> void:
 		min_p = min_p.min(point)
 		max_p = max_p.max(point)
-		var tolerance := width * width
+		var tolerance := 3.0 / wb.draw_scale
 		if DebugManager.giant_brush_deadzone:
-			tolerance *= 100.0
+			tolerance *= 10.0
+		tolerance *= tolerance
 		if points.size() >= 2 and points[-2].distance_squared_to(point) < tolerance:
 			points[-1] = point
 			pressures[-1] = pressure

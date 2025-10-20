@@ -122,6 +122,13 @@ func _notification(what: int) -> void:
 func _ready() -> void:
 	if color_picker:
 		color_picker.color_changed.connect(func(new_color: Color): primary_color = new_color)
+		color_picker.color = ThemeManager.active_theme.text
+		var old_theme_color: PackedColorArray = [ThemeManager.active_theme.text]
+		ThemeManager.themes_changed.connect(func():
+			if old_theme_color[0] == color_picker.color:
+				color_picker.color = ThemeManager.active_theme.text
+			old_theme_color[0] = ThemeManager.active_theme.text
+		)
 		primary_color = color_picker.color
 	if ThemeManager.active_theme:
 		(func():

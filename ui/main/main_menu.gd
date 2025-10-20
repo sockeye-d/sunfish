@@ -1,21 +1,40 @@
 extends MenuButton
 
+
+static var bug_icon: IconTexture2D:
+	get:
+		if not bug_icon:
+			bug_icon = IconTexture2D.create("bug")
+		return bug_icon
+
+
 enum {
 	OPEN = 0,
 	SAVE = 1,
 	NEW = 2,
 	PREFERENCES = 3,
-	DEBUG = 4,
+	DEBUG = 5,
 }
+
+@onready var debug := $Debug
+
+
+var last_show_debug_menu: bool = false
 
 
 func _ready() -> void:
-	for item_index in item_count:
-		var item_text := get_popup().get_item_text(item_index)
-		var node := get_node_or_null(item_text)
-		if node:
-			node.reparent(get_popup())
-			get_popup().set_item_submenu_node(item_index, node)
+	debug.reparent(get_popup())
+	if Settings["core/show_debug_menu"]:
+		last_show_debug_menu = true
+		_add_debug_menu()
+	
+	Settings.setting_changed("core/show_debug_menu").connect(func(new_value: bool):
+		if new_value and not last_show_debug_menu:
+			_add_debug_menu()
+		elif last_show_debug_menu:
+			_remove_debug_menu()
+		last_show_debug_menu = new_value
+	)
 	
 	get_popup().set_item_shortcut(OPEN, Shortcuts.create("shortcuts/open"))
 	get_popup().set_item_shortcut(SAVE, Shortcuts.create("shortcuts/save_as"))
@@ -32,3 +51,14 @@ func _ready() -> void:
 			PREFERENCES:
 				Settings.show()
 	)
+
+
+func _add_debug_menu() -> void:
+	get_popup().add_separator("")
+	get_popup().add_icon_item(bug_icon, "Debug")
+	get_popup().set_item_submenu_node(DEBUG, debug)
+
+
+func _remove_debug_menu() -> void:
+	get_popup().remove_item(get_popup().item_count - 1)
+	get_popup().remove_item(get_popup().item_count - 1)

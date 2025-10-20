@@ -28,17 +28,9 @@ class EraserElement extends BrushTool.BrushElement:
 	
 	static func get_id() -> String: return "dev.fishies.sunfish.EraserElement"
 	
-	
-	func _falloff(x: float) -> float: return max(0.0, 2.0 - 1.0 / x if x <= 1.0 else x)
-	
 	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard) -> void:
-		var real_width := _falloff(width * wb.draw_scale) / wb.draw_scale
-		if real_width < 0.0:
-			return
-		if points.size() >= 2:
-			canvas.material = Inner.erase_material
-			var merged_points := DrawingUtil.merge_close_points(points, pressures, 2.0 / wb.draw_scale)
-			DrawingUtil.draw_round_polyline(canvas.get_canvas_item(), merged_points[0], Color.WHITE, real_width, merged_points[1])
+		canvas.material = Inner.erase_material
+		super.draw(canvas, wb)
 
 
 class EraserDotElement extends BrushTool.BrushDotElement:
@@ -48,9 +40,8 @@ class EraserDotElement extends BrushTool.BrushDotElement:
 	static func get_id() -> String: return "dev.fishies.sunfish.EraserDotElement"
 	
 	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard) -> void:
-		Util.unused(wb)
 		canvas.material = Inner.erase_material
-		canvas.draw_circle(position, width * 0.5, Color.WHITE)
+		super.draw(canvas, wb)
 
 
 class Inner:

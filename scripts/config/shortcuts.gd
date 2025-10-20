@@ -11,5 +11,6 @@ static func _static_init() -> void:
 @export var new := Shortcuts.key(KEY_N, KEY_MASK_CTRL)
 @export var show_preferences := Shortcuts.key(KEY_COMMA, KEY_MASK_CTRL | KEY_MASK_SHIFT)
 
+@export var text_accept := Shortcuts.key(KEY_ENTER, KEY_MASK_CTRL)
 
 func get_id() -> String: return "shortcuts"

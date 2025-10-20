@@ -60,6 +60,6 @@ class TextDialogHandle:
 class ConfirmingTextEdit extends TextEdit:
 	signal confirmed
 	func _gui_input(event: InputEvent) -> void:
-		if event.is_action_pressed("text_edit_confirm"):
+		if event.is_match(Settings["shortcuts/text_accept"]):
 			accept_event()
 			confirmed.emit()

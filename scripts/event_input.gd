@@ -45,7 +45,8 @@ func _init(initial_value: InputEvent = null) -> void:
 			event_btn.gui_input.connect(btn_gui_input)
 		else:
 			btn_lost_input.call()
-			event_btn.focus_exited.disconnect(btn_lost_input)
+			if event_btn.focus_exited.is_connected(btn_lost_input):
+				event_btn.focus_exited.disconnect(btn_lost_input)
 	)
 	clear_btn.pressed.connect(func():
 		last_event = null

@@ -108,7 +108,7 @@ func set_theme(new_theme: ThemeColors) -> void:
 	theme_res.set_color("parent_hl_line_color", "Tree", theme.overlay)
 	theme_res.set_color("relationship_line_color", "Tree", theme.surface)
 	
-	theme_res.set_stylebox("panel", "Tree", new_flat(theme.background_0, [base_spacing], [base_spacing]))
+	theme_res.set_stylebox("panel", "Tree", new_flat(theme.background_0, [base_spacing * 2], [base_spacing]))
 	theme_res.set_stylebox("hovered", "Tree", new_flat(theme.surface_hover, [base_spacing], [base_spacing]))
 	theme_res.set_stylebox("selected", "Tree", new_flat(theme.surface_hover, [base_spacing], [base_spacing]))
 	theme_res.set_stylebox("hovered_dimmed", "Tree", new_flat(theme.surface, [base_spacing], [base_spacing]))

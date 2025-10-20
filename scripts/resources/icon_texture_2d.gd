@@ -61,6 +61,13 @@ func _get_svg_path() -> PackedStringArray:
 	return ["res://assets/%s.svg" % icon, "res://plugins/%s.svg" % ReverseDNSUtil.id_to_path(icon)]
 
 
+static func create(icon_name: String, scale: float = 1.0) -> IconTexture2D:
+	var i := new()
+	i.icon = icon_name
+	i.icon_scale = scale
+	return i
+
+
 class SignalBus:
 	signal update
 	static var instance: SignalBus:
