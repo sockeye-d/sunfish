@@ -1,9 +1,11 @@
-[gd_resource type="Theme" load_steps=115 format=3 uid="uid://6m1sumf80mct"]
+[gd_resource type="Theme" load_steps=117 format=3 uid="uid://6m1sumf80mct"]
 
 [ext_resource type="FontFile" uid="uid://cm1owo44e6kug" path="res://assets/fonts/LiberationSans-Regular.ttf" id="1_470mv"]
 [ext_resource type="Script" uid="uid://cg1d5ghvrv5un" path="res://scripts/resources/icon_texture_2d.gd" id="1_a2l2q"]
 [ext_resource type="FontFile" uid="uid://y3da3t84kupb" path="res://assets/fonts/LiberationSerif-Bold.ttf" id="2_466ly"]
 [ext_resource type="FontFile" uid="uid://13ebtoj6jkry" path="res://assets/fonts/LiberationSans-Bold.ttf" id="3_466ly"]
+[ext_resource type="FontFile" uid="uid://dyte8f36cqfjo" path="res://assets/fonts/LiberationSerif-Regular.ttf" id="5_52mx2"]
+[ext_resource type="FontFile" uid="uid://882ertswqdgg" path="res://assets/fonts/IosevkaWeb-Regular.woff2" id="5_466ly"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_58jnp"]
 content_margin_left = 4.0
@@ -1365,6 +1367,8 @@ PopupMenu/colors/font_color = Color(0.8039216, 0.8392157, 0.95686275, 1)
 PopupMenu/colors/font_disabled_color = Color(0.6509804, 0.6784314, 0.78431374, 1)
 PopupMenu/colors/font_hover_color = Color(0.8039216, 0.8392157, 0.95686275, 1)
 PopupMenu/colors/font_separator_color = Color(0.6509804, 0.6784314, 0.78431374, 1)
+PopupMenu/fonts/font_separator = ExtResource("3_466ly")
+PopupMenu/fonts/title_font = ExtResource("5_52mx2")
 PopupMenu/icons/checked = SubResource("DPITexture_0omi4")
 PopupMenu/icons/checked_disabled = SubResource("DPITexture_a2l2q")
 PopupMenu/icons/radio_checked = SubResource("DPITexture_yhfeq")
@@ -1397,6 +1401,8 @@ SpinBox/icons/up = SubResource("DPITexture_tq6wv")
 SpinBox/icons/up_disabled = SubResource("DPITexture_lobyy")
 SpinBox/icons/up_hover = SubResource("DPITexture_3hrxq")
 SpinBox/icons/up_pressed = SubResource("DPITexture_6ybe0")
+StatusLabel/base_type = &"SubtextLabel"
+StatusLabel/fonts/font = ExtResource("5_466ly")
 SubtextLabel/base_type = &"Label"
 SubtextLabel/colors/font_color = Color(0.6509804, 0.6784314, 0.78431374, 1)
 TabContainer/colors/font_disabled_color = Color(0.6509804, 0.6784314, 0.78431374, 1)

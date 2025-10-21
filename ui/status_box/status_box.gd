@@ -25,7 +25,10 @@ func _process(delta: float) -> void:
 
 
 func _update_text() -> void:
-	position_label.text = "Position: %05d, %05d" % [whiteboard.inv_draw_xform.get_origin().x, whiteboard.inv_draw_xform.get_origin().y]
+	position_label.text = "Position: %s, %s" % [
+		String.num(whiteboard.inv_draw_xform.get_origin().x, 0).lpad(8),
+		String.num(whiteboard.inv_draw_xform.get_origin().y, 0).lpad(8),
+	]
 	zoom_label.text = "Zoom: %.f%%" % (Util.round_sig_figs(whiteboard.draw_scale, 3) * 100.0)
 	tool_label.text = "Active tool: %s" % ", ".join(
 		whiteboard.active_tools

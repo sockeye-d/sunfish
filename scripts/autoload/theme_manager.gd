@@ -64,7 +64,7 @@ func set_theme(new_theme: ThemeColors) -> void:
 	
 	var selection := Color(theme.accent_0, 0.3)
 	var disabled_surface := theme.surface.lerp(theme.background_0, 0.5)
-	var darkest_bg := get_darkest(theme.background_0, theme.background_1, theme.background_2)
+	var darkest_bg := get_darkest(theme.background_0, theme.background_1, theme.background_2, theme.text)
 	var shadow_color := Color(darkest_bg, 0.5)
 	var base_spacing := 8 if OS.has_feature("mobile") else 4
 	var base_font_size := 12 if OS.has_feature("mobile") else 16

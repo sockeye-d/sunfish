@@ -27,7 +27,7 @@ func _ready() -> void:
 	close_requested.connect(hide)
 	if OS.has_feature("mobile"):
 		size = Vector2i(500, 275)
-		position = (get_tree().root.size / 2 / get_tree().root.content_scale_factor - size / 2.0)
+		position = get_tree().root.size / 2.0 / get_tree().root.content_scale_factor - size / 2.0
 	reload_settings(ResourceLoader.load(config_path, "", ResourceLoader.CACHE_MODE_IGNORE_DEEP) as SettingsSerializer)
 	has_deserialized = true
 	shortcut_search_text.text_changed.connect(_emit_shortcut_search_changed)

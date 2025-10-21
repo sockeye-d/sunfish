@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://78r8qgrrm8sv"]
+[gd_scene load_steps=11 format=3 uid="uid://78r8qgrrm8sv"]
 
 [ext_resource type="Script" uid="uid://cg1d5ghvrv5un" path="res://scripts/resources/icon_texture_2d.gd" id="1_0dkrt"]
 [ext_resource type="Script" uid="uid://duwys366t42it" path="res://ui/main/main_menu.gd" id="2_wk0pr"]
@@ -26,7 +26,7 @@ icon = "open"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_7nk2m"]
-_source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12.5 7V2.5H5.5L3.5 4.5V7M3.5 12.5V13.5H12.5V12.5\" id=\"path1\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M8 4.5V11.5\" id=\"path3\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M5.5 9 8 11.5 10.5 9\" id=\"path4\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
+_source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M2.5 2.5H12.5l1 1V13.5H2.5Z\" id=\"path1\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect width=\"6\" height=\"4\" x=\"4.5\" y=\"2.5\" stroke-width=\"1\" stroke=\"#fff\" fill=\"none\"/><line x2=\"9.5\" stroke=\"#fff\" y2=\"6\" x1=\"9.5\" y1=\"3\"/></svg>"
 color_map = {
 Color(1, 1, 1, 1): Color(1, 1, 1, 1),
 Color(0, 0, 0, 1): Color(0, 0, 0, 1)
@@ -55,6 +55,26 @@ script = ExtResource("1_0dkrt")
 icon = "config"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
+[sub_resource type="DPITexture" id="DPITexture_wk0pr"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path d=\"M2.5 2.5v4h4\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M2.5 8.5a5.5 5.5 0 005.5 5.5 1 1 0 000-11 5.5 5.5 0 00-5 3\" stroke=\"#fff\" fill=\"none\" stroke-linecap=\"round\"/><line x2=\"6\" stroke=\"#fff\" y2=\"10\" x1=\"10\" y1=\"10\" stroke-linecap=\"round\"/><line x2=\"8\" stroke=\"#fff\" y2=\"12\" x1=\"8\" y1=\"8\" stroke-linecap=\"round\"/></svg>"
+color_map = {
+Color(1, 1, 1, 1): Color(1, 1, 1, 1),
+Color(0, 0, 0, 1): Color(0, 0, 0, 1)
+}
+script = ExtResource("1_0dkrt")
+icon = "reset_zoom"
+metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
+
+[sub_resource type="DPITexture" id="DPITexture_rmr83"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><use href=\"#half-square\" transform=\"scale(1-1)\" y=\"-16\"/><use href=\"#half-square\" transform=\"scale(-1 1)\" y=\"0\" x=\"-16\"/><use href=\"#half-square\" x=\"-16\" transform=\"scale(-1)\" y=\"-16\"/><path id=\"half-square\" d=\"M11.5 3.5a1 1 0 011 1\" stroke=\"#fff\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path id=\"arrow\" d=\"M8 8.5l0 5 1.4-1.4m-1.4 1.4-1.4-1.4\" stroke=\"#fff\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-opacity=\"1\"/><use href=\"#arrow\" y=\"-16\" transform=\"rotate(90)\"/><use href=\"#arrow\" transform=\"rotate(-90)\" x=\"-16\"/><use href=\"#arrow\" x=\"-16\" transform=\"scale(-1)\" y=\"-16\"/></svg>"
+color_map = {
+Color(1, 1, 1, 1): Color(1, 1, 1, 1),
+Color(0, 0, 0, 1): Color(0, 0, 0, 1)
+}
+script = ExtResource("1_0dkrt")
+icon = "reset_view"
+metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
+
 [sub_resource type="GDScript" id="GDScript_0dkrt"]
 script/source = "extends PopupMenu
 
@@ -73,11 +93,11 @@ func _ready() -> void:
 	)
 "
 
-[node name="MainMenu" type="MenuButton"]
+[node name="MainMenu" type="MenuButton" unique_id=442572562]
 icon = SubResource("DPITexture_06s8x")
 flat = false
 icon_alignment = 1
-item_count = 5
+item_count = 8
 popup/item_0/text = "File"
 popup/item_0/id = 0
 popup/item_0/separator = true
@@ -93,9 +113,18 @@ popup/item_3/id = 3
 popup/item_4/text = "Preferences"
 popup/item_4/icon = SubResource("DPITexture_0dkrt")
 popup/item_4/id = 4
+popup/item_5/text = "View"
+popup/item_5/id = 5
+popup/item_5/separator = true
+popup/item_6/text = "Reset zoom"
+popup/item_6/icon = SubResource("DPITexture_wk0pr")
+popup/item_6/id = 6
+popup/item_7/text = "Reset view"
+popup/item_7/icon = SubResource("DPITexture_rmr83")
+popup/item_7/id = 7
 script = ExtResource("2_wk0pr")
 
-[node name="Debug" type="PopupMenu" parent="."]
+[node name="Debug" type="PopupMenu" parent="." unique_id=1728632799]
 oversampling_override = 1.0
 size = Vector2i(196, 100)
 hide_on_checkable_item_selection = false

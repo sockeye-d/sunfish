@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://3ujj1wwej6lg" path="res://ui/status_box/status_box.gd" id="1_qfuws"]
 
-[node name="StatusBox" type="ScrollContainer"]
+[node name="StatusBox" type="ScrollContainer" unique_id=40150734]
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
@@ -14,54 +14,54 @@ size_flags_horizontal = 3
 vertical_scroll_mode = 0
 script = ExtResource("1_qfuws")
 
-[node name="HBoxContainer" type="FlowContainer" parent="."]
+[node name="HBoxContainer" type="FlowContainer" parent="." unique_id=2037197021]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="LeftHBoxContainer" type="HBoxContainer" parent="HBoxContainer"]
+[node name="LeftHBoxContainer" type="HBoxContainer" parent="HBoxContainer" unique_id=465985052]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="PositionLabel" type="Label" parent="HBoxContainer/LeftHBoxContainer"]
+[node name="PositionLabel" type="Label" parent="HBoxContainer/LeftHBoxContainer" unique_id=1460186781]
 unique_name_in_owner = true
 layout_mode = 2
-theme_type_variation = &"SubtextLabel"
+theme_type_variation = &"StatusLabel"
 text = "pos"
 
-[node name="VSeparator" type="VSeparator" parent="HBoxContainer/LeftHBoxContainer"]
+[node name="VSeparator" type="VSeparator" parent="HBoxContainer/LeftHBoxContainer" unique_id=755690422]
 layout_mode = 2
 
-[node name="ZoomLabel" type="Label" parent="HBoxContainer/LeftHBoxContainer"]
+[node name="ZoomLabel" type="Label" parent="HBoxContainer/LeftHBoxContainer" unique_id=1848153247]
 unique_name_in_owner = true
 layout_mode = 2
-theme_type_variation = &"SubtextLabel"
+theme_type_variation = &"StatusLabel"
 text = "zoom"
 
-[node name="VSeparator2" type="VSeparator" parent="HBoxContainer/LeftHBoxContainer"]
+[node name="VSeparator2" type="VSeparator" parent="HBoxContainer/LeftHBoxContainer" unique_id=1034687067]
 layout_mode = 2
 
-[node name="ToolLabel" type="Label" parent="HBoxContainer/LeftHBoxContainer"]
+[node name="ToolLabel" type="Label" parent="HBoxContainer/LeftHBoxContainer" unique_id=666595465]
 unique_name_in_owner = true
 layout_mode = 2
-theme_type_variation = &"SubtextLabel"
+theme_type_variation = &"StatusLabel"
 text = "tool"
 
-[node name="RightHBoxContainer" type="HBoxContainer" parent="HBoxContainer"]
+[node name="RightHBoxContainer" type="HBoxContainer" parent="HBoxContainer" unique_id=1204504896]
 layout_mode = 2
 size_flags_horizontal = 3
 alignment = 2
 
-[node name="StrokeLabel" type="Label" parent="HBoxContainer/RightHBoxContainer"]
+[node name="StrokeLabel" type="Label" parent="HBoxContainer/RightHBoxContainer" unique_id=470379173]
 unique_name_in_owner = true
 layout_mode = 2
-theme_type_variation = &"SubtextLabel"
+theme_type_variation = &"StatusLabel"
 text = "stroke"
 
-[node name="VSeparator" type="VSeparator" parent="HBoxContainer/RightHBoxContainer"]
+[node name="VSeparator" type="VSeparator" parent="HBoxContainer/RightHBoxContainer" unique_id=146897949]
 layout_mode = 2
 
-[node name="FPSLabel" type="Label" parent="HBoxContainer/RightHBoxContainer"]
+[node name="FPSLabel" type="Label" parent="HBoxContainer/RightHBoxContainer" unique_id=1743523953]
 unique_name_in_owner = true
 layout_mode = 2
-theme_type_variation = &"SubtextLabel"
+theme_type_variation = &"StatusLabel"
 text = "fps"

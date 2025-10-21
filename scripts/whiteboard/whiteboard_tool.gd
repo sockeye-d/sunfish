@@ -12,9 +12,6 @@ static func get_id() -> StringName:
 func receive_input(wb: Whiteboard, event: InputEvent) -> Display
 
 
-func create_configuration_display() -> Control: return null
-
-
 func activated(wb: Whiteboard) -> void: Util.unused(wb)
 
 
