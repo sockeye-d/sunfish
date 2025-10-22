@@ -14,7 +14,7 @@ var tool_instances: Dictionary[Script, WhiteboardTool]
 @export_tool_button("Update tools") var __ := _update_tools
 
 
-var tool_buttons: Dictionary[Script, ToolButtonState]
+var tools: Dictionary[Script, ToolButtonState]
 var selected_tool_id: String
 
 
@@ -31,12 +31,12 @@ func _ready() -> void:
 
 
 func _update_tools() -> void:
-	for tool in tool_buttons:
-		if tool in tool_buttons:
-			tool_buttons[tool].queue_free()
+	for tool in tools:
+		if tool in tools:
+			tools[tool].queue_free()
 		else:
-			tool_buttons.erase(tool)
-	tool_buttons.clear()
+			tools.erase(tool)
+	tools.clear()
 	if WhiteboardManager.tools.is_empty():
 		return
 	for tool_id in WhiteboardManager.tools:
@@ -47,14 +47,27 @@ func _update_tools() -> void:
 		var icon := IconTexture2D.create(tool.get_id())
 		state.icon = icon
 		state.tool = tool
-		tool_buttons[tool] = state
+		tools[tool] = state
 
 
 func set_selected(tool: Script) -> void:
-	tool_buttons[tool].button_pressed = true
+	tools[tool].button_pressed = true
 
 
 class ToolButtonState:
 	var icon: Texture2D
 	var tool: Script
 	var hovered: bool
+
+
+class Visual extends Control:
+	var t: ToolPopup
+	
+	
+	func _draw() -> void:
+		var index := 0
+		for tool_id in t.tools:
+			var angle := index * TAU / t.tools.size()
+			var state := t.tools[tool_id]
+			
+			index += 1
