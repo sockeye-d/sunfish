@@ -14,12 +14,13 @@ func create_brush_element() -> BrushElement: return EraserElement.new()
 func create_dot_element() -> BrushDotElement: return EraserDotElement.new()
 
 
-func _get_default_width() -> float: return 15.0
+func _get_default_width() -> float: return 30.0
+func _do_pressure() -> bool: return false
 
 
 func _validate_property(property: Dictionary) -> void:
 	if property.name == "width":
-		property.hint_string = "1.0,15.0,0.0,or_greater"
+		property.hint_string = "1.0,%s,0.0,or_greater" % _get_default_width()
 
 
 class EraserElement extends BrushTool.BrushElement:
@@ -31,6 +32,11 @@ class EraserElement extends BrushTool.BrushElement:
 	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard) -> void:
 		canvas.material = Inner.erase_material
 		super.draw(canvas, wb)
+	
+	static func deserialize(data: Dictionary) -> Element:
+		var el := EraserElement.new()
+		_deserialize(el, data)
+		return el
 
 
 class EraserDotElement extends BrushTool.BrushDotElement:
@@ -42,6 +48,11 @@ class EraserDotElement extends BrushTool.BrushDotElement:
 	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard) -> void:
 		canvas.material = Inner.erase_material
 		super.draw(canvas, wb)
+	
+	static func deserialize(data: Dictionary) -> Element:
+		var el := EraserDotElement.new()
+		_deserialize(el, data)
+		return el
 
 
 class Inner:

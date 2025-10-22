@@ -13,6 +13,11 @@ func get_id() -> StringName: return "core"
 		theme = value
 		update_theme.call_deferred()
 @export var default_tool := "dev.fishies.sunfish.BrushTool"
+@export_range(0.25, 4.0, 0.25) var ui_scale := 3.0 if OS.has_feature("mobile") else 1.0:
+	set(value):
+		ui_scale = value
+		ThemeManager.ui_scale = ui_scale
+	get: return ui_scale
 
 @export var show_debug_menu: bool = false
 

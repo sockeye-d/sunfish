@@ -14,16 +14,34 @@ static var instance: WhiteboardManager:
 
 static var tools: Dictionary[String, Script]
 static var passive_tools: Dictionary[String, WhiteboardTool]
+static var _passive_tool_initialized: Dictionary[WhiteboardTool, bool]
 static var _deserializers: Dictionary[String, Callable]
+static var _register_tool_guard: int = 0
+
+
+static func _static_init() -> void:
+	PluginManager.instance.pre_scan.connect(func(): begin_register_tool())
+	PluginManager.instance.post_scan.connect(func(): end_register_tool())
 
 
 static func register_passive_tool(tool: WhiteboardTool) -> void:
 	_register_passive_tool.call_deferred(tool)
 
 
+static func begin_register_tool() -> void:
+	_register_tool_guard += 1
+
+
+static func end_register_tool() -> void:
+	_register_tool_guard -= 1
+	assert(_register_tool_guard >= 0)
+	if _register_tool_guard == 0:
+		instance.tools_changed.emit()
+
+
 static func register_tool(tool_script: Script) -> void:
 	tools[tool_script.get_id()] = tool_script
-	instance.tools_changed.emit.call_deferred()
+	instance.tools_changed.emit()
 
 
 static func _register_passive_tool(tool: WhiteboardTool) -> void:
@@ -59,3 +77,19 @@ static func deserialize(data: Dictionary) -> Array[WhiteboardTool.Element]:
 	for element in data.elements:
 		elements.append(_deserializers[element.id].call(element.data))
 	return elements
+
+
+static func is_passive_tool_initialized(tool: WhiteboardTool) -> bool:
+	return _passive_tool_initialized.get(tool, false)
+
+
+static func initialize_passive_tool(wb: Whiteboard, tool: WhiteboardTool) -> void:
+	if is_passive_tool_initialized(tool):
+		return
+	_passive_tool_initialized[tool] = true
+	tool.activated(wb)
+
+
+static func intialize_passive_tools(wb: Whiteboard) -> void:
+	for tool_key in passive_tools:
+		initialize_passive_tool(wb, passive_tools[tool_key])

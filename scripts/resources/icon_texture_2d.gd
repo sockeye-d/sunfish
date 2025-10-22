@@ -22,8 +22,7 @@ var secondary_icon_scale: float = 1.0:
 	set(value):
 		modulate = value
 		_update_image()
-static var text_color: Color = Color.WHITE
-static var bg_color: Color = Color.BLACK
+static var global_color_map: Dictionary[Color, Color]
 
 
 func _init() -> void:
@@ -38,7 +37,7 @@ func _update_image() -> void:
 		if svg:
 			set_source(svg)
 			base_scale = icon_scale * secondary_icon_scale
-			color_map = { Color.WHITE: text_color * modulate, Color.BLACK: bg_color * modulate }
+			color_map = global_color_map
 			emit_changed()
 			return
 

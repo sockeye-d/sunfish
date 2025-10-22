@@ -35,12 +35,12 @@ static var hint_delegates: Dictionary[int, Callable] = {
 		var extra_hints := data[3].split(",") if data.size() >= 4 else PackedStringArray()
 		
 		var slider := SliderCombo.new()
-		slider.slider_value = initial_value
+		slider.step = maxf(step, 0.01)
 		slider.min_value = min_value
 		slider.max_value = max_value
-		slider.step = maxf(step, 0.01)
 		slider.allow_greater = "or_greater" in extra_hints
 		slider.allow_lesser = "or_less" in extra_hints
+		slider.slider_value = initial_value
 		slider.changed.emit()
 		slider.slider_value_changed.connect(set_prop)
 		return slider,
@@ -104,6 +104,7 @@ var tools: Array[WhiteboardTool]:
 @onready var scroll_container: ScrollContainer = %ScrollContainer
 
 
+var tool_properties: Dictionary[StringName, Dictionary]
 var inner_container: VBoxContainer
 
 
@@ -118,12 +119,18 @@ func _update_inspector() -> void:
 	inner_container = VBoxContainer.new()
 	inner_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll_container.add_child(inner_container)
+	var existing_tool_properties: Dictionary[StringName, Dictionary] = Settings.get_safe("state/tool_properties").front()
+	if existing_tool_properties == null:
+		existing_tool_properties = {}
 	for tool in tools:
 		var properties := tool.get_property_list().filter(func(el): return el.usage & PROPERTY_USAGE_EDITOR and el.name != "script")
 		if not properties:
 			continue
+		var property_dict: Dictionary[StringName, Variant]
+		var tool_id: String = tool.get_script().get_id()
+		var single_tool_properties = existing_tool_properties.get(tool_id, {})
 		var header := Label.new()
-		header.text = ReverseDNSUtil.pretty_print(tool.get_script().get_id()).trim_suffix("Tool").strip_edges()
+		header.text = ReverseDNSUtil.pretty_print(tool_id).trim_suffix("Tool").strip_edges()
 		header.theme_type_variation = "HeaderMedium"
 		inner_container.add_child(header)
 		var outer_prop_container := MarginContainer.new()
@@ -134,12 +141,20 @@ func _update_inspector() -> void:
 			var label := Label.new()
 			label.text = Util.pretty_print_property(property.name)
 			prop_container.add_child(label)
+			var property_value = single_tool_properties[property.name] if property.name in single_tool_properties else tool.get(property.name)
+			property_dict[property.name] = property_value
 			var delegate: Control = create_delegate(
-				property, tool.get(property.name),
-				func(new_value): tool.set(property.name, convert(new_value, property.type))
+				property, property_value,
+				func(new_value):
+					new_value = type_convert(new_value, property.type)
+					property_dict[property.name] = new_value
+					tool.set(property.name, new_value)
+					Settings["state/tool_properties"] = tool_properties
 			)
 			delegate.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			prop_container.add_child(delegate)
+		tool_properties[tool_id] = property_dict
+	Settings["state/tool_properties"] = tool_properties
 
 
 static func create_delegate(prop: Dictionary, initial_value, set_prop: Callable) -> Control:

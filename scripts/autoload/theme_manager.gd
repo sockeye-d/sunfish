@@ -35,7 +35,7 @@ var active_theme: ThemeColors
 func _ready() -> void:
 	ui_scale_changed.connect(func(): RenderingServer.global_shader_parameter_set("ui_scale", ui_scale))
 	ui_scale_changed.connect(func(): get_tree().root.content_scale_factor = ui_scale)
-	ui_scale = get_tree().root.content_scale_factor
+	ui_scale = Settings["core/ui_scale"]
 	
 	set_theme_id(Settings["core/theme"])
 
@@ -231,8 +231,15 @@ func set_theme(new_theme: ThemeColors) -> void:
 	theme_res.set_block_signals(false)
 	theme_res.emit_changed()
 	background_color_changed.emit(theme.background_1)
-	IconTexture2D.text_color = theme.text
-	IconTexture2D.bg_color = theme.background_0
+	IconTexture2D.global_color_map = {
+		Color("#ffffff"): theme.text,
+		Color("#000000"): theme.background_0,
+		Color("#00ff00"): theme.success,
+		Color("#ffff00"): theme.warning,
+		Color("#ff0000"): theme.error,
+		Color("#0000ff"): theme.accent_0,
+		Color("#00ffff"): theme.accent_1,
+	}
 	IconTexture2D.SignalBus.instance.update.emit()
 	
 	if Engine.is_editor_hint():

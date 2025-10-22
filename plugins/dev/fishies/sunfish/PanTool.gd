@@ -16,9 +16,6 @@ static func is_visible() -> bool:
 
 
 func receive_input(wb: Whiteboard, event: InputEvent) -> WhiteboardTool.Display:
-	if event.is_action_pressed("reset_zoom"):
-		wb.draw_xform = Transform2D()
-		wb.accept_event()
 	var mb := event as InputEventMouseButton
 	if mb:
 		match mb.button_index:
@@ -29,14 +26,14 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> WhiteboardTool.Display:
 			MOUSE_BUTTON_WHEEL_UP:
 				if mb.pressed:
 					if mb.ctrl_pressed:
-						wb.draw_xform = zoom(wb.draw_xform, mb.position, 1.0 * 1.1)
+						zoom(wb, mb.position, 1.0 * 1.1)
 					else:
 						pan(wb, mb, +00.0, +80.0)
 					wb.accept_event()
 			MOUSE_BUTTON_WHEEL_DOWN:
 				if mb.pressed:
 					if mb.ctrl_pressed:
-						wb.draw_xform = zoom(wb.draw_xform, mb.position, 1.0 / 1.1)
+						zoom(wb, mb.position, 1.0 / 1.1)
 					else:
 						pan(wb, mb, +00.0, -80.0)
 					wb.accept_event()
@@ -52,31 +49,33 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> WhiteboardTool.Display:
 	if mm:
 		if is_dragging:
 			if mm.ctrl_pressed:
-				wb.draw_xform = zoom(wb.draw_xform, drag_start_pos, exp(- mm.relative.y * 0.005 * wb.draw_scale))
+				zoom(wb, drag_start_pos, exp(- mm.relative.y * 0.005 * wb.draw_scale))
 			else:
 				wb.draw_xform = wb.draw_xform.translated_local(mm.relative)
+				wb.save()
 			wb.accept_event()
 	var pg := event as InputEventPanGesture
 	if pg:
 		if pg.ctrl_pressed:
-			wb.draw_xform = zoom(wb.draw_xform, pg.position, exp(-pg.delta.y * 0.05))
+			zoom(wb, pg.position, exp(-pg.delta.y * 0.05))
 		else:
 			wb.draw_xform = wb.draw_xform.translated(-pg.delta * 2.0)
+			wb.save()
 		wb.accept_event()
 	var zg := event as InputEventMagnifyGesture
 	if zg:
-		wb.draw_xform = zoom(wb.draw_xform, zg.position, zg.factor)
+		zoom(wb, zg.position, zg.factor)
 	return null
 
 
 func pan(wb: Whiteboard, e: InputEventMouseButton, x: float, y: float) -> void:
 	wb.draw_xform = wb.draw_xform.translated(0.5 * e.factor * Vector2(x, y))
+	wb.save()
 
 
-func zoom(xform: Transform2D, screen_center: Vector2, amount: float) -> Transform2D:
+func zoom(wb: Whiteboard, screen_center: Vector2, amount: float) -> void:
 	var center := screen_center
-	if amount < 1 and xform.get_scale().length() / sqrt(2.0) < 0.2:
-		return xform
-	#if amount > 1 and xform.get_scale().length() / sqrt(2.0) < 0.1:
-		#return xform
-	return xform.translated_local(center).scaled_local(Vector2(amount, amount)).translated_local(-center)
+	if amount < 1 and wb.draw_scale < 0.2:
+		return
+	wb.draw_xform = wb.draw_xform.translated_local(center).scaled_local(Vector2(amount, amount)).translated_local(-center)
+	wb.save()

@@ -24,3 +24,6 @@ static func default(value, default_value):
 	if value:
 		return value
 	return default_value
+
+
+static func falloff(x: float) -> float: return maxf(0.0, 2.0 - 1.0 / x if x <= 1.0 else x)

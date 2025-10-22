@@ -3,5 +3,4 @@ extends Node
 
 
 func _ready() -> void:
-	PluginManager.scan_plugins()
-	PluginManager.scan_plugins("res://scripts/config")
+	PluginManager.scan_plugins([PluginManager.PLUGIN_PREFIX, "res://scripts/config"])

@@ -16,12 +16,8 @@ class CircleElement extends ShapeTool.ShapeElement:
 	
 	static func get_id() -> StringName: return "dev.fishies.sunfish.CircleElement"
 	
-	func _falloff(x: float) -> float: return max(0.0, 2.0 - 1.0 / x if x <= 1.0 else x)
-	
 	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard) -> void:
-		var real_width := _falloff(width * wb.draw_scale) / wb.draw_scale
-		if real_width < 0.0:
-			return
+		Util.unused(wb)
 		var size := rect.size * 0.5
 		var points: PackedVector2Array = []
 		points.resize(180)

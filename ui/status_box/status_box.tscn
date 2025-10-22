@@ -1,6 +1,19 @@
-[gd_scene load_steps=2 format=3 uid="uid://dbxmfkswghn1p"]
+[gd_scene load_steps=5 format=3 uid="uid://dbxmfkswghn1p"]
 
 [ext_resource type="Script" uid="uid://3ujj1wwej6lg" path="res://ui/status_box/status_box.gd" id="1_qfuws"]
+[ext_resource type="Script" uid="uid://cg1d5ghvrv5un" path="res://scripts/resources/icon_texture_2d.gd" id="2_vlp5f"]
+
+[sub_resource type="DPITexture" id="DPITexture_vlp5f"]
+_source = "<svg width=\"16\" height=\"16\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M6.5 13.5H3.5A1 1 0 012.5 12.5V3.5A1 1 0 013.5 2.5H11.5l2 2V6.5\" id=\"path1\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"m4.5 2.5h6v4h-6z\" stroke=\"#fff\" fill=\"none\"/><path d=\"m9.5 3v3\" stroke=\"#fff\"/><path d=\"M9.5 12.5l2 1 2-4\" stroke=\"#0f0\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
+script = ExtResource("2_vlp5f")
+icon = "saved"
+metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
+
+[sub_resource type="DPITexture" id="DPITexture_nkl6t"]
+_source = "<svg width=\"16\" height=\"16\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M6.5 13.5H3.5A1 1 0 012.5 12.5V3.5A1 1 0 013.5 2.5H11.5l2 2V6.5\" id=\"path1\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"m4.5 2.5h6v4h-6z\" stroke-width=\"1\" stroke=\"#fff\" fill=\"none\"/><path d=\"m9.5 3v3\" stroke=\"#fff\"/><path d=\"m4.5 2.5h6v4h-6z\" stroke-width=\"1\" stroke=\"#fff\" fill=\"none\"/><path d=\"m9.5 3v3\" stroke=\"#fff\"/><circle r=\"2.5\" cx=\"11.5\" cy=\"11.5\" fill=\"red\"/></svg>"
+script = ExtResource("2_vlp5f")
+icon = "unsaved"
+metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [node name="StatusBox" type="ScrollContainer" unique_id=40150734]
 anchors_preset = 12
@@ -13,14 +26,24 @@ grow_vertical = 0
 size_flags_horizontal = 3
 vertical_scroll_mode = 0
 script = ExtResource("1_qfuws")
+saved_texture = SubResource("DPITexture_vlp5f")
+unsaved_texture = SubResource("DPITexture_nkl6t")
 
-[node name="HBoxContainer" type="FlowContainer" parent="." unique_id=2037197021]
+[node name="HBoxContainer" type="GridContainer" parent="." unique_id=1845835233]
 layout_mode = 2
 size_flags_horizontal = 3
+columns = 3
 
 [node name="LeftHBoxContainer" type="HBoxContainer" parent="HBoxContainer" unique_id=465985052]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 2
+
+[node name="SavedIndicator" type="TextureRect" parent="HBoxContainer/LeftHBoxContainer" unique_id=1909037789]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="VSeparator" type="VSeparator" parent="HBoxContainer/LeftHBoxContainer" unique_id=755690422]
+layout_mode = 2
 
 [node name="PositionLabel" type="Label" parent="HBoxContainer/LeftHBoxContainer" unique_id=1460186781]
 unique_name_in_owner = true
@@ -28,7 +51,7 @@ layout_mode = 2
 theme_type_variation = &"StatusLabel"
 text = "pos"
 
-[node name="VSeparator" type="VSeparator" parent="HBoxContainer/LeftHBoxContainer" unique_id=755690422]
+[node name="VSeparator2" type="VSeparator" parent="HBoxContainer/LeftHBoxContainer" unique_id=1633159260]
 layout_mode = 2
 
 [node name="ZoomLabel" type="Label" parent="HBoxContainer/LeftHBoxContainer" unique_id=1848153247]
@@ -37,10 +60,12 @@ layout_mode = 2
 theme_type_variation = &"StatusLabel"
 text = "zoom"
 
-[node name="VSeparator2" type="VSeparator" parent="HBoxContainer/LeftHBoxContainer" unique_id=1034687067]
+[node name="CenterHBoxContainer" type="HBoxContainer" parent="HBoxContainer" unique_id=692332042]
 layout_mode = 2
+size_flags_horizontal = 4
+alignment = 1
 
-[node name="ToolLabel" type="Label" parent="HBoxContainer/LeftHBoxContainer" unique_id=666595465]
+[node name="ToolLabel" type="Label" parent="HBoxContainer/CenterHBoxContainer" unique_id=666595465]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"StatusLabel"
@@ -48,7 +73,7 @@ text = "tool"
 
 [node name="RightHBoxContainer" type="HBoxContainer" parent="HBoxContainer" unique_id=1204504896]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 10
 alignment = 2
 
 [node name="StrokeLabel" type="Label" parent="HBoxContainer/RightHBoxContainer" unique_id=470379173]

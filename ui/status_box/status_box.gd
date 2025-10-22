@@ -6,9 +6,14 @@ class_name StatusBox extends Control
 @onready var tool_label: Label = %ToolLabel
 @onready var fps_label: Label = %FPSLabel
 @onready var stroke_label: Label = %StrokeLabel
+@onready var saved_indicator: TextureRect = %SavedIndicator
 
 
 @export var whiteboard: Whiteboard
+
+
+@export var saved_texture: IconTexture2D
+@export var unsaved_texture: IconTexture2D
 
 
 func _ready() -> void:
@@ -17,6 +22,11 @@ func _ready() -> void:
 	whiteboard.element_count_changed.connect(_update_text)
 	
 	_update_text()
+	
+	WhiteboardBus.save_status_changed.connect(func(saved: bool):
+		saved_indicator.texture = saved_texture if saved else unsaved_texture
+	)
+	saved_indicator.texture = saved_texture
 
 
 func _process(delta: float) -> void:
@@ -25,9 +35,11 @@ func _process(delta: float) -> void:
 
 
 func _update_text() -> void:
+	var x_text := String.num(whiteboard.inv_draw_xform.get_origin().x, 0)
+	var y_text := String.num(whiteboard.inv_draw_xform.get_origin().y, 0)
 	position_label.text = "Position: %s, %s" % [
-		String.num(whiteboard.inv_draw_xform.get_origin().x, 0).lpad(8),
-		String.num(whiteboard.inv_draw_xform.get_origin().y, 0).lpad(8),
+		x_text.lpad(maxi(x_text.length(), y_text.length())),
+		y_text.lpad(maxi(x_text.length(), y_text.length())),
 	]
 	zoom_label.text = "Zoom: %.f%%" % (Util.round_sig_figs(whiteboard.draw_scale, 3) * 100.0)
 	tool_label.text = "Active tool: %s" % ", ".join(

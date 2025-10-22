@@ -1,5 +1,5 @@
 @tool
-class_name ToolContainer extends Control
+class_name ToolPopup extends PopupPanel
 
 
 signal active_tool_changed(new_tool: Script)
@@ -14,7 +14,7 @@ var tool_instances: Dictionary[Script, WhiteboardTool]
 @export_tool_button("Update tools") var __ := _update_tools
 
 
-var tool_buttons: Dictionary[Script, Button]
+var tool_buttons: Dictionary[Script, ToolButtonState]
 var selected_tool_id: String
 
 
@@ -43,23 +43,18 @@ func _update_tools() -> void:
 		var tool := WhiteboardManager.tools[tool_id]
 		if not tool.is_visible():
 			continue
-		var btn := Button.new()
+		var state := ToolButtonState.new()
 		var icon := IconTexture2D.create(tool.get_id())
-		btn.toggle_mode = true
-		btn.icon = icon
-		btn.button_group = tool_button_group
-		
-		if selected_tool_id == tool_id:
-			btn.button_pressed = true
-			active_tool_changed.emit(tool)
-		
-		tool_buttons[tool] = btn
-		btn.pressed.connect(func():
-			selected_tool_id = tool_id
-			active_tool_changed.emit(tool)
-		)
-		add_child(btn)
+		state.icon = icon
+		state.tool = tool
+		tool_buttons[tool] = state
 
 
 func set_selected(tool: Script) -> void:
 	tool_buttons[tool].button_pressed = true
+
+
+class ToolButtonState:
+	var icon: Texture2D
+	var tool: Script
+	var hovered: bool

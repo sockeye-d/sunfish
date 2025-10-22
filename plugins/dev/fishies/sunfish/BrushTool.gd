@@ -20,6 +20,7 @@ func create_dot_element() -> BrushDotElement: return BrushDotElement.new()
 
 
 func _get_default_width() -> float: return 5.0
+func _do_pressure() -> bool: return true
 
 
 func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
@@ -53,7 +54,7 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 				if last_draw_element == null:
 					last_draw_element = create_brush_element()
 				var el := last_draw_element
-				el.append_point(mm_pos, mm.pressure if mm.pressure > 0.0 else 1.0, wb)
+				el.append_point(mm_pos, (mm.pressure if mm.pressure > 0.0 else 1.0) if _do_pressure() else 1.0, wb)
 				el.color = color
 				el.width = draw_width
 				display.elements = [el]
@@ -90,15 +91,10 @@ class BrushElement extends WhiteboardTool.Element:
 			pressures.append(pressure)
 	
 	
-	func _falloff(x: float) -> float: return max(0.0, 2.0 - 1.0 / x if x <= 1.0 else x)
-	
 	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard) -> void:
-		var real_width := _falloff(width * wb.draw_scale) / wb.draw_scale
-		if real_width < 0.0:
-			return
+		Util.unused(wb)
 		if points.size() >= 2:
-			var merged_points := DrawingUtil.merge_close_points(points, pressures, 2.0 / wb.draw_scale)
-			DrawingUtil.draw_round_polyline(canvas.get_canvas_item(), merged_points[0], color, real_width, merged_points[1])
+			DrawingUtil.draw_round_polyline(canvas.get_canvas_item(), points, color, width, pressures)
 	
 	
 	func get_bounding_box() -> Rect2:
@@ -115,6 +111,11 @@ class BrushElement extends WhiteboardTool.Element:
 	
 	static func deserialize(data: Dictionary) -> Element:
 		var el := BrushElement.new()
+		_deserialize(el, data)
+		return el
+	
+	
+	static func _deserialize(el: BrushElement, data: Dictionary) -> void:
 		el.points = data.points
 		el.pressures = data.get("pressures", [])
 		if el.pressures.size() != el.points.size():
@@ -131,7 +132,6 @@ class BrushElement extends WhiteboardTool.Element:
 			new_max_p = new_max_p.max(point)
 		el.min_p = new_min_p
 		el.max_p = new_max_p
-		return el
 
 
 class BrushDotElement extends WhiteboardTool.Element:
@@ -162,7 +162,11 @@ class BrushDotElement extends WhiteboardTool.Element:
 	
 	static func deserialize(data: Dictionary) -> Element:
 		var el := BrushDotElement.new()
+		_deserialize(el, data)
+		return el
+	
+	
+	static func _deserialize(el: BrushDotElement, data: Dictionary) -> void:
 		el.position = data.position
 		el.color = data.color
 		el.width = data.width
-		return el

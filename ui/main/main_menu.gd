@@ -13,10 +13,12 @@ enum {
 	FILE_OPEN,
 	FILE_SAVE,
 	FILE_NEW,
-	PREFERENCES,
 	VIEW_SPACER,
-	RESET_ZOOM,
-	RESET_VIEW,
+	VIEW_RESET_ZOOM,
+	VIEW_RESET_VIEW,
+	OTHER_SPACER,
+	OTHER_PREFERENCES,
+	OTHER_PLUGINS,
 }
 
 var debug_spacer_id: int = -1
@@ -45,18 +47,23 @@ func _ready() -> void:
 	get_popup().set_item_shortcut(FILE_OPEN, Shortcuts.create("shortcuts/open"))
 	get_popup().set_item_shortcut(FILE_SAVE, Shortcuts.create("shortcuts/save_as"))
 	get_popup().set_item_shortcut(FILE_NEW, Shortcuts.create("shortcuts/new"))
-	get_popup().set_item_shortcut(PREFERENCES, Shortcuts.create("shortcuts/show_preferences"))
-	get_popup().set_item_shortcut(RESET_ZOOM, Shortcuts.create("shortcuts/reset_zoom"))
-	get_popup().set_item_shortcut(RESET_VIEW, Shortcuts.create("shortcuts/reset_view"))
-	get_popup().id_pressed.connect(func(id: int):
-		match id:
+	get_popup().set_item_shortcut(VIEW_RESET_ZOOM, Shortcuts.create("shortcuts/reset_zoom"))
+	get_popup().set_item_shortcut(VIEW_RESET_VIEW, Shortcuts.create("shortcuts/reset_view"))
+	get_popup().set_item_shortcut(OTHER_PREFERENCES, Shortcuts.create("shortcuts/show_preferences"))
+	get_popup().set_item_shortcut(OTHER_PLUGINS, Shortcuts.create("shortcuts/show_plugins"))
+	get_popup().index_pressed.connect(func(index: int):
+		match index:
 			FILE_OPEN:
-				DataManager.load_file()
+				WhiteboardBus.load_file()
 			FILE_SAVE:
-				DataManager.save_file_as()
+				WhiteboardBus.save_file_as()
 			FILE_NEW:
-				DataManager.create_new_file()
-			PREFERENCES:
+				WhiteboardBus.create_new_file()
+			VIEW_RESET_ZOOM:
+				WhiteboardBus.view_reset_zoom.emit()
+			VIEW_RESET_VIEW:
+				WhiteboardBus.view_reset_view.emit()
+			OTHER_PREFERENCES:
 				Settings.show()
 	)
 

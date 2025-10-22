@@ -117,6 +117,8 @@ func _init() -> void:
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		serialize_or_new()
+	if what == NOTIFICATION_WM_WINDOW_FOCUS_OUT:
+		serialize_or_new()
 
 
 func _ready() -> void:
@@ -143,21 +145,32 @@ func _ready() -> void:
 	else:
 		serialize_or_new()
 	
-	DataManager.file_save.connect(func(filepath: String):
+	WhiteboardBus.file_save.connect(func(filepath: String):
 		Util.unused(filepath)
 		serialize()
 	)
 	
-	DataManager.file_load.connect(func(filepath: String):
+	WhiteboardBus.file_load.connect(func(filepath: String):
 		deserialize(StreamPeerFile.open(filepath, FileAccess.READ))
 	)
 	
-	DataManager.file_new.connect(func():
+	WhiteboardBus.file_new.connect(func():
 		reset()
 		serialize_or_new()
 	)
 	
+	WhiteboardBus.view_reset_view.connect(func():
+		draw_xform = Transform2D.IDENTITY
+	)
+	
+	WhiteboardBus.view_reset_zoom.connect(func():
+		var center := size * 0.5
+		draw_xform = draw_xform.translated(-center).scaled(Vector2.ONE / draw_xform.get_scale()).translated(center)
+	)
+	
 	save_timer.timeout.connect(serialize_or_new)
+	
+	WhiteboardManager.intialize_passive_tools(self)
 
 
 var _preview_draw_twice := false
@@ -219,12 +232,13 @@ func set_active_tools(new_active_tools: Array[WhiteboardTool]) -> void:
 
 func save() -> void:
 	save_timer.start()
+	WhiteboardBus.save_status_changed.emit(false)
 
 
 func serialize_or_new() -> void:
 	var filepath: String = Settings["state/last_opened_filepath"]
 	if not filepath:
-		filepath = DataManager.get_default_save_path()
+		filepath = WhiteboardBus.get_default_save_path()
 		Settings["state/last_opened_filepath"] = filepath
 	serialize(StreamPeerFile.open(filepath, FileAccess.WRITE))
 
@@ -242,6 +256,7 @@ func serialize(
 	var json_compressed := json.compress(FileAccess.COMPRESSION_ZSTD)
 	stream.put_u64(json.size())
 	stream.put_data(json_compressed)
+	WhiteboardBus.save_status_changed.emit(true)
 
 
 func deserialize(stream: StreamPeer) -> void:

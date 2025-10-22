@@ -8,13 +8,13 @@ var color: Color
 var is_drawing: bool
 var last_draw_element: ShapeElement
 var start_pos: Vector2
-var preview := LinePreviewElement.new()
+var preview := PlainPreviewElement.new()
 
 
 func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
-	width = 5.0 / wb.draw_scale
+	var draw_width := width / wb.draw_scale
 	color = wb.primary_color
-	preview.width = width
+	preview.width = draw_width
 	preview.color = color
 	var display := Display.new([], [preview])
 	var mb := event as InputEventMouseButton
@@ -25,7 +25,7 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 					start_pos = mb.position
 					last_draw_element = create_element()
 					last_draw_element.color = color
-					last_draw_element.width = width
+					last_draw_element.width = draw_width
 				else:
 					last_draw_element = null
 	var mm := event as InputEventMouseMotion
@@ -53,23 +53,12 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 func create_element() -> ShapeElement
 
 
-class LinePreviewElement extends WhiteboardTool.PreviewElement:
-	var position: Vector2
-	var color: Color
-	var width: float
-	
-	func draw(canvas: CanvasItem, _wb: Whiteboard):
-		canvas.draw_circle(position, width * 0.5, color, false, -2.0, false)
-
-
 @abstract
 class ShapeElement extends WhiteboardTool.Element:
 	var color: Color
 	var width: float
 	
 	var rect: Rect2
-	
-	func _falloff(x: float) -> float: return max(0.0, 2.0 - 1.0 / x if x <= 1.0 else x)
 	
 	func get_bounding_box() -> Rect2:
 		return rect.abs().grow(width)

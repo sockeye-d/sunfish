@@ -5,6 +5,13 @@ signal file_load(filepath: String)
 signal file_save(filepath: String)
 signal file_new
 
+@warning_ignore_start("unused_signal")
+signal view_reset_zoom
+signal view_reset_view
+
+signal save_status_changed(saved: bool)
+@warning_ignore_restore("unused_signal")
+
 
 func _ready() -> void:
 	Settings.setting_changed("state/last_opened_filepath").connect(func(v):

@@ -60,15 +60,11 @@ class LineElement extends WhiteboardTool.Element:
 	
 	static func get_id() -> StringName: return "dev.fishies.sunfish.LineElement"
 	
-	func _falloff(x: float) -> float: return max(0.0, 2.0 - 1.0 / x if x <= 1.0 else x)
-	
 	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard) -> void:
-		var real_width := _falloff(width * wb.draw_scale) / wb.draw_scale
-		if real_width < 0.0:
-			return
-		canvas.draw_circle(start_pos, real_width * 0.5, color)
+		Util.unused(wb)
+		canvas.draw_circle(start_pos, width * 0.5, color)
 		canvas.draw_line(start_pos, end_pos, color, width)
-		canvas.draw_circle(end_pos, real_width * 0.5, color)
+		canvas.draw_circle(end_pos, width * 0.5, color)
 	
 	func get_bounding_box() -> Rect2:
 		return Rect2(start_pos, end_pos - start_pos).abs().grow(width)

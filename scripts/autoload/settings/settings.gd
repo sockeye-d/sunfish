@@ -82,16 +82,18 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 				config.set(property_name, initial_value)
 
 			if property.usage & PROPERTY_USAGE_EDITOR:
+				var label_container := HBoxContainer.new()
+				label_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 				var label := Label.new()
 				label.tooltip_text = property_key
 				label.mouse_filter = Control.MOUSE_FILTER_PASS
 				label.text = Util.pretty_print_property(property_name)
 				label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+				label_container.add_child(label)
 				var edit_container := HBoxContainer.new()
-				edit_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 				var reset_button := Button.new()
 				reset_button.icon = RESET_ICON
-				edit_container.add_child(reset_button)
+				label_container.add_child(reset_button)
 				var update_reset_button := func():
 					var config_value = config.get(property_name)
 					if is_shortcut:
@@ -136,11 +138,11 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 						label.visible = not failed_filter
 						edit_container.visible = not failed_filter
 					)
-					shortcut_container.add_child(label)
+					shortcut_container.add_child(label_container)
 					shortcut_container.add_child(edit_container)
 				else:
 					has_tree_worthy_properties = true
-					grid_container.add_child(label)
+					grid_container.add_child(label_container)
 					grid_container.add_child(edit_container)
 	var data := ConfigurationData.new()
 	data.config = config

@@ -16,23 +16,22 @@ class FilledRectangleElement extends ShapeTool.ShapeElement:
 	
 	static func get_id() -> StringName: return "dev.fishies.sunfish.FilledRectangleElement"
 	
-	func _falloff(x: float) -> float: return max(0.0, 2.0 - 1.0 / x if x <= 1.0 else x)
-	
 	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard) -> void:
-		var real_width := _falloff(width * wb.draw_scale) / wb.draw_scale
-		if real_width < 0.0:
-			return
-		canvas.draw_circle(rect.position + rect.size * Vector2(0, 0), real_width * 0.5, color)
-		canvas.draw_circle(rect.position + rect.size * Vector2(1, 0), real_width * 0.5, color)
-		canvas.draw_circle(rect.position + rect.size * Vector2(0, 1), real_width * 0.5, color)
-		canvas.draw_circle(rect.position + rect.size * Vector2(1, 1), real_width * 0.5, color)
+		Util.unused(wb)
+		var abs_rect := rect.abs()
+		var rect_pos := abs_rect.position
+		var rect_size := abs_rect.size
+		canvas.draw_circle(rect_pos + rect_size * Vector2(0, 0), width * 0.5, color)
+		canvas.draw_circle(rect_pos + rect_size * Vector2(1, 0), width * 0.5, color)
+		canvas.draw_circle(rect_pos + rect_size * Vector2(0, 1), width * 0.5, color)
+		canvas.draw_circle(rect_pos + rect_size * Vector2(1, 1), width * 0.5, color)
 		canvas.draw_rect(Rect2(
-			rect.position - Vector2(real_width * 0.5, 0.0),
-			rect.size + Vector2(real_width, 0.0)
+			rect_pos - Vector2(width * 0.5, 0.0),
+			rect_size + Vector2(width, 0.0)
 		).abs(), color)
 		canvas.draw_rect(Rect2(
-			rect.position - Vector2(0.0, real_width * 0.5),
-			rect.size + Vector2(0.0, real_width)
+			rect_pos - Vector2(0.0, width * 0.5),
+			rect_size + Vector2(0.0, width)
 		).abs(), color)
 	
 	static func deserialize(data: Dictionary) -> Element: return deserialize_into(new(), data)

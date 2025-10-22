@@ -28,7 +28,7 @@ config/windows_native_icon="res://icons/sunfish.ico"
 TreeEvents="*res://scripts/autoload/tree_events.gd"
 Settings="*res://scripts/autoload/settings/settings.tscn"
 DialogUtil="*res://scripts/autoload/dialog_util.gd"
-DataManager="*res://scripts/autoload/data_manager.gd"
+WhiteboardBus="*res://scripts/autoload/whiteboard_bus.gd"
 ThemeManager="*res://scripts/autoload/theme_manager.gd"
 DebugManager="*res://scripts/autoload/debug_manager.gd"
 

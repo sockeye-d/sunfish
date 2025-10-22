@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://78r8qgrrm8sv"]
+[gd_scene load_steps=12 format=3 uid="uid://78r8qgrrm8sv"]
 
 [ext_resource type="Script" uid="uid://cg1d5ghvrv5un" path="res://scripts/resources/icon_texture_2d.gd" id="1_0dkrt"]
 [ext_resource type="Script" uid="uid://duwys366t42it" path="res://ui/main/main_menu.gd" id="2_wk0pr"]
@@ -16,7 +16,7 @@ icon_scale = 1.5
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_04ebt"]
-_source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg5\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"m3.233206 5.5c0 0 .125667-1.885.204533-3.067C3.472406 1.908 3.909206 1.5 4.435273 1.5h3.264735c.552067 0 1.000134.448 1.000134 1v1c0 .552.4472 1 1.000134 1h4.799869l-1.000134 10\" id=\"path2\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"m1.599538 6.590463c-.026-.2794.0676-.557333.2574-.764866C2.045872 5.618063 2.313672 5.499996 2.595339 5.499996h3.004735c.292067 0 .571133.115867.7774.321933.206267.2068.3224.4862.3224.778066 0 .6072.492267 1.1 1.0998 1.1H11.499877L13.50001 14.499992H2.500005c0 0-.648267-5.130197-.900467-7.909529z\" id=\"path3\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
+_source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg5\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M2.5 13.5l1.875-7.375a1 .8 0 01.875-.625H9a1 1 0 011 .5 1 1 0 001 .5h2a.8.8 0 01.75 1L12.5 13.5z\" stroke=\"#fff\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M2.5 13.5v-10a1 1 0 011-1h4a1 1 0 011 1 1 1 0 001 1h2a1 1 0 011 1v.5\" stroke=\"#fff\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
 color_map = {
 Color(1, 1, 1, 1): Color(1, 1, 1, 1),
 Color(0, 0, 0, 1): Color(0, 0, 0, 1)
@@ -26,7 +26,7 @@ icon = "open"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_7nk2m"]
-_source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M2.5 2.5H12.5l1 1V13.5H2.5Z\" id=\"path1\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect width=\"6\" height=\"4\" x=\"4.5\" y=\"2.5\" stroke-width=\"1\" stroke=\"#fff\" fill=\"none\"/><line x2=\"9.5\" stroke=\"#fff\" y2=\"6\" x1=\"9.5\" y1=\"3\"/></svg>"
+_source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M2.5 2.5H12.5l1 1V13.5H2.5Z\" id=\"path1\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"m4.5 2.5h6v4h-6z\" stroke-width=\"1\" stroke=\"#fff\" fill=\"none\"/><path d=\"m9.5 3v3\" stroke=\"#fff\"/></svg>"
 color_map = {
 Color(1, 1, 1, 1): Color(1, 1, 1, 1),
 Color(0, 0, 0, 1): Color(0, 0, 0, 1)
@@ -36,13 +36,33 @@ icon = "save"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_ar4ev"]
-_source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M12.5 7V2.5H5L3.5 4V13.500011H5.000005\" id=\"path1\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M8 5 9 6.78648 10.853179 7.072953 9.426591 8.463533 9.763363 10.42706 8 9.5 6.236649 10.42706 6.57342 8.463533 5.146832 7.072953 7.118326 6.78648Z\" transform=\"translate(2 3)\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
+_source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M13.5 13.5V2.5H2.5V10.5L5.5 13.5Zm-10.5-3h2.5v2.5\" id=\"path1\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
 color_map = {
 Color(1, 1, 1, 1): Color(1, 1, 1, 1),
 Color(0, 0, 0, 1): Color(0, 0, 0, 1)
 }
 script = ExtResource("1_0dkrt")
 icon = "new"
+metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
+
+[sub_resource type="DPITexture" id="DPITexture_wk0pr"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path id=\"half-square\" d=\"M8.5 3.5h3a1 1 0 011 1v3\" stroke=\"#fff\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path id=\"arrow\" d=\"M9.5 9.5 13.5 13.5v-2m0 2h-2\" stroke=\"#fff\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-opacity=\"1\"/><use href=\"#arrow\" x=\"-16\" transform=\"scale(-1)\" y=\"-16\"/><use href=\"#half-square\" x=\"-16\" transform=\"scale(-1)\" y=\"-16\"/></svg>"
+color_map = {
+Color(1, 1, 1, 1): Color(1, 1, 1, 1),
+Color(0, 0, 0, 1): Color(0, 0, 0, 1)
+}
+script = ExtResource("1_0dkrt")
+icon = "reset_zoom"
+metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
+
+[sub_resource type="DPITexture" id="DPITexture_rmr83"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path id=\"arrow\" d=\"M9.5 9.5 13.5 13.5v-2m0 2h-2\" stroke=\"#fff\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-opacity=\"1\"/><use href=\"#arrow\" x=\"-16\" transform=\"scale(-1)\" y=\"-16\"/><use href=\"#arrow\" x=\"0\" transform=\"scale(1-1)\" y=\"-16\"/><use href=\"#arrow\" x=\"-16\" transform=\"scale(-1 1)\" y=\"0\"/><path d=\"M7.5 3.5H8.5M12.5 7.5V8.5M8.5 12.5H7.5M3.5 8.5V7.5\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-opacity=\"0\"/></svg>"
+color_map = {
+Color(1, 1, 1, 1): Color(1, 1, 1, 1),
+Color(0, 0, 0, 1): Color(0, 0, 0, 1)
+}
+script = ExtResource("1_0dkrt")
+icon = "reset_view"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_0dkrt"]
@@ -55,24 +75,10 @@ script = ExtResource("1_0dkrt")
 icon = "config"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
-[sub_resource type="DPITexture" id="DPITexture_wk0pr"]
-_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path d=\"M2.5 2.5v4h4\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M2.5 8.5a5.5 5.5 0 005.5 5.5 1 1 0 000-11 5.5 5.5 0 00-5 3\" stroke=\"#fff\" fill=\"none\" stroke-linecap=\"round\"/><line x2=\"6\" stroke=\"#fff\" y2=\"10\" x1=\"10\" y1=\"10\" stroke-linecap=\"round\"/><line x2=\"8\" stroke=\"#fff\" y2=\"12\" x1=\"8\" y1=\"8\" stroke-linecap=\"round\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
+[sub_resource type="DPITexture" id="DPITexture_8uxxo"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><rect width=\"4\" height=\"4\" x=\"9.5\" y=\"2.5\" stroke=\"#fff\" fill=\"none\" stroke-linejoin=\"round\"/><path d=\"M2.5 5.5h4v4H10.5V13.5H2.5ZM3 9.5H6M6.5 10V13\" fill=\"none\" stroke=\"#fff\" stroke-linejoin=\"round\"/></svg>"
 script = ExtResource("1_0dkrt")
-icon = "reset_zoom"
-metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
-
-[sub_resource type="DPITexture" id="DPITexture_rmr83"]
-_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><use href=\"#half-square\" transform=\"scale(1-1)\" y=\"-16\"/><use href=\"#half-square\" transform=\"scale(-1 1)\" y=\"0\" x=\"-16\"/><use href=\"#half-square\" x=\"-16\" transform=\"scale(-1)\" y=\"-16\"/><path id=\"half-square\" d=\"M11.5 3.5a1 1 0 011 1\" stroke=\"#fff\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path id=\"arrow\" d=\"M8 8.5l0 5 1.4-1.4m-1.4 1.4-1.4-1.4\" stroke=\"#fff\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-opacity=\"1\"/><use href=\"#arrow\" y=\"-16\" transform=\"rotate(90)\"/><use href=\"#arrow\" transform=\"rotate(-90)\" x=\"-16\"/><use href=\"#arrow\" x=\"-16\" transform=\"scale(-1)\" y=\"-16\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
-script = ExtResource("1_0dkrt")
-icon = "reset_view"
+icon = "plugins"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="GDScript" id="GDScript_0dkrt"]
@@ -97,7 +103,7 @@ func _ready() -> void:
 icon = SubResource("DPITexture_06s8x")
 flat = false
 icon_alignment = 1
-item_count = 8
+item_count = 10
 popup/item_0/text = "File"
 popup/item_0/id = 0
 popup/item_0/separator = true
@@ -106,22 +112,27 @@ popup/item_1/icon = SubResource("DPITexture_04ebt")
 popup/item_1/id = 1
 popup/item_2/text = "Save as"
 popup/item_2/icon = SubResource("DPITexture_7nk2m")
-popup/item_2/id = 2
+popup/item_2/id = 1
 popup/item_3/text = "New"
 popup/item_3/icon = SubResource("DPITexture_ar4ev")
-popup/item_3/id = 3
-popup/item_4/text = "Preferences"
-popup/item_4/icon = SubResource("DPITexture_0dkrt")
+popup/item_3/id = 2
+popup/item_4/text = "View"
 popup/item_4/id = 4
-popup/item_5/text = "View"
+popup/item_4/separator = true
+popup/item_5/text = "Reset zoom"
+popup/item_5/icon = SubResource("DPITexture_wk0pr")
 popup/item_5/id = 5
-popup/item_5/separator = true
-popup/item_6/text = "Reset zoom"
-popup/item_6/icon = SubResource("DPITexture_wk0pr")
+popup/item_6/text = "Reset view"
+popup/item_6/icon = SubResource("DPITexture_rmr83")
 popup/item_6/id = 6
-popup/item_7/text = "Reset view"
-popup/item_7/icon = SubResource("DPITexture_rmr83")
-popup/item_7/id = 7
+popup/item_7/id = 8
+popup/item_7/separator = true
+popup/item_8/text = "Preferences"
+popup/item_8/icon = SubResource("DPITexture_0dkrt")
+popup/item_8/id = 7
+popup/item_9/text = "Plugins"
+popup/item_9/icon = SubResource("DPITexture_8uxxo")
+popup/item_9/id = 9
 script = ExtResource("2_wk0pr")
 
 [node name="Debug" type="PopupMenu" parent="." unique_id=1728632799]

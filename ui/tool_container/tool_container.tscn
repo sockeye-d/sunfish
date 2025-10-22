@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://g8c0ppafuaxo" path="res://ui/tool_container/tool_container.gd" id="1_tpjp1"]
 
-[node name="ToolContainer" type="VBoxContainer"]
+[node name="ToolContainer" type="VBoxContainer" unique_id=1119772857]
 offset_right = 32.0
 offset_bottom = 284.0
 size_flags_horizontal = 0
