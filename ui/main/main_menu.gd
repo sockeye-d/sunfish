@@ -13,6 +13,8 @@ enum {
 	FILE_OPEN,
 	FILE_SAVE,
 	FILE_NEW,
+	EDIT_SPACER,
+	EDIT_UNDO,
 	VIEW_SPACER,
 	VIEW_RESET_ZOOM,
 	VIEW_RESET_VIEW,
@@ -31,6 +33,34 @@ var last_show_debug_menu: bool = false
 
 
 func _ready() -> void:
+	add_separator("File")
+	var open := add_item("Open", "open", "shortcuts/open")
+	var save := add_item("Save as", "save", "shortcuts/save_as")
+	var new := add_item("New", "new", "shortcuts/new")
+	add_separator("Edit")
+	var undo := add_item("Undo", "save", "shortcuts/undo")
+	var preferences := add_item("Preferences", "config", "shortcuts/show_preferences")
+	var plugins := add_item("Plugins", "plugins", "shortcuts/show_plugins")
+	add_separator("View")
+	var reset_zoom := add_item("Reset zoom", "reset_zoom", "shortcuts/reset_zoom")
+	var reset_view := add_item("Reset view", "reset_view", "shortcuts/reset_view")
+	
+	get_popup().index_pressed.connect(func(index: int):
+		match index:
+			open:
+				WhiteboardBus.load_file()
+			save:
+				WhiteboardBus.save_file_as()
+			new:
+				WhiteboardBus.create_new_file()
+			reset_zoom:
+				WhiteboardBus.view_reset_zoom.emit()
+			reset_view:
+				WhiteboardBus.view_reset_view.emit()
+			preferences:
+				Settings.show()
+	)
+	
 	debug.reparent(get_popup())
 	if Settings["core/show_debug_menu"]:
 		last_show_debug_menu = true
@@ -42,29 +72,6 @@ func _ready() -> void:
 		elif last_show_debug_menu:
 			_remove_debug_menu()
 		last_show_debug_menu = new_value
-	)
-	
-	get_popup().set_item_shortcut(FILE_OPEN, Shortcuts.create("shortcuts/open"))
-	get_popup().set_item_shortcut(FILE_SAVE, Shortcuts.create("shortcuts/save_as"))
-	get_popup().set_item_shortcut(FILE_NEW, Shortcuts.create("shortcuts/new"))
-	get_popup().set_item_shortcut(VIEW_RESET_ZOOM, Shortcuts.create("shortcuts/reset_zoom"))
-	get_popup().set_item_shortcut(VIEW_RESET_VIEW, Shortcuts.create("shortcuts/reset_view"))
-	get_popup().set_item_shortcut(OTHER_PREFERENCES, Shortcuts.create("shortcuts/show_preferences"))
-	get_popup().set_item_shortcut(OTHER_PLUGINS, Shortcuts.create("shortcuts/show_plugins"))
-	get_popup().index_pressed.connect(func(index: int):
-		match index:
-			FILE_OPEN:
-				WhiteboardBus.load_file()
-			FILE_SAVE:
-				WhiteboardBus.save_file_as()
-			FILE_NEW:
-				WhiteboardBus.create_new_file()
-			VIEW_RESET_ZOOM:
-				WhiteboardBus.view_reset_zoom.emit()
-			VIEW_RESET_VIEW:
-				WhiteboardBus.view_reset_view.emit()
-			OTHER_PREFERENCES:
-				Settings.show()
 	)
 
 
@@ -79,3 +86,13 @@ func _add_debug_menu() -> void:
 func _remove_debug_menu() -> void:
 	get_popup().remove_item(get_popup().item_count - 1)
 	get_popup().remove_item(get_popup().item_count - 1)
+
+
+func add_item(item_text: String, item_icon_name: String, item_shortcut_id: String) -> int:
+	get_popup().add_icon_item(IconTexture2D.create(item_icon_name), item_text)
+	get_popup().set_item_shortcut(item_count - 1, Shortcuts.create(item_shortcut_id))
+	return item_count - 1
+
+
+func add_separator(label: String = "") -> void:
+	get_popup().add_separator(label)

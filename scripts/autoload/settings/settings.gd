@@ -91,6 +91,7 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 				label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 				label_container.add_child(label)
 				var edit_container := HBoxContainer.new()
+				edit_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 				var reset_button := Button.new()
 				reset_button.icon = RESET_ICON
 				label_container.add_child(reset_button)

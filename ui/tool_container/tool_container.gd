@@ -28,14 +28,15 @@ func _ready() -> void:
 	WhiteboardManager.instance.tools_changed.connect(_update_tools)
 	selected_tool_id = Settings["core/default_tool"]
 	_update_tools.call_deferred()
+	whiteboard.tool_popup.tool_selected.connect(func(tool: Script):
+		active_tool_changed.emit(tool)
+		tool_buttons[tool].button_pressed = true
+	)
 
 
 func _update_tools() -> void:
 	for tool in tool_buttons:
-		if tool in tool_buttons:
-			tool_buttons[tool].queue_free()
-		else:
-			tool_buttons.erase(tool)
+		tool_buttons[tool].queue_free()
 	tool_buttons.clear()
 	if WhiteboardManager.tools.is_empty():
 		return
@@ -59,6 +60,7 @@ func _update_tools() -> void:
 			active_tool_changed.emit(tool)
 		)
 		add_child(btn)
+	whiteboard.tool_popup._update_tools()
 
 
 func set_selected(tool: Script) -> void:

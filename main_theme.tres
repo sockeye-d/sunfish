@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=117 format=3 uid="uid://6m1sumf80mct"]
+[gd_resource type="Theme" load_steps=118 format=3 uid="uid://6m1sumf80mct"]
 
 [ext_resource type="FontFile" uid="uid://cm1owo44e6kug" path="res://assets/fonts/LiberationSans-Regular.ttf" id="1_470mv"]
 [ext_resource type="Script" uid="uid://cg1d5ghvrv5un" path="res://scripts/resources/icon_texture_2d.gd" id="1_a2l2q"]
@@ -92,60 +92,36 @@ shadow_offset = Vector2(0, 2)
 
 [sub_resource type="DPITexture" id="DPITexture_0omi4"]
 _source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><rect id=\"rect1\" width=\"13\" height=\"13\" x=\"1.5\" y=\"1.5\" ry=\"2.5\" fill=\"none\" stroke=\"#fff\"/><path d=\"M4 10 7 12 12 4\" id=\"path1\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/checkbox_checked"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_a2l2q"]
 _source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><rect id=\"rect1\" width=\"13\" height=\"13\" x=\"1.5\" y=\"1.5\" ry=\"2.5\" fill=\"none\" stroke=\"#fff\" style=\"opacity:0.5\"/><path d=\"M4 10 7 12 12 4\" id=\"path1\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"opacity:0.5\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/checkbox_checked_disabled"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_yhfeq"]
 _source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><rect id=\"rect1\" width=\"13\" height=\"13\" x=\"1.5\" y=\"1.5\" ry=\"2.5\" fill=\"none\" stroke=\"#fff\"/><rect width=\"8\" height=\"8\" x=\"4\" y=\"4\" ry=\"0\" fill=\"#fff\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/checkbox_radio_checked"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_0kida"]
 _source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><rect id=\"rect1\" width=\"13\" height=\"13\" x=\"1.5\" y=\"1.5\" ry=\"2.5\" fill=\"none\" stroke=\"#fff\" style=\"opacity:0.5\"/><rect width=\"8\" height=\"8\" x=\"4\" y=\"4\" ry=\"0\" fill=\"#fff\" style=\"opacity:0.5\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/checkbox_radio_checked_disabled"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_58jnp"]
 _source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><rect id=\"rect1\" width=\"13\" height=\"13\" x=\"1.5\" y=\"1.5\" ry=\"2.5\" stroke=\"#fff\" fill=\"none\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/checkbox_unchecked"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_466ly"]
 _source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><rect id=\"rect1\" width=\"13\" height=\"13\" x=\"1.5\" y=\"1.5\" ry=\"2.5\" stroke=\"#fff\" fill=\"none\" style=\"opacity:0.5\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/checkbox_unchecked_disabled"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
@@ -218,40 +194,24 @@ shadow_offset = Vector2(0, 2)
 
 [sub_resource type="DPITexture" id="DPITexture_py0i1"]
 _source = "<svg width=\"32\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><rect id=\"rect1\" width=\"29\" height=\"13\" x=\"1.5\" y=\"1.5\" ry=\"2.5\" stroke=\"#fff\" fill=\"none\"/><rect width=\"8\" height=\"8\" x=\"20\" y=\"4\" ry=\"0\" fill=\"#fff\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/checkbutton_checked"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_7hjjl"]
 _source = "<svg width=\"32\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><rect id=\"rect1\" width=\"29\" height=\"13\" x=\"1.5\" y=\"1.5\" ry=\"2.5\" stroke=\"#fff\" fill=\"none\" style=\"opacity:0.5\"/><rect width=\"8\" height=\"8\" x=\"20\" y=\"4\" ry=\"0\" fill=\"#fff\" style=\"opacity:0.5\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/checkbutton_checked_disabled"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_wnmfn"]
 _source = "<svg width=\"32\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><rect id=\"rect1\" width=\"29\" height=\"13\" x=\"1.5\" y=\"1.5\" ry=\"2.5\" stroke=\"#fff\" fill=\"none\"/><rect width=\"8\" height=\"8\" x=\"4\" y=\"4\" ry=\"0\" fill=\"#fff\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/checkbutton_unchecked"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_1i34x"]
 _source = "<svg width=\"32\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><rect id=\"rect1\" width=\"29\" height=\"13\" x=\"1.5\" y=\"1.5\" ry=\"2.5\" stroke=\"#fff\" fill=\"none\" style=\"opacity:0.5\"/><rect width=\"8\" height=\"8\" x=\"4\" y=\"4\" ry=\"0\" fill=\"#fff\" style=\"opacity:0.5\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/checkbutton_unchecked_disabled"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
@@ -324,20 +284,12 @@ shadow_offset = Vector2(0, 2)
 
 [sub_resource type="DPITexture" id="DPITexture_kq6f5"]
 _source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M8 8m0-5v10m-5-5h10\" stroke=\"#fff\" stroke-linecap=\"round\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "add"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_4rll8"]
 _source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"20\"><path fill=\"#fff\" d=\"M2 16h12l-6-6z\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/color_picker/arrow"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
@@ -353,40 +305,24 @@ height = 6
 
 [sub_resource type="DPITexture" id="DPITexture_j0ank"]
 _source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path d=\"M1.5 6.5a1 1 0 016 0v5a1 1 0 01-6 0zM9.5 7.5l5 7m0-7-5 7\" stroke=\"#fff\" fill=\"none\" stroke-linecap=\"round\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/color_picker/hex"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_7upj7"]
 _source = "<svg width=\"12\" height=\"12\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M2 4 6 8 10 4\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/down_chevron"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_upq38"]
 _source = "<svg width=\"12\" height=\"12\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M4 10 8 6 4 2\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/right_chevron"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_ttg1c"]
 _source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><circle r=\"1.5\" cx=\"10\" cy=\"13\" fill=\"#fff\"/><circle r=\"1.5\" cx=\"10\" cy=\"8\" fill=\"#fff\"/><circle r=\"1.5\" cx=\"10\" cy=\"3\" fill=\"#fff\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/color_picker/menu"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
@@ -411,30 +347,18 @@ _source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"12\" height=\"12\">
 
 [sub_resource type="DPITexture" id="DPITexture_4duq5"]
 _source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"m8 8h8v8h-8z\" fill=\"#000\"/><path d=\"m0 0h8v8h-8z\" fill=\"#000\"/><path d=\"m0 8h8v8h-8z\" fill=\"#fff\"/><path d=\"m8 0h8v8h-8z\" fill=\"#fff\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/color_picker/mini_checkerboard"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_igq5l"]
 _source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path d=\"M2.5 2.5v4h4\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M2.5 8.5a5.5 5.5 0 005.5 5.5 1 1 0 000-11 5.5 5.5 0 00-5 3\" stroke=\"#fff\" fill=\"none\" stroke-linecap=\"round\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "reload"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_w0xme"]
 _source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"m6 3a1 1 0 014 0v2h1v1h-6v-1h1\" fill=\"#fff\"/><path d=\"M6.5 6V11C6.5 12.5 8 13 8 15 8 13 9.5 12.5 9.5 11V6\" stroke=\"#fff\" fill=\"none\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "pick_color"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
@@ -574,10 +498,6 @@ corner_radius_bottom_left = 1
 
 [sub_resource type="DPITexture" id="DPITexture_sxwih"]
 _source = "<svg width=\"6\" height=\"6\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><circle r=\"3\" cx=\"3\" cy=\"3\" fill=\"#fff\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 0.78431374),
-Color(0, 0, 0, 1): Color(0, 0, 0, 0.78431374)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/slider_grabber"
 modulate = Color(1, 1, 1, 0.78431374)
@@ -585,10 +505,6 @@ metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_52mx2"]
 _source = "<svg width=\"6\" height=\"6\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><circle r=\"3\" cx=\"3\" cy=\"3\" fill=\"#fff\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 0.39215687),
-Color(0, 0, 0, 1): Color(0, 0, 0, 0.39215687)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/slider_grabber"
 modulate = Color(1, 1, 1, 0.39215687)
@@ -596,10 +512,6 @@ metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_rt4o7"]
 _source = "<svg width=\"6\" height=\"6\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><circle r=\"3\" cx=\"3\" cy=\"3\" fill=\"#fff\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/slider_grabber"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
@@ -666,10 +578,6 @@ corner_radius_bottom_left = 4
 
 [sub_resource type="DPITexture" id="DPITexture_q6oxf"]
 _source = "<svg width=\"12\" height=\"12\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M2 4 6 8 10 4\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/down_chevron"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
@@ -700,20 +608,12 @@ corner_radius_bottom_left = 8
 
 [sub_resource type="DPITexture" id="DPITexture_2u8nx"]
 _source = "<svg width=\"12\" height=\"12\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M4 10 8 6 4 2\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/right_chevron"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_nxip8"]
 _source = "<svg width=\"12\" height=\"12\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M8 2 4 6 8 10\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/left_chevron"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
@@ -848,80 +748,48 @@ corner_radius_bottom_left = 4
 
 [sub_resource type="DPITexture" id="DPITexture_lsctt"]
 _source = "<svg width=\"12\" height=\"12\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M2 4 6 8 10 4\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/spin_box/down"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_wc7hn"]
 _source = "<svg width=\"12\" height=\"12\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M2 4 6 8 10 4\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-opacity=\".5\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/spin_box/down_disabled"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_caist"]
 _source = "<svg width=\"12\" height=\"12\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M2 4 6 8 10 4\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/spin_box/down_hover"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_tupki"]
 _source = "<svg width=\"12\" height=\"12\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M2 4 6 8 10 4\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/spin_box/down_pressed"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_tq6wv"]
 _source = "<svg width=\"12\" height=\"12\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M2 8 6 4 10 8\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/spin_box/up"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_lobyy"]
 _source = "<svg width=\"12\" height=\"12\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M2 8 6 4 10 8\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-opacity=\".5\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/spin_box/up_disabled"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_3hrxq"]
 _source = "<svg width=\"12\" height=\"12\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M2 8 6 4 10 8\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/spin_box/up_hover"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_6ybe0"]
 _source = "<svg width=\"12\" height=\"12\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M2 8 6 4 10 8\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/spin_box/up_pressed"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
@@ -995,82 +863,52 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_52mx2"]
+
 [sub_resource type="DPITexture" id="DPITexture_qu8em"]
 _source = "<svg width=\"12\" height=\"12\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M2 4 6 8 10 4\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/down_chevron"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_ffxfl"]
 _source = "<svg width=\"12\" height=\"12\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M4 10 8 6 4 2\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/right_chevron"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_tpkcg"]
 _source = "<svg width=\"12\" height=\"12\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M8 2 4 6 8 10\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/left_chevron"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_xxa0j"]
 _source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><rect id=\"rect1\" width=\"13\" height=\"13\" x=\"1.5\" y=\"1.5\" ry=\"2.5\" fill=\"none\" stroke=\"#fff\"/><path d=\"M4 10 7 12 12 4\" id=\"path1\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/checkbox_checked"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_70bsv"]
 _source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><rect id=\"rect1\" width=\"13\" height=\"13\" x=\"1.5\" y=\"1.5\" ry=\"2.5\" fill=\"none\" stroke=\"#fff\" style=\"opacity:0.5\"/><path d=\"M4 10 7 12 12 4\" id=\"path1\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"opacity:0.5\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/checkbox_checked_disabled"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_hr40q"]
 _source = "<svg width=\"12\" height=\"12\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M2 4 6 8 10 4\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/down_chevron"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_a24hu"]
 _source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><rect id=\"rect1\" width=\"13\" height=\"13\" x=\"1.5\" y=\"1.5\" ry=\"2.5\" stroke=\"#fff\" fill=\"none\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/checkbox_unchecked"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
 
 [sub_resource type="DPITexture" id="DPITexture_dfltk"]
 _source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><rect id=\"rect1\" width=\"13\" height=\"13\" x=\"1.5\" y=\"1.5\" ry=\"2.5\" stroke=\"#fff\" fill=\"none\" style=\"opacity:0.5\"/></svg>"
-color_map = {
-Color(1, 1, 1, 1): Color(1, 1, 1, 1),
-Color(0, 0, 0, 1): Color(0, 0, 0, 1)
-}
 script = ExtResource("1_a2l2q")
 icon = "gui/checkbox_unchecked_disabled"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
@@ -1422,6 +1260,8 @@ TextEdit/colors/font_uneditable_color = Color(0.6509804, 0.6784314, 0.78431374, 
 TextEdit/colors/selection_color = Color(0.79607844, 0.6509804, 0.96862745, 0.3)
 TextEdit/styles/focus = SubResource("StyleBoxFlat_52mx2")
 TextEdit/styles/normal = SubResource("StyleBoxFlat_6ybe0")
+ToolPopup/base_type = &"PopupPanel"
+ToolPopup/styles/panel = SubResource("StyleBoxEmpty_52mx2")
 Tree/colors/children_hl_line_color = Color(0.27058825, 0.2784314, 0.3529412, 1)
 Tree/colors/font_color = Color(0.8039216, 0.8392157, 0.95686275, 1)
 Tree/colors/font_disabled_color = Color(0.6509804, 0.6784314, 0.78431374, 1)

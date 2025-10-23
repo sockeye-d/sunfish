@@ -1,7 +1,6 @@
 @tool
 class_name Whiteboard extends Control
 
-const OVERSAMPLE = 1.0
 const PanTool = preload("uid://ios48ehu0i7f")
 const WHITEBOARD_BACKGROUND = preload("uid://h1qiidxtgcs0")
 
@@ -21,7 +20,7 @@ var draw_xform: Transform2D:
 		draw_origin = draw_xform.get_origin()
 		xform_changed.emit()
 		if viewport:
-			viewport.canvas_transform = draw_xform * OVERSAMPLE
+			viewport.canvas_transform = draw_xform * Settings["core/ui_scale"]
 		redraw_preview()
 var inv_draw_xform: Transform2D
 var draw_scale: float
@@ -44,11 +43,15 @@ var preview: PreviewControl
 
 
 var viewport_container: Control
-var viewport: Viewport
+var viewport: SubViewport
 var layer_container: Node2D
 
 
 var save_timer: Timer
+var tool_popup: ToolPopup
+
+
+var _is_ready: bool = false
 
 
 func _init() -> void:
@@ -56,6 +59,10 @@ func _init() -> void:
 	save_timer.wait_time = 0.5
 	save_timer.one_shot = true
 	add_child(save_timer)
+	
+	tool_popup = ToolPopup.new()
+	tool_popup.size = Vector2i(200, 200)
+	add_child(tool_popup)
 	
 	clip_contents = true
 	draw_xform = Transform2D.IDENTITY
@@ -97,7 +104,9 @@ func _init() -> void:
 	viewport = SubViewport.new()
 	viewport.transparent_bg = true
 	viewport.msaa_2d = Viewport.MSAA_4X
-	resized.connect(func(): viewport.size = size * OVERSAMPLE)
+	viewport.canvas_item_default_texture_filter = Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+	resized.connect(func(): viewport.size = size * Settings["core/ui_scale"])
+	#Settings.setting_changed("core/ui_scale").connect(_update_viewport_size)
 	var render_mat := ShaderMaterial.new()
 	render_mat.shader = preload("whiteboard_render.gdshader")
 	render_mat["shader_parameter/canvas_texture"] = viewport.get_texture()
@@ -117,11 +126,12 @@ func _init() -> void:
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		serialize_or_new()
-	if what == NOTIFICATION_WM_WINDOW_FOCUS_OUT:
+	if what == NOTIFICATION_WM_WINDOW_FOCUS_OUT and _is_ready:
 		serialize_or_new()
 
 
 func _ready() -> void:
+	_is_ready = true
 	if color_picker:
 		color_picker.color_changed.connect(func(new_color: Color): primary_color = new_color)
 		color_picker.color = ThemeManager.active_theme.text
@@ -183,6 +193,13 @@ func _gui_input(e: InputEvent) -> void:
 	var tools: Array[WhiteboardTool]
 	tools.append_array(WhiteboardManager.passive_tools.values())
 	tools.append_array(active_tools)
+	if e.is_match(Settings["shortcuts/show_tool_pie"]):
+		tool_popup.center_pos = get_global_mouse_position() + 200.0 * Vector2.ONE
+		tool_popup.mouse_pos = Vector2.ZERO
+		tool_popup.selected_tools.assign(active_tools.map(func(el): return el.get_script()))
+		tool_popup.popup(get_viewport_rect().grow(200.0))
+		accept_event()
+		return
 	for tool in tools:
 		@warning_ignore("redundant_await") # I don't know why it thinks this isn't a coroutine
 		var tool_output := await tool.receive_input(self, e.xformed_by((draw_xform).affine_inverse()))
@@ -211,6 +228,14 @@ func _gui_input(e: InputEvent) -> void:
 		preview.queue_redraw()
 
 
+func _update_viewport_size(new_value: float) -> void:
+	viewport.size = size * new_value
+	print(size)
+	print(viewport.size)
+	draw_xform = draw_xform
+	print(new_value)
+
+
 func undo() -> void:
 	elements.pop_back()
 	layer_container.remove_child(layer_container.get_child(layer_container.get_child_count() - 1))
@@ -236,11 +261,11 @@ func save() -> void:
 
 
 func serialize_or_new() -> void:
-	var filepath: String = Settings["state/last_opened_filepath"]
-	if not filepath:
-		filepath = WhiteboardBus.get_default_save_path()
+	var filepath: Array = Settings.get_safe("state/last_opened_filepath")
+	if filepath.is_empty() or filepath[0].is_empty():
+		filepath = [WhiteboardBus.get_default_save_path()]
 		Settings["state/last_opened_filepath"] = filepath
-	serialize(StreamPeerFile.open(filepath, FileAccess.WRITE))
+	serialize(StreamPeerFile.open(filepath[0], FileAccess.WRITE))
 
 
 func serialize(
