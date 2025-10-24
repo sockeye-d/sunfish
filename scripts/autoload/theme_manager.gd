@@ -200,6 +200,9 @@ func set_theme(new_theme: ThemeColors) -> void:
 	theme_res.set_stylebox("separator", "VSeparator", new_flat(disabled_surface, [1], [1, 0], [0, 0]))
 	theme_res.set_stylebox("separator", "HSeparator", new_flat(disabled_surface, [1], [0, 1], [0, 0]))
 
+	theme_res.set_constant("minimum_grab_thickness", "SplitContainer", base_spacing)
+	theme_res.set_constant("separation", "SplitContainer", base_spacing)
+
 	theme_res.set_color("font_color", "PopupMenu", theme.text)
 	theme_res.set_color("font_disabled_color", "PopupMenu", theme.subtext)
 	theme_res.set_color("font_accelerator_color", "PopupMenu", theme.subtext)

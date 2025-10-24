@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://oss6ipx4baxl" path="res://scripts/window_auto_scaler.gd" id="4_dh64r"]
 
 [node name="Settings" type="Window" unique_id=1222024932]
+oversampling_override = 1.0
 title = "Settings"
 position = Vector2i(176, 74)
 size = Vector2i(800, 500)
@@ -26,9 +27,10 @@ grow_vertical = 2
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"FlatTabContainer"
-current_tab = 0
+current_tab = 1
 
-[node name="Settings" type="HSplitContainer" parent="MarginContainer/TabContainer" unique_id=1795098909]
+[node name="Settings" type="SplitContainer" parent="MarginContainer/TabContainer" unique_id=2033601052]
+visible = false
 layout_mode = 2
 split_offset = 300
 metadata/_tab_index = 0
@@ -47,7 +49,6 @@ layout_mode = 2
 horizontal_scroll_mode = 0
 
 [node name="Shortcuts" type="PanelContainer" parent="MarginContainer/TabContainer" unique_id=1256963595]
-visible = false
 layout_mode = 2
 theme_type_variation = &"SettingsPanelContainer"
 metadata/_tab_index = 1

@@ -2,6 +2,7 @@
 class_name Whiteboard extends Control
 
 const WHITEBOARD_BACKGROUND = preload("uid://h1qiidxtgcs0")
+const NOTIFICATION_UPDATE_VISIBILITY = 20000
 
 signal xform_changed
 signal active_tools_changed
@@ -29,6 +30,7 @@ var draw_origin: Vector2
 var elements: Array[WhiteboardTool.Element]
 var preview_elements: Array[WhiteboardTool.PreviewElement]
 var active_tools: Array[WhiteboardTool] = []
+var element_undo_offset: int
 
 var active_element_count: int:
 	get: return elements.size()
@@ -205,7 +207,7 @@ func _gui_input(e: InputEvent) -> void:
 				var old_element_size := elements.size()
 				elements.append_array(tool_output.elements)
 				for element_index in range(old_element_size, elements.size()):
-					layer_container.add_child(create_layer(element_index))
+					create_layer(element_index)
 				element_count_changed.emit()
 				save()
 			else:
@@ -294,7 +296,7 @@ func deserialize(file: FileAccess) -> void:
 	reset()
 	elements = WhiteboardManager.deserialize(data.elements)
 	for element_index in elements.size():
-		layer_container.add_child(create_layer(element_index))
+		create_layer(element_index)
 	draw_xform = data.xform
 
 
@@ -307,11 +309,11 @@ func reset() -> void:
 		child.queue_free()
 
 
-func create_layer(index: int) -> ElementLayer:
+func create_layer(index: int) -> void:
 	var layer := ElementLayer.new()
 	layer.index = index
 	layer.whiteboard = self
-	return layer
+	layer_container.add_child(layer)
 
 
 class PreviewControl extends Node2D:
@@ -325,6 +327,10 @@ class PreviewControl extends Node2D:
 class ElementLayer extends Node2D:
 	var whiteboard: Whiteboard
 	var index: int
+
+	func _notification(what: int) -> void:
+		if what == NOTIFICATION_UPDATE_VISIBILITY:
+			visible = index < whiteboard.elements.size() - whiteboard.element_undo_offset
 
 	func _draw() -> void:
 		var element := whiteboard.elements[index]
