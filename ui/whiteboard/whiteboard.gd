@@ -283,13 +283,13 @@ func serialize(
 	arr.resize(8)
 	arr.encode_u64(0, json.size())
 	file.store_buffer(arr)
-	file.put_data(json_compressed)
+	file.store_buffer(json_compressed)
 	WhiteboardBus.save_status_changed.emit(true)
 
 
 func deserialize(file: FileAccess) -> void:
 	var json_size := file.get_buffer(8).decode_u64(0)
-	var json_compressed: PackedByteArray = file.get_buffer(file.get_available_bytes())
+	var json_compressed: PackedByteArray = file.get_buffer(file.get_length() - file.get_position())
 	var data = bytes_to_var(json_compressed.decompress(json_size, FileAccess.COMPRESSION_ZSTD))
 	reset()
 	elements = WhiteboardManager.deserialize(data.elements)

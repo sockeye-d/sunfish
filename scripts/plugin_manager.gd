@@ -91,8 +91,8 @@ static func serialize_plugins() -> void:
 			"name": plugin.name,
 			"enabled": plugin.enabled,
 		})
-	var stream := StreamPeerFile.open(plugin_meta_path, FileAccess.WRITE)
-	stream.put_data(JSON.stringify(data, "  ").to_utf8_buffer())
+	var file := FileAccess.open(plugin_meta_path, FileAccess.WRITE)
+	file.store_string(JSON.stringify(data, "  "))
 
 
 static func are_plugins_changed() -> bool:

@@ -1,4 +1,4 @@
-class_name DrawingUtil2
+class_name DrawingUtil
 
 
 const CIRCLE_RESOLUTION = 90
@@ -26,9 +26,7 @@ static func _static_init() -> void:
 
 static func draw_round_polyline(canvas_item: RID, points: PackedVector2Array, color: Color, width: float, pressures: PackedFloat32Array = []) -> void:
 	assert(points.size() >= 2)
-	#color = Color(color, 0.25)
 	var quad_colors: PackedColorArray = [color, color, color, color]
-	#color = Color(Color.RED, 0.25)
 	var tri_colors: PackedColorArray = [color, color, color]
 	var half_width := width * 0.5
 	for point_index in points.size() - 1:
@@ -61,8 +59,10 @@ static func draw_round_polyline(canvas_item: RID, points: PackedVector2Array, co
 					rs.canvas_item_add_primitive(canvas_item, [a, a + b_normal, a + normal_a], tri_colors, tri_uvs, RID())
 				else:
 					rs.canvas_item_add_primitive(canvas_item, [a, a - b_normal, a - normal_a], tri_colors, tri_uvs, RID())
-				
-	var color_array := _create_color_array(half_circle_tris.size(), color)
+
+	var color_array := PackedColorArray()
+	color_array.resize(half_circle_tris.size())
+	color_array.fill(color)
 	_add_endcap(canvas_item, points[0], points[1], color_array, width * pressures[0])
 	_add_endcap(canvas_item, points[-1], points[-2], color_array, width * pressures[-1])
 
@@ -78,11 +78,3 @@ static func _add_endcap(canvas_item: RID, point_a: Vector2, point_b: Vector2, co
 		half_circle_uvs,
 		[], [], RID()
 	)
-
-
-static func _create_color_array(length: int, color: Color) -> PackedColorArray:
-	var arr := PackedColorArray()
-	arr.resize(length)
-	for i in length:
-		arr[i] = color
-	return arr
