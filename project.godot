@@ -39,7 +39,6 @@ gdscript/warnings/static_called_on_instance=0
 [display]
 
 window/size/initial_position_type=5
-window/size/transparent=true
 window/energy_saving/keep_screen_on=false
 window/subwindows/embed_subwindows=false
 window/per_pixel_transparency/allowed=true

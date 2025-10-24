@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=118 format=3 uid="uid://6m1sumf80mct"]
+[gd_resource type="Theme" load_steps=119 format=3 uid="uid://6m1sumf80mct"]
 
 [ext_resource type="FontFile" uid="uid://cm1owo44e6kug" path="res://assets/fonts/LiberationSans-Regular.ttf" id="1_470mv"]
 [ext_resource type="Script" uid="uid://cg1d5ghvrv5un" path="res://scripts/resources/icon_texture_2d.gd" id="1_a2l2q"]
@@ -1033,6 +1033,12 @@ corner_radius_top_right = 1
 corner_radius_bottom_right = 1
 corner_radius_bottom_left = 1
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_py0i1"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pcabs"]
 content_margin_left = 2.0
 content_margin_top = 0.0
@@ -1073,6 +1079,7 @@ corner_radius_bottom_left = 2
 default_font = ExtResource("1_470mv")
 default_font_size = 16
 AcceptDialog/styles/panel = SubResource("StyleBoxFlat_58jnp")
+AltPanelContainer/base_type = &"PanelContainer"
 BoxContainer/constants/separation = 4
 Button/colors/font_color = Color(0.8039216, 0.8392157, 0.95686275, 1)
 Button/colors/font_disabled_color = Color(0.6509804, 0.6784314, 0.78431374, 1)
@@ -1295,6 +1302,9 @@ VScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_nj22i")
 VScrollBar/styles/scroll = SubResource("StyleBoxFlat_13pc2")
 VScrollBar/styles/scroll_focus = SubResource("StyleBoxFlat_q6oxf")
 VSeparator/styles/separator = SubResource("StyleBoxFlat_2juqn")
+VSeparatorEmpty/base_type = &"VSeparator"
+VSeparatorEmpty/constants/separation = 0
+VSeparatorEmpty/styles/separator = SubResource("StyleBoxEmpty_py0i1")
 VSlider/constants/center_grabber = 0
 VSlider/constants/grabber_offset = 0
 VSlider/icons/grabber = SubResource("DPITexture_sxwih")

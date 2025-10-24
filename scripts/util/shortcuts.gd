@@ -13,7 +13,7 @@ static func create(property_id: String) -> Shortcut:
 	return obj
 
 ## Create a new InputEvent from the given [param keycode] and [param mods].
-static func key(keycode: Key, mods: KeyModifierMask = 0 as KeyModifierMask) -> InputEvent:
+static func key(keycode: Key, mods: KeyModifierMask = KEY_CODE_MASK) -> InputEvent:
 	var e := InputEventKey.new()
 	e.keycode = keycode
 	e.alt_pressed = mods & KEY_MASK_ALT

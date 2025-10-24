@@ -65,6 +65,7 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 	tree_item.set_metadata(0, id)
 	tree_item.set_tooltip_text(0, id)
 	var has_tree_worthy_properties := false
+	var has_created_shortcut_header := false
 	for property in config.get_property_list():
 		if not property.usage & PROPERTY_USAGE_SCRIPT_VARIABLE or not property.usage & PROPERTY_USAGE_STORAGE:
 			continue
@@ -139,6 +140,19 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 						label.visible = not failed_filter
 						edit_container.visible = not failed_filter
 					)
+					if not has_created_shortcut_header:
+						#var header_left_container := PanelContainer.new()
+						#header_left_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+						#header_left_container.theme_type_variation = "AltPanelContainer"
+						var header_label := Label.new()
+						header_label.text = ReverseDNSUtil.pretty_print(config.get_id())
+						header_label.theme_type_variation = "HeaderMedium"
+						#header_left_container.add_child(header_label)
+						var header_right := Control.new()
+						header_right.size_flags_horizontal = Control.SIZE_SHRINK_END
+						shortcut_container.add_child(header_label)
+						shortcut_container.add_child(header_right)
+						has_created_shortcut_header = true
 					shortcut_container.add_child(label_container)
 					shortcut_container.add_child(edit_container)
 				else:

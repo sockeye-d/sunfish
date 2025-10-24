@@ -9,6 +9,8 @@ signal file_new
 signal view_reset_zoom
 signal view_reset_view
 
+signal undo
+
 signal save_status_changed(saved: bool)
 @warning_ignore_restore("unused_signal")
 

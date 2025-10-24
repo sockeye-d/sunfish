@@ -52,7 +52,6 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> WhiteboardTool.Display:
 				zoom(wb, drag_start_pos, exp(- mm.relative.y * 0.005 * wb.draw_scale))
 			else:
 				wb.draw_xform = wb.draw_xform.translated_local(mm.relative)
-				wb.save()
 			wb.accept_event()
 	var pg := event as InputEventPanGesture
 	if pg:
@@ -60,7 +59,6 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> WhiteboardTool.Display:
 			zoom(wb, pg.position, exp(-pg.delta.y * 0.05))
 		else:
 			wb.draw_xform = wb.draw_xform.translated(-pg.delta * 2.0)
-			wb.save()
 		wb.accept_event()
 	var zg := event as InputEventMagnifyGesture
 	if zg:
@@ -70,7 +68,6 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> WhiteboardTool.Display:
 
 func pan(wb: Whiteboard, e: InputEventMouseButton, x: float, y: float) -> void:
 	wb.draw_xform = wb.draw_xform.translated(0.5 * e.factor * Vector2(x, y))
-	wb.save()
 
 
 func zoom(wb: Whiteboard, screen_center: Vector2, amount: float) -> void:
@@ -78,4 +75,3 @@ func zoom(wb: Whiteboard, screen_center: Vector2, amount: float) -> void:
 	if amount < 1 and wb.draw_scale < 0.2:
 		return
 	wb.draw_xform = wb.draw_xform.translated_local(center).scaled_local(Vector2(amount, amount)).translated_local(-center)
-	wb.save()

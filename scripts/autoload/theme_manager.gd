@@ -93,6 +93,7 @@ func set_theme(new_theme: ThemeColors) -> void:
 	theme_res.set_constant("margin_right", "MarginContainer", base_spacing)
 	
 	theme_res.set_stylebox("panel", "PanelContainer", new_flat(theme.background_0, [base_spacing * 2], [base_spacing]))
+	theme_res.set_stylebox("panel", "AltPanelContainer", new_flat(theme.background_1, [base_spacing * 2], [base_spacing]))
 	theme_res.set_stylebox("panel", "SettingsPanelContainer", new_flat(theme.background_0, [0, base_spacing * 2, base_spacing * 2, base_spacing * 2], [base_spacing]))
 	theme_res.set_stylebox("panel", "Panel", new_flat(theme.background_0, [base_spacing * 2], [base_spacing]))
 	

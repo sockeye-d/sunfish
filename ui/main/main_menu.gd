@@ -53,12 +53,16 @@ func _ready() -> void:
 				WhiteboardBus.save_file_as()
 			new:
 				WhiteboardBus.create_new_file()
+			undo:
+				WhiteboardBus.undo.emit()
 			reset_zoom:
 				WhiteboardBus.view_reset_zoom.emit()
 			reset_view:
 				WhiteboardBus.view_reset_view.emit()
 			preferences:
 				Settings.show()
+			plugins:
+				pass
 	)
 	
 	debug.reparent(get_popup())

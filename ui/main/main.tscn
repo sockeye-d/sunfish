@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cabo3vvcus82u"]
+[gd_scene load_steps=8 format=3 uid="uid://cabo3vvcus82u"]
 
 [ext_resource type="Script" uid="uid://c06cfhdwo6mqj" path="res://ui/main/main.gd" id="1_fc3ap"]
 [ext_resource type="Script" uid="uid://byygqcqk1nokj" path="res://ui/whiteboard/whiteboard.gd" id="1_ig7tw"]
@@ -7,12 +7,6 @@
 [ext_resource type="Script" uid="uid://bwc2gp0rut4nn" path="res://ui/nice_color_picker/nice_color_picker.gd" id="3_loxbi"]
 [ext_resource type="PackedScene" uid="uid://dbxmfkswghn1p" path="res://ui/status_box/status_box.tscn" id="3_t6oic"]
 [ext_resource type="PackedScene" uid="uid://dl3cf2qtuhquc" path="res://ui/inspector/inspector.tscn" id="7_06s8x"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_06s8x"]
-content_margin_left = 0.0
-content_margin_top = 0.0
-content_margin_right = 0.0
-content_margin_bottom = 0.0
 
 [node name="Main" type="ColorRect" unique_id=1228390697]
 anchors_preset = 15
@@ -72,8 +66,7 @@ whiteboard = NodePath("../../../../../SplitContainer/VBoxContainer/Whiteboard")
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
-theme_override_constants/separation = 0
-theme_override_styles/separator = SubResource("StyleBoxEmpty_06s8x")
+theme_type_variation = &"VSeparatorEmpty"
 
 [node name="SplitContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BoxContainer" unique_id=282493804]
 layout_mode = 2

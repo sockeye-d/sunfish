@@ -21,6 +21,7 @@ var draw_xform: Transform2D:
 		xform_changed.emit()
 		if viewport:
 			viewport.canvas_transform = draw_xform * Settings["core/ui_scale"]
+		save.call_deferred()
 		redraw_preview()
 var inv_draw_xform: Transform2D
 var draw_scale: float
@@ -178,6 +179,8 @@ func _ready() -> void:
 		draw_xform = draw_xform.translated(-center).scaled(Vector2.ONE / draw_xform.get_scale()).translated(center)
 	)
 	
+	WhiteboardBus.undo.connect(undo)
+	
 	save_timer.timeout.connect(serialize_or_new)
 	
 	WhiteboardManager.intialize_passive_tools(self)
@@ -185,8 +188,6 @@ func _ready() -> void:
 
 var _preview_draw_twice := false
 func _gui_input(e: InputEvent) -> void:
-	if e.is_action_pressed("ui_undo", true):
-		undo()
 	if e is InputEventMouseMotion and not has_focus():
 		grab_focus()
 	var new_preview_elements: Array[WhiteboardTool.PreviewElement]
