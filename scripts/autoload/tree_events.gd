@@ -3,7 +3,8 @@ extends Node
 
 
 func _ready() -> void:
-	PluginManager.load_plugins()
+	if not Engine.is_editor_hint():
+		PluginManager.load_plugins()
 	PluginManager.scan_plugins([PluginManager.PLUGIN_PREFIX, "res://scripts/config"])
 
 

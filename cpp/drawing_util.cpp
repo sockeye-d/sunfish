@@ -19,24 +19,19 @@ PackedColorArray DrawingUtil::create_color_array(const size_t p_length, const Co
 	return array;
 }
 
-DrawingUtil::HalfCircleData DrawingUtil::generate_half_circle_data() {
-	HalfCircleData hd;
-	hd.half_circle_tris = {Vector2()};
-	hd.half_circle_uvs = {Vector2()};
+DrawingUtil::HalfCircleData *DrawingUtil::generate_half_circle_data() {
+	auto hd = new HalfCircleData;
+	hd->half_circle_tris = {Vector2()};
+	hd->half_circle_uvs = {Vector2()};
 	for (int angle_index = 0; angle_index < CIRCLE_RESOLUTION + 2; angle_index++) {
 		const auto angle = (angle_index) / static_cast<real_t>(CIRCLE_RESOLUTION) * Math_PI - Math_PI * 0.5;
 		auto point = Vector2::from_angle(angle);
-		hd.half_circle_tris.append(point);
-		hd.half_circle_uvs.append(Vector2());
+		hd->half_circle_tris.append(point);
+		hd->half_circle_uvs.append(Vector2());
 		if (angle_index != 0) {
-			hd.half_circle_indices.append_array({0, angle_index - 1, angle_index});
+			hd->half_circle_indices.append_array({0, angle_index - 1, angle_index});
 		}
 	}
-	return hd;
-}
-
-DrawingUtil::HalfCircleData& DrawingUtil::get_half_circle_data() {
-	static HalfCircleData hd = generate_half_circle_data();
 	return hd;
 }
 
@@ -108,13 +103,13 @@ void DrawingUtil::draw_round_polyline(const RID& p_canvas_item, const PackedVect
 
 void DrawingUtil::draw_endcap(const RID& p_canvas_item, const Vector2 p_a, const Vector2 p_b, const Color p_color,
 							  const double p_width) {
-	static const auto& [half_circle_tris, half_circle_uvs, half_circle_indices] = get_half_circle_data();
-	const PackedColorArray color_array = create_color_array(half_circle_tris.size(), p_color);
+	static const auto* data = generate_half_circle_data();
+	const PackedColorArray color_array = create_color_array(data->half_circle_tris.size(), p_color);
 	const auto start_angle = (p_a - p_b).normalized() * p_width * 0.5;
 	const auto rotated_half_circle_tris =
-		Transform2D(start_angle, start_angle.orthogonal(), p_a).xform(half_circle_tris);
+		Transform2D(start_angle, start_angle.orthogonal(), p_a).xform(data->half_circle_tris);
 	RenderingServer::get_singleton()->canvas_item_add_triangle_array(
-		p_canvas_item, half_circle_indices, rotated_half_circle_tris, color_array, half_circle_uvs, {}, {}, RID());
+		p_canvas_item, data->half_circle_indices, rotated_half_circle_tris, color_array, data->half_circle_uvs, {}, {}, RID());
 }
 
 Array DrawingUtil::merge_close_points(const PackedVector2Array& p_points, const PackedFloat32Array& p_pressures,

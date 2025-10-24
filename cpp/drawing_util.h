@@ -5,6 +5,8 @@
 class DrawingUtil : public godot::Object {
 	GDCLASS(DrawingUtil, godot::Object);
 
+	static const int CIRCLE_RESOLUTION = 90;
+
 	struct HalfCircleData {
 		godot::PackedVector2Array half_circle_tris;
 		godot::PackedVector2Array half_circle_uvs;
@@ -13,8 +15,7 @@ class DrawingUtil : public godot::Object {
 
 	static godot::PackedColorArray create_color_array(const size_t p_length, const godot::Color p_value);
 
-	static HalfCircleData generate_half_circle_data();
-	static HalfCircleData& get_half_circle_data();
+	static HalfCircleData *generate_half_circle_data();
 
 protected:
 	static void _bind_methods();

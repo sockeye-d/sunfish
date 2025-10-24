@@ -141,9 +141,9 @@ func _ready() -> void:
 			background_shader.material.set_shader_parameter("text_color", ThemeManager.active_theme.text)
 		).call_deferred()
 	if Settings["state/last_opened_filepath"]:
-		var peer := StreamPeerFile.open(Settings["state/last_opened_filepath"], FileAccess.READ)
-		if peer:
-			deserialize(peer)
+		var file := FileAccess.open(Settings["state/last_opened_filepath"], FileAccess.READ)
+		if file:
+			deserialize(file)
 		else:
 			serialize_or_new()
 	else:
@@ -155,7 +155,7 @@ func _ready() -> void:
 	)
 
 	WhiteboardBus.file_load.connect(func(filepath: String):
-		deserialize(StreamPeerFile.open(filepath, FileAccess.READ))
+		deserialize(FileAccess.open(filepath, FileAccess.READ))
 	)
 
 	WhiteboardBus.file_new.connect(func():
@@ -265,11 +265,11 @@ func serialize_or_new() -> void:
 	if filepath.is_empty() or filepath[0].is_empty():
 		filepath = [Util.get_default_save_path()]
 		Settings["state/last_opened_filepath"] = filepath[0]
-	serialize(StreamPeerFile.open(filepath[0], FileAccess.WRITE))
+	serialize(FileAccess.open(filepath[0], FileAccess.WRITE))
 
 
 func serialize(
-		stream: StreamPeer = StreamPeerFile.open(
+		file: FileAccess = FileAccess.open(
 			Settings["state/last_opened_filepath"],
 			FileAccess.WRITE
 		)
@@ -279,14 +279,17 @@ func serialize(
 		"elements": WhiteboardManager.serialize(elements),
 	})
 	var json_compressed := json.compress(FileAccess.COMPRESSION_ZSTD)
-	stream.put_u64(json.size())
-	stream.put_data(json_compressed)
+	var arr := PackedByteArray()
+	arr.resize(8)
+	arr.encode_u64(0, json.size())
+	file.store_buffer(arr)
+	file.put_data(json_compressed)
 	WhiteboardBus.save_status_changed.emit(true)
 
 
-func deserialize(stream: StreamPeer) -> void:
-	var json_size := stream.get_u64()
-	var json_compressed: PackedByteArray =  stream.get_data(stream.get_available_bytes())[1]
+func deserialize(file: FileAccess) -> void:
+	var json_size := file.get_buffer(8).decode_u64(0)
+	var json_compressed: PackedByteArray = file.get_buffer(file.get_available_bytes())
 	var data = bytes_to_var(json_compressed.decompress(json_size, FileAccess.COMPRESSION_ZSTD))
 	reset()
 	elements = WhiteboardManager.deserialize(data.elements)
