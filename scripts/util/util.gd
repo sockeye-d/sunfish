@@ -1,6 +1,9 @@
 class_name Util
 
 
+const NOTIFICATION_WINDOW_CLOSING = 10000
+
+
 static func unused(..._v) -> void:
 	pass
 

@@ -1,7 +1,6 @@
 @tool
 class_name Whiteboard extends Control
 
-const PanTool = preload("uid://ios48ehu0i7f")
 const WHITEBOARD_BACKGROUND = preload("uid://h1qiidxtgcs0")
 
 signal xform_changed
@@ -90,8 +89,10 @@ func _init() -> void:
 
 	theme_changed.connect(func(): if ThemeManager.active_theme: mat.set_shader_parameter("text_color", ThemeManager.active_theme.text))
 
+	focus_entered.connect(_update_mouse_hidden)
 	mouse_entered.connect(_update_mouse_hidden)
 	mouse_exited.connect(func(): Input.mouse_mode = Input.MOUSE_MODE_VISIBLE)
+	focus_exited.connect(func(): Input.mouse_mode = Input.MOUSE_MODE_VISIBLE)
 
 	viewport_container = SubViewportContainer.new()
 	viewport_container.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -101,7 +102,6 @@ func _init() -> void:
 	viewport.msaa_2d = Viewport.MSAA_4X
 	viewport.canvas_item_default_texture_filter = Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 	resized.connect(func(): viewport.size = size * Settings["core/ui_scale"])
-	#Settings.setting_changed("core/ui_scale").connect(_update_viewport_size)
 	var render_mat := ShaderMaterial.new()
 	render_mat.shader = preload("whiteboard_render.gdshader")
 	render_mat["shader_parameter/canvas_texture"] = viewport.get_texture()
@@ -119,12 +119,13 @@ func _init() -> void:
 
 
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+	if what == Util.NOTIFICATION_WINDOW_CLOSING:
 		serialize_or_new()
 
 
 func _ready() -> void:
-	get_window().focus_exited.connect(serialize_or_new)
+	if not Engine.is_editor_hint():
+		get_window().focus_exited.connect(serialize_or_new)
 	if color_picker:
 		color_picker.color_changed.connect(func(new_color: Color): primary_color = new_color)
 		color_picker.color = ThemeManager.active_theme.text

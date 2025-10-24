@@ -1,5 +1,5 @@
 @tool
-extends EditorScript
+class_name ScanForNonDPITextureSVGs extends EditorScript
 
 
 const SEARCH_PATHS = [

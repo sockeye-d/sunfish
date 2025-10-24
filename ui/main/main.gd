@@ -34,6 +34,11 @@ func _ready() -> void:
 	tool_scroll_container.get_v_scroll_bar().visibility_changed.connect(func():
 		tool_scrollbar_separator.visible = tool_scroll_container.get_v_scroll_bar().is_visible_in_tree()
 	)
+	if not Engine.is_editor_hint():
+		get_tree().root.close_requested.connect(func():
+			get_tree().root.propagate_notification(Util.NOTIFICATION_WINDOW_CLOSING)
+			get_tree().quit()
+		)
 
 
 func _process(delta: float) -> void:

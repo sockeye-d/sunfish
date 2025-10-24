@@ -1,0 +1,70 @@
+[gd_scene load_steps=3 format=3 uid="uid://b6hvblp68jx7w"]
+
+[ext_resource type="Script" uid="uid://dmyvir1r7yvwk" path="res://ui/plugin_window/plugin_window.gd" id="1_hqigd"]
+[ext_resource type="Script" uid="uid://oss6ipx4baxl" path="res://scripts/window_auto_scaler.gd" id="1_i8832"]
+
+[node name="PluginWindow" type="Window" unique_id=100290597]
+oversampling_override = 1.0
+title = "Plugins"
+position = Vector2i(0, 36)
+size = Vector2i(500, 400)
+transient = true
+exclusive = true
+popup_window = true
+script = ExtResource("1_hqigd")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=556904587]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1402496160]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer" unique_id=1784089200]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer" unique_id=1597139598]
+layout_mode = 2
+
+[node name="FilterLineEdit" type="LineEdit" parent="MarginContainer/VBoxContainer/PanelContainer/HBoxContainer" unique_id=996962755]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Filter"
+
+[node name="InstallFromFileButton" type="Button" parent="MarginContainer/VBoxContainer/PanelContainer/HBoxContainer" unique_id=657884173]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Install from file"
+
+[node name="PanelContainer2" type="PanelContainer" parent="MarginContainer/VBoxContainer" unique_id=1638824328]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/PanelContainer2" unique_id=176880961]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PluginContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer2/ScrollContainer" unique_id=36411019]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="WindowAutoScaler" type="Node" parent="." unique_id=435363602]
+script = ExtResource("1_i8832")
+metadata/_custom_type_script = "uid://oss6ipx4baxl"
+
+[node name="RestartConfirmationDialog" type="ConfirmationDialog" parent="." unique_id=1067690150]
+unique_name_in_owner = true
+oversampling_override = 1.0
+title = "Restart?"
+size = Vector2i(242, 100)
+ok_button_text = "Restart"
+dialog_text = "Restart to apply plugin changes?"
+dialog_autowrap = true
+
+[connection signal="canceled" from="RestartConfirmationDialog" to="." method="_on_restart_confirmation_dialog_canceled"]
+[connection signal="confirmed" from="RestartConfirmationDialog" to="." method="_on_restart_confirmation_dialog_confirmed"]
