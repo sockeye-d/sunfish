@@ -1,11 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://cx6dyh7jcf7hi"]
+[gd_scene load_steps=5 format=3 uid="uid://cx6dyh7jcf7hi"]
 
 [ext_resource type="Script" uid="uid://bm64ce6hhghy" path="res://scripts/autoload/settings/settings.gd" id="1_nlfgh"]
 [ext_resource type="Script" uid="uid://cyewsxvhxivf" path="res://scripts/event_input.gd" id="2_5o5ow"]
 [ext_resource type="Script" uid="uid://be1l162hdbq5b" path="res://scripts/scroll_container_spacer_component.gd" id="3_uu5hy"]
+[ext_resource type="Script" uid="uid://oss6ipx4baxl" path="res://scripts/window_auto_scaler.gd" id="4_dh64r"]
 
 [node name="Settings" type="Window" unique_id=1222024932]
-oversampling_override = 1.0
 title = "Settings"
 position = Vector2i(176, 74)
 size = Vector2i(800, 500)
@@ -23,6 +23,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="TabContainer" type="TabContainer" parent="MarginContainer" unique_id=42462048]
+unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"FlatTabContainer"
 current_tab = 0
@@ -97,5 +98,9 @@ script = ExtResource("3_uu5hy")
 scroll_container = NodePath("..")
 separator = NodePath("../HBoxContainer/VSeparator")
 metadata/_custom_type_script = "uid://be1l162hdbq5b"
+
+[node name="WindowAutoScaler" type="Node" parent="." unique_id=1923513585]
+script = ExtResource("4_dh64r")
+metadata/_custom_type_script = "uid://oss6ipx4baxl"
 
 [connection signal="item_selected" from="MarginContainer/TabContainer/Settings/Tree" to="." method="_on_tree_item_selected"]

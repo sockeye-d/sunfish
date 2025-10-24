@@ -44,7 +44,7 @@ var _slider_value: float:
 		return _slider_value
 	set(v):
 		slider.value = v
-		line_edit.text = "%s%.*f" % [prefix, max(ceil(log(1.0 / step) / log(10.0)), 0.0), v]
+		line_edit.text = "%s%.*f" % [prefix, max(ceil(Util.log10(1.0 / step)), 0.0) + 1, v]
 		_slider_value = v
 @export var slider_value: float:
 	set(v):
@@ -76,7 +76,7 @@ func _init() -> void:
 		remove_child(outer_container)
 		outer_container = outer_container.duplicate()
 		add_child(outer_container, false, Node.INTERNAL_MODE_BACK)
-	
+
 	if margin_container == null:
 		margin_container = MarginContainer.new()
 		margin_container.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -85,15 +85,15 @@ func _init() -> void:
 		margin_container.add_theme_constant_override("margin_top",    0)
 		margin_container.add_theme_constant_override("margin_bottom", 0)
 		outer_container.add_child(margin_container, false, Node.INTERNAL_MODE_BACK)
-	
+
 	if container == null:
 		container = VBoxContainer.new()
 		container.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		container.resized.connect(_resize)
 		container.add_theme_constant_override("separation", 0)
-		
+
 		margin_container.add_child(container, false, Node.INTERNAL_MODE_BACK)
-	
+
 	if line_edit == null:
 		line_edit = LineEdit.new()
 		line_edit.size_flags_horizontal = Control.SIZE_FILL
@@ -105,7 +105,7 @@ func _init() -> void:
 		line_edit.caret_blink = true
 		line_edit.add_theme_stylebox_override("focus", StyleBoxEmpty.new())
 		container.add_child(line_edit, false, Node.INTERNAL_MODE_BACK)
-	
+
 	if slider == null:
 		slider = HSlider.new()
 		slider.value_changed.connect(_on_value_changed)
@@ -115,13 +115,13 @@ func _init() -> void:
 		slider.step = step
 		container.add_child(slider, false, Node.INTERNAL_MODE_BACK)
 		slider.drag_ended.connect(func(_v): changed_ended.emit())
-	
+
 	if not value_changed.is_connected(_on_value_changed):
 		value_changed.connect(_on_value_changed)
-	
+
 	if not changed.is_connected(_on_changed):
 		changed.connect(_on_changed)
-	
+
 	slider_value = value
 
 
@@ -143,9 +143,9 @@ func _on_changed() -> void:
 
 func _on_text_submitted(new_text: String) -> void:
 	var val = new_text.trim_prefix(prefix).to_float()
-	
+
 	val = _constrain(val)
-	
+
 	line_edit.release_focus()
 	changed_begun.emit()
 	slider_value = val
@@ -154,9 +154,9 @@ func _on_text_submitted(new_text: String) -> void:
 
 func _on_line_edit_focus_exited() -> void:
 	var val = line_edit.text.trim_prefix(prefix).to_float()
-	
+
 	val = _constrain(val)
-	
+
 	slider_value = val
 	changed_begun.emit()
 	changed_ended.emit()
@@ -173,16 +173,16 @@ func _on_line_edit_input(event: InputEvent) -> void:
 	if mouse_draggable:
 		if event is InputEventMouseButton:
 			var e = event as InputEventMouseButton
-			
+
 			if e.pressed:
 				dragging_state = DraggingState.CLICKED
 				drag_mouse_pos = e.global_position
-			
+
 			if not e.pressed and dragging_state == DraggingState.DRAGGING:
 				dragging_state = DraggingState.NONE
 				line_edit.editable = true
 				changed_ended.emit()
-		
+
 		if event is InputEventMouseMotion:
 			var e := event as InputEventMouseMotion
 			if dragging_state == DraggingState.CLICKED and e.button_mask & MOUSE_BUTTON_MASK_LEFT and abs(e.global_position.x - drag_mouse_pos.x) > mouse_threshold:
@@ -190,7 +190,7 @@ func _on_line_edit_input(event: InputEvent) -> void:
 				float_slider_value = slider_value
 				line_edit.editable = false
 				changed_begun.emit()
-			
+
 			if dragging_state == DraggingState.DRAGGING:
 				float_slider_value += e.relative.x * mouse_drag_scale * (max_value - min_value)
 				slider_value = float_slider_value

@@ -41,12 +41,15 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 				if mm.ctrl_pressed:
 					pos -= size
 					size *= 2.0
-				
+
 				last_draw_element.rect.position = pos
 				last_draw_element.rect.size = size
 				display.elements = [last_draw_element]
 		preview.position = mm.position
 	return display
+
+
+func should_hide_mouse() -> bool: return true
 
 
 @abstract
@@ -57,25 +60,25 @@ func create_element() -> ShapeElement
 class ShapeElement extends WhiteboardTool.Element:
 	var color: Color
 	var width: float
-	
+
 	var rect: Rect2
-	
+
 	func get_bounding_box() -> Rect2:
 		return rect.abs().grow(width)
-	
-	
+
+
 	func serialize() -> Dictionary:
 		return {
 			"color": color,
 			"width": width,
 			"rect": rect,
 		}
-	
-	
+
+
 	static func deserialize(data: Dictionary) -> Element:
 		Util.unused(data)
 		return null
-	
+
 	static func deserialize_into(instance: ShapeElement, data: Dictionary) -> ShapeElement:
 		instance.rect = data.rect
 		instance.color = data.color

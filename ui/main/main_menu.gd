@@ -40,6 +40,7 @@ func _ready() -> void:
 	add_separator("Edit")
 	var undo := add_item("Undo", "save", "shortcuts/undo")
 	var preferences := add_item("Preferences", "config", "shortcuts/show_preferences")
+	var shortcuts := add_item("Shortcuts", "config", "shortcuts/show_shortcuts")
 	var plugins := add_item("Plugins", "plugins", "shortcuts/show_plugins")
 	add_separator("View")
 	var reset_zoom := add_item("Reset zoom", "reset_zoom", "shortcuts/reset_zoom")
@@ -60,7 +61,9 @@ func _ready() -> void:
 			reset_view:
 				WhiteboardBus.view_reset_view.emit()
 			preferences:
-				Settings.show()
+				Settings.show_settings()
+			shortcuts:
+				Settings.show_shortcuts()
 			plugins:
 				pass
 	)

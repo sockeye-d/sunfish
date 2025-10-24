@@ -16,6 +16,7 @@ var config_path := OS.get_config_dir().path_join("sunfish/settings.tres")
 @onready var shortcut_container: GridContainer = %ShortcutContainer
 @onready var shortcut_search_text: LineEdit = %ShortcutSearchText
 @onready var shortcut_search_event: EventInput = %ShortcutSearchEvent
+@onready var tab_container: TabContainer = %TabContainer
 
 
 var config_data: Dictionary[StringName, ConfigurationData]
@@ -61,6 +62,7 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 	var tree_item := parent.create_child()
 	var grid_container := GridContainer.new()
 	grid_container.columns = 2
+	grid_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	tree_item.set_text(0, ReverseDNSUtil.pretty_print(id))
 	tree_item.set_metadata(0, id)
 	tree_item.set_tooltip_text(0, id)
@@ -89,11 +91,14 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 			if property_usage & PROPERTY_USAGE_EDITOR:
 				var label_container := HBoxContainer.new()
 				label_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+				label_container.size_flags_vertical = Control.SIZE_EXPAND_FILL
 				var label := Label.new()
 				label.tooltip_text = property_key
 				label.mouse_filter = Control.MOUSE_FILTER_PASS
 				label.text = Util.pretty_print_property(ReverseDNSUtil.pretty_print(property_name))
 				label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+				label.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+				#label.vertical_alignment = VERTICAL_ALIGNMENT_TOP
 				label_container.add_child(label)
 				var edit_container := HBoxContainer.new()
 				edit_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -236,3 +241,13 @@ func serialize(path: String = config_path) -> void:
 	var res := SettingsSerializer.new()
 	res.generate_values()
 	ResourceSaver.save(res, path)
+
+
+func show_settings() -> void:
+	tab_container.current_tab = 0
+	show()
+
+
+func show_shortcuts() -> void:
+	tab_container.current_tab = 1
+	show()

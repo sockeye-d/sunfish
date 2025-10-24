@@ -2,6 +2,7 @@ class_name Inspector extends PanelContainer
 
 enum {
 	PROPERTY_HINT_EXT_PRETTY_RDNS_ENUM = 256,
+	PROPERTY_HINT_EXT_RANGE_ENUM,
 }
 
 ## [codeblock]
@@ -90,7 +91,36 @@ static var hint_delegates: Dictionary[int, Callable] = {
 			btn.selected = options.find(initial_value)
 		if btn.selected != -1:
 			btn.tooltip_text = options[btn.selected]
-		return btn
+		return btn,
+	PROPERTY_HINT_EXT_RANGE_ENUM: func(prop: Dictionary, initial_value, set_prop: Callable) -> Control:
+		assert(prop.type in [TYPE_FLOAT])
+		print(prop.hint_string)
+		var options = JSON.parse_string(prop.hint_string as String)
+		var btn := OptionButton.new()
+		btn.fit_to_longest_item = false
+		var enum_range := PackedFloat32Array(options.range)
+		var step: float = options.step
+		assert(enum_range.size() == 2)
+		var max_i := int((enum_range[1] - enum_range[0]) / options.step)
+		var is_percentage: bool = options.get("percentage", false)
+		for i in max_i + 1:
+			if is_percentage:
+				btn.add_item("%.f%%" % (remap(i, 0.0, max_i, enum_range[0], enum_range[1]) * 100.0))
+			else:
+				btn.add_item("%.f" % remap(i, 0.0, max_i, enum_range[0], enum_range[1]))
+		#for op in options:
+			#btn.add_item("%.f%%" % (op.to_float() * 100.0))
+		btn.item_selected.connect(func(index: int) -> void:
+			set_prop.call(remap(index, 0, max_i, enum_range[0], enum_range[1]))
+		)
+		#if prop.type == TYPE_INT:
+			#btn.selected = initial_value
+		#elif prop.type == TYPE_STRING:
+			#btn.selected = options.find(initial_value)
+		#if btn.selected != -1:
+			#btn.tooltip_text = options[btn.selected]
+		btn.selected = int(remap(initial_value, enum_range[0], enum_range[1], 0, max_i))
+		return btn,
 }
 
 

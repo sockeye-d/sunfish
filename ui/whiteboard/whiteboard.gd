@@ -90,10 +90,7 @@ func _init() -> void:
 
 	theme_changed.connect(func(): if ThemeManager.active_theme: mat.set_shader_parameter("text_color", ThemeManager.active_theme.text))
 
-	mouse_entered.connect(func():
-		if active_tools.any(func(e: WhiteboardTool): return e.should_hide_mouse()):
-			Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
-	)
+	mouse_entered.connect(_update_mouse_hidden)
 	mouse_exited.connect(func(): Input.mouse_mode = Input.MOUSE_MODE_VISIBLE)
 
 	viewport_container = SubViewportContainer.new()
@@ -232,6 +229,11 @@ func _update_viewport_size(new_value: float) -> void:
 	print(new_value)
 
 
+func _update_mouse_hidden() -> void:
+	if active_tools.any(func(e: WhiteboardTool): return e.should_hide_mouse()):
+		Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+
+
 func undo() -> void:
 	elements.pop_back()
 	layer_container.remove_child(layer_container.get_child(layer_container.get_child_count() - 1))
@@ -249,6 +251,7 @@ func set_active_tools(new_active_tools: Array[WhiteboardTool]) -> void:
 		tool.activated(self)
 	active_tools = new_active_tools
 	active_tools_changed.emit()
+	_update_mouse_hidden()
 
 
 func save() -> void:
