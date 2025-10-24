@@ -94,7 +94,6 @@ static var hint_delegates: Dictionary[int, Callable] = {
 		return btn,
 	PROPERTY_HINT_EXT_RANGE_ENUM: func(prop: Dictionary, initial_value, set_prop: Callable) -> Control:
 		assert(prop.type in [TYPE_FLOAT])
-		print(prop.hint_string)
 		var options = JSON.parse_string(prop.hint_string as String)
 		var btn := OptionButton.new()
 		btn.fit_to_longest_item = false

@@ -1,7 +1,7 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
-/export/sunfish*
+/export/
 
 .sconsign*.dblite
 
