@@ -4,6 +4,7 @@ class_name ToolPopup extends PopupPanel
 
 const RADIUS = 125.0
 const DEADZONE = 50.0
+const THICKNESS = 64.0
 
 
 signal tool_selected(new_tool: Script)
@@ -32,7 +33,7 @@ func _init() -> void:
 	visual.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	visual.t = self
 	add_child(visual)
-	
+
 	exclusive = true
 
 
@@ -90,17 +91,17 @@ class Visual extends Control:
 		Vector2(1, -1),
 	]
 	var t: ToolPopup
-	
-	
+
+
 	func _draw() -> void:
 		var index := 0
 		var center := t.center_pos
 		var mouse_angle := t.mouse_pos.angle()
 		var angle_per_index := TAU / t.tools.size()
 		var outside_deadzone_fac := smoothstep(DEADZONE, DEADZONE + 30.0, t.mouse_pos.length())
-		draw_circle(center, RADIUS, ThemeManager.active_theme.background_1, false, 64.0, true)
+		draw_circle(center, RADIUS, ThemeManager.active_theme.background_1, false, THICKNESS, true)
 		draw_circle(center, DEADZONE, ThemeManager.active_theme.overlay.lerp(ThemeManager.active_theme.overlay_press, outside_deadzone_fac), false, 2.0 + 2.0 * outside_deadzone_fac, true)
-		draw_arc(center, RADIUS, mouse_angle - angle_per_index * 0.5, mouse_angle + angle_per_index * 0.5, 32, Color(ThemeManager.active_theme.surface, outside_deadzone_fac), 64.0, true)
+		draw_arc(center, RADIUS, mouse_angle - angle_per_index * 0.5, mouse_angle + angle_per_index * 0.5, 16, Color(ThemeManager.active_theme.surface, outside_deadzone_fac), THICKNESS, true)
 		for tool_id in t.tools:
 			var state := t.tools[tool_id]
 			var is_selected: bool = state.tool in t.selected_tools

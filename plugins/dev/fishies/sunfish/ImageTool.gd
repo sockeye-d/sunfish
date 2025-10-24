@@ -11,6 +11,9 @@ var image_preview_element: ImagePreviewElement
 static func get_id() -> StringName: return "dev.fishies.sunfish.ImageTool"
 
 
+static func get_shortcut() -> InputEvent: return Shortcuts.key(KEY_I)
+
+
 func activated(wb: Whiteboard) -> void:
 	var img := DisplayServer.clipboard_get_image()
 	if img and not img.is_empty():
@@ -75,11 +78,11 @@ class ImagePreviewElement extends WhiteboardTool.PreviewElement:
 			image_texture = ImageTexture.create_from_image(value)
 	var image_texture: ImageTexture
 	var center_position: Vector2
-	
+
 	func draw(canvas: CanvasItem, wb: Whiteboard):
 		var rect := get_rect(image, center_position, wb.draw_scale)
 		canvas.draw_texture_rect(image_texture, rect, false, Color(1.0, 1.0, 1.0, 0.5 * opacity))
-	
+
 	static func get_rect(_image: Image, _center_position: Vector2, draw_scale: float) -> Rect2:
 		var rect := Rect2(0, 0, _image.get_width() / draw_scale, _image.get_height() / draw_scale)
 		rect.position = _center_position - rect.size * 0.5
@@ -89,7 +92,7 @@ class ImagePreviewElement extends WhiteboardTool.PreviewElement:
 class ImageElement extends WhiteboardTool.Element:
 	static func _static_init() -> void:
 		WhiteboardManager.register_deserializer(ImageElement)
-	
+
 	var rect: Rect2
 	var opacity: float
 	var image: Image:
@@ -99,18 +102,18 @@ class ImageElement extends WhiteboardTool.Element:
 				image.generate_mipmaps()
 			image_texture = ImageTexture.create_from_image(value)
 	var image_texture: ImageTexture
-	
+
 	static func get_id() -> StringName: return "dev.fishies.sunfish.ImageElement"
-	
+
 	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard):
 		Util.unused(wb)
 		if image_texture:
 			canvas.draw_texture_rect(image_texture, rect, false, Color(1, 1, 1, opacity))
-	
+
 	func get_bounding_box() -> Rect2:
 		return rect
-	
-	
+
+
 	func serialize() -> Dictionary:
 		var image_data := image.get_data()
 		var image_data_compressed := image_data.compress(FileAccess.COMPRESSION_ZSTD)
@@ -123,8 +126,8 @@ class ImageElement extends WhiteboardTool.Element:
 			"image_height": image.get_height(),
 			"image_format": image.get_format(),
 		}
-	
-	
+
+
 	static func deserialize(data: Dictionary) -> Element:
 		var el := ImageElement.new()
 		el.rect = data.rect

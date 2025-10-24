@@ -33,7 +33,7 @@ static var hint_delegates: Dictionary[int, Callable] = {
 		var max_value := float(data[1])
 		var step := float(data[2])
 		var extra_hints := data[3].split(",") if data.size() >= 4 else PackedStringArray()
-		
+
 		var slider := SliderCombo.new()
 		slider.step = maxf(step, 0.01)
 		slider.min_value = min_value

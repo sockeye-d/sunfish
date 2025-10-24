@@ -12,6 +12,9 @@ var preview := PlainPreviewElement.new()
 static func get_id() -> StringName: return "dev.fishies.sunfish.BrushTool"
 
 
+static func get_shortcut() -> InputEvent: return Shortcuts.key(KEY_B)
+
+
 func should_hide_mouse() -> bool: return true
 
 
@@ -65,17 +68,17 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 class BrushElement extends WhiteboardTool.Element:
 	static func _static_init() -> void:
 		WhiteboardManager.register_deserializer(BrushElement)
-	
+
 	var points: PackedVector2Array
 	var pressures: PackedFloat32Array
 	var color: Color
 	var width: float
-	
+
 	var min_p: Vector2 = Vector2(+INF, +INF)
 	var max_p: Vector2 = Vector2(-INF, -INF)
-	
+
 	static func get_id() -> StringName: return "dev.fishies.sunfish.BrushElement"
-	
+
 	func append_point(point: Vector2, pressure: float, wb: Whiteboard) -> void:
 		min_p = min_p.min(point)
 		max_p = max_p.max(point)
@@ -89,17 +92,17 @@ class BrushElement extends WhiteboardTool.Element:
 		else:
 			points.append(point)
 			pressures.append(pressure)
-	
-	
+
+
 	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard) -> void:
 		Util.unused(wb)
 		if points.size() >= 2:
 			DrawingUtil.draw_round_polyline(canvas.get_canvas_item(), points, color, width, pressures)
-	
-	
+
+
 	func get_bounding_box() -> Rect2:
 		return Rect2(min_p, max_p - min_p).grow(width * 0.5).abs()
-	
+
 	func serialize() -> Dictionary:
 		return {
 			"points": points,
@@ -107,14 +110,14 @@ class BrushElement extends WhiteboardTool.Element:
 			"color": color,
 			"width": width,
 		}
-	
-	
+
+
 	static func deserialize(data: Dictionary) -> Element:
 		var el := BrushElement.new()
 		_deserialize(el, data)
 		return el
-	
-	
+
+
 	static func _deserialize(el: BrushElement, data: Dictionary) -> void:
 		el.points = data.points
 		el.pressures = data.get("pressures", [])
@@ -137,35 +140,35 @@ class BrushElement extends WhiteboardTool.Element:
 class BrushDotElement extends WhiteboardTool.Element:
 	static func _static_init() -> void:
 		WhiteboardManager.register_deserializer(BrushDotElement)
-	
+
 	var position: Vector2
 	var color: Color
 	var width: float
-	
+
 	static func get_id() -> StringName: return "dev.fishies.sunfish.BrushDotElement"
-	
+
 	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard) -> void:
 		Util.unused(wb)
 		canvas.draw_circle(position, width * 0.5, color)
-	
+
 	func get_bounding_box() -> Rect2:
 		return Rect2(position, Vector2.ZERO).grow(width)
-	
-	
+
+
 	func serialize() -> Dictionary:
 		return {
 			"position": position,
 			"color": color,
 			"width": width,
 		}
-	
-	
+
+
 	static func deserialize(data: Dictionary) -> Element:
 		var el := BrushDotElement.new()
 		_deserialize(el, data)
 		return el
-	
-	
+
+
 	static func _deserialize(el: BrushDotElement, data: Dictionary) -> void:
 		el.position = data.position
 		el.color = data.color

@@ -27,3 +27,7 @@ static func default(value, default_value):
 
 
 static func falloff(x: float) -> float: return maxf(0.0, 2.0 - 1.0 / x if x <= 1.0 else x)
+
+
+static func get_default_save_path() -> String:
+	return "user://%s.sunfish" % Time.get_datetime_string_from_system().replace(":", "_")

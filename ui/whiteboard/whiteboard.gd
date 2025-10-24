@@ -52,19 +52,16 @@ var save_timer: Timer
 var tool_popup: ToolPopup
 
 
-var _is_ready: bool = false
-
-
 func _init() -> void:
 	save_timer = Timer.new()
 	save_timer.wait_time = 0.5
 	save_timer.one_shot = true
 	add_child(save_timer)
-	
+
 	tool_popup = ToolPopup.new()
 	tool_popup.size = Vector2i(200, 200)
 	add_child(tool_popup)
-	
+
 	clip_contents = true
 	draw_xform = Transform2D.IDENTITY
 	background = Panel.new()
@@ -73,32 +70,32 @@ func _init() -> void:
 	background.mouse_behavior_recursive = Control.MOUSE_BEHAVIOR_DISABLED
 	background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	add_child(background)
-	
+
 	var mat := ShaderMaterial.new()
 	mat.shader = WHITEBOARD_BACKGROUND
-	
+
 	background_shader = ColorRect.new()
 	background_shader.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	background_shader.material = mat
 	background.add_child(background_shader)
-	
+
 	xform_changed.connect(func():
 		var x := Vector3(inv_draw_xform[0][0], inv_draw_xform[0][1], 0.0)
 		var y := Vector3(inv_draw_xform[1][0], inv_draw_xform[1][1], 0.0)
 		var z := Vector3(inv_draw_xform[2][0], inv_draw_xform[2][1], 0.0)
 		mat.set_shader_parameter("xform", Basis(x, y, z))
 	)
-	
+
 	focus_mode = Control.FOCUS_ALL
-	
+
 	theme_changed.connect(func(): if ThemeManager.active_theme: mat.set_shader_parameter("text_color", ThemeManager.active_theme.text))
-	
-	#mouse_entered.connect(func():
-		#if active_tools.any(func(e: WhiteboardTool): return e.should_hide_mouse()):
-			#Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
-	#)
-	#mouse_exited.connect(func(): Input.mouse_mode = Input.MOUSE_MODE_VISIBLE)
-	
+
+	mouse_entered.connect(func():
+		if active_tools.any(func(e: WhiteboardTool): return e.should_hide_mouse()):
+			Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+	)
+	mouse_exited.connect(func(): Input.mouse_mode = Input.MOUSE_MODE_VISIBLE)
+
 	viewport_container = SubViewportContainer.new()
 	viewport_container.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	viewport_container.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -112,27 +109,25 @@ func _init() -> void:
 	render_mat.shader = preload("whiteboard_render.gdshader")
 	render_mat["shader_parameter/canvas_texture"] = viewport.get_texture()
 	viewport_container.material = render_mat
-	
+
 	layer_container = Node2D.new()
 	viewport_container.add_child(viewport)
 	viewport.add_child(layer_container)
-	
+
 	preview = PreviewControl.new()
 	preview.wb = self
 	viewport.add_child(preview)
-	
+
 	add_child(viewport_container)
 
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		serialize_or_new()
-	if what == NOTIFICATION_WM_WINDOW_FOCUS_OUT and _is_ready:
-		serialize_or_new()
 
 
 func _ready() -> void:
-	_is_ready = true
+	get_window().focus_exited.connect(serialize_or_new)
 	if color_picker:
 		color_picker.color_changed.connect(func(new_color: Color): primary_color = new_color)
 		color_picker.color = ThemeManager.active_theme.text
@@ -155,34 +150,34 @@ func _ready() -> void:
 			serialize_or_new()
 	else:
 		serialize_or_new()
-	
+
 	WhiteboardBus.file_save.connect(func(filepath: String):
 		Util.unused(filepath)
 		serialize()
 	)
-	
+
 	WhiteboardBus.file_load.connect(func(filepath: String):
 		deserialize(StreamPeerFile.open(filepath, FileAccess.READ))
 	)
-	
+
 	WhiteboardBus.file_new.connect(func():
 		reset()
 		serialize_or_new()
 	)
-	
+
 	WhiteboardBus.view_reset_view.connect(func():
 		draw_xform = Transform2D.IDENTITY
 	)
-	
+
 	WhiteboardBus.view_reset_zoom.connect(func():
 		var center := size * 0.5
 		draw_xform = draw_xform.translated(-center).scaled(Vector2.ONE / draw_xform.get_scale()).translated(center)
 	)
-	
+
 	WhiteboardBus.undo.connect(undo)
-	
+
 	save_timer.timeout.connect(serialize_or_new)
-	
+
 	WhiteboardManager.intialize_passive_tools(self)
 
 
@@ -206,7 +201,7 @@ func _gui_input(e: InputEvent) -> void:
 		var tool_output := await tool.receive_input(self, e.xformed_by((draw_xform).affine_inverse()))
 		if tool_output == null:
 			continue
-		
+
 		if not tool_output.elements.is_empty():
 			if elements.slice(elements.size() - tool_output.elements.size()) != tool_output.elements:
 				var old_element_size := elements.size()
@@ -219,10 +214,10 @@ func _gui_input(e: InputEvent) -> void:
 				for layer_index in range(elements.size() - tool_output.elements.size(), elements.size()):
 					(layer_container.get_child(layer_index) as ElementLayer).queue_redraw()
 				save()
-		
+
 		if not tool_output.preview_elements.is_empty():
 			new_preview_elements.append_array(tool_output.preview_elements)
-	
+
 	preview_elements = new_preview_elements
 	if not preview_elements.is_empty() or _preview_draw_twice:
 		_preview_draw_twice = not preview_elements.is_empty()
@@ -264,8 +259,8 @@ func save() -> void:
 func serialize_or_new() -> void:
 	var filepath: Array = Settings.get_safe("state/last_opened_filepath")
 	if filepath.is_empty() or filepath[0].is_empty():
-		filepath = [WhiteboardBus.get_default_save_path()]
-		Settings["state/last_opened_filepath"] = filepath
+		filepath = [Util.get_default_save_path()]
+		Settings["state/last_opened_filepath"] = filepath[0]
 	serialize(StreamPeerFile.open(filepath[0], FileAccess.WRITE))
 
 
@@ -314,7 +309,7 @@ func create_layer(index: int) -> ElementLayer:
 
 class PreviewControl extends Node2D:
 	var wb: Whiteboard
-	
+
 	func _draw() -> void:
 		for preview_element in wb.preview_elements:
 			preview_element.draw(self, wb)
@@ -323,7 +318,7 @@ class PreviewControl extends Node2D:
 class ElementLayer extends Node2D:
 	var whiteboard: Whiteboard
 	var index: int
-	
+
 	func _draw() -> void:
 		var element := whiteboard.elements[index]
 		if DebugManager.show_bounds:

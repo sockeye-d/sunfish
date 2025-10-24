@@ -20,7 +20,7 @@ func _ready() -> void:
 		Util.unused(v)
 		update_window_title()
 	)
-	update_window_title.call_deferred() 
+	update_window_title.call_deferred()
 
 
 func load_file() -> void:
@@ -52,10 +52,6 @@ func save_file_as() -> void:
 func create_new_file() -> void:
 	Settings["state/last_opened_filepath"] = ""
 	file_new.emit()
-
-
-func get_default_save_path() -> String:
-	return "user://%s.sunfish" % Time.get_datetime_string_from_system().replace(":", "_")
 
 
 func update_window_title() -> void:

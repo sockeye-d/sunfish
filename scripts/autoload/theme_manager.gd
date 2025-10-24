@@ -36,7 +36,7 @@ func _ready() -> void:
 	ui_scale_changed.connect(func(): RenderingServer.global_shader_parameter_set("ui_scale", ui_scale))
 	ui_scale_changed.connect(func(): get_tree().root.content_scale_factor = ui_scale)
 	ui_scale = Settings["core/ui_scale"]
-	
+
 	set_theme_id(Settings["core/theme"])
 
 
@@ -61,7 +61,7 @@ func set_theme(new_theme: ThemeColors) -> void:
 	RenderingServer.set_default_clear_color(theme.background_1)
 	if Engine.is_editor_hint():
 		ProjectSettings["rendering/environment/defaults/default_clear_color"] = theme.background_1
-	
+
 	var selection := Color(theme.accent_0, 0.3)
 	var disabled_surface := theme.surface.lerp(theme.background_0, 0.5)
 	var darkest_bg := get_darkest(theme.background_0, theme.background_1, theme.background_2, theme.text)
@@ -70,35 +70,35 @@ func set_theme(new_theme: ThemeColors) -> void:
 	var base_font_size := 12 if OS.has_feature("mobile") else 16
 	var shadow := func(sb: StyleBoxFlat) -> StyleBoxFlat:
 		return shadowed(sb, shadow_color, 2, 0, base_spacing / 2)
-	
+
 	theme_res.set_block_signals(true)
 	get_tree().root.theme = theme_res
 	theme_res.default_font = SANS
 	theme_res.default_font_size = base_font_size
-	
+
 	theme_res.set_font("font", "HeaderLarge", SERIF_BOLD)
 	theme_res.set_font_size("font_size", "HeaderLarge", int(base_font_size * 1.5))
 	theme_res.set_font("font", "HeaderMedium", SANS_BOLD)
 	theme_res.set_font_size("font_size", "HeaderMedium", int(base_font_size * 1.125))
 	theme_res.set_font("font", "HeaderSmall", SANS)
 	theme_res.set_font_size("font_size", "HeaderSmall", base_font_size)
-	
+
 	theme_res.set_constant("separation", "BoxContainer", base_spacing)
 	theme_res.set_constant("separation", "HBoxContainer", base_spacing)
 	theme_res.set_constant("separation", "VBoxContainer", base_spacing)
-	
+
 	theme_res.set_constant("margin_bottom", "MarginContainer", base_spacing)
 	theme_res.set_constant("margin_top", "MarginContainer", base_spacing)
 	theme_res.set_constant("margin_left", "MarginContainer", base_spacing)
 	theme_res.set_constant("margin_right", "MarginContainer", base_spacing)
-	
+
 	theme_res.set_stylebox("panel", "PanelContainer", new_flat(theme.background_0, [base_spacing * 2], [base_spacing]))
 	theme_res.set_stylebox("panel", "AltPanelContainer", new_flat(theme.background_1, [base_spacing * 2], [base_spacing]))
 	theme_res.set_stylebox("panel", "SettingsPanelContainer", new_flat(theme.background_0, [0, base_spacing * 2, base_spacing * 2, base_spacing * 2], [base_spacing]))
 	theme_res.set_stylebox("panel", "Panel", new_flat(theme.background_0, [base_spacing * 2], [base_spacing]))
-	
+
 	theme_res.set_constant("scrollbar_h_separation", "Tree", base_spacing)
-	
+
 	theme_res.set_color("font_color", "Tree", theme.text)
 	theme_res.set_color("font_disabled_color", "Tree", theme.subtext)
 	theme_res.set_color("font_hovered_color", "Tree", theme.text)
@@ -108,17 +108,17 @@ func set_theme(new_theme: ThemeColors) -> void:
 	theme_res.set_color("children_hl_line_color", "Tree", theme.surface_hover)
 	theme_res.set_color("parent_hl_line_color", "Tree", theme.overlay)
 	theme_res.set_color("relationship_line_color", "Tree", theme.surface)
-	
+
 	theme_res.set_stylebox("panel", "Tree", new_flat(theme.background_0, [base_spacing * 2], [base_spacing]))
 	theme_res.set_stylebox("hovered", "Tree", new_flat(theme.surface_hover, [base_spacing], [base_spacing]))
 	theme_res.set_stylebox("selected", "Tree", new_flat(theme.surface_hover, [base_spacing], [base_spacing]))
 	theme_res.set_stylebox("hovered_dimmed", "Tree", new_flat(theme.surface, [base_spacing], [base_spacing]))
 	theme_res.set_stylebox("hovered_selected", "Tree", new_flat(theme.surface_press, [base_spacing], [base_spacing]))
-	
+
 	theme_res.set_color("font_color", "Label", theme.text)
-	
+
 	theme_res.set_color("font_color", "SubtextLabel", theme.subtext)
-	
+
 	theme_res.set_color("font_color", "Button", theme.text)
 	theme_res.set_color("font_pressed_color", "Button", theme.text)
 	theme_res.set_color("font_hover_pressed_color", "Button", theme.text)
@@ -128,7 +128,7 @@ func set_theme(new_theme: ThemeColors) -> void:
 	theme_res.set_stylebox("hover", "Button", new_flat(theme.surface_hover, [base_spacing], [base_spacing]))
 	theme_res.set_stylebox("pressed", "Button", shadow.call(new_flat(theme.surface_press, [base_spacing], [base_spacing])))
 	theme_res.set_stylebox("disabled", "Button", new_flat(disabled_surface, [base_spacing], [base_spacing]))
-	
+
 	for clazz in PackedStringArray(["CheckButton", "CheckBox"]):
 		theme_res.set_color("font_color", clazz, theme.text)
 		theme_res.set_color("font_pressed_color", clazz, theme.text)
@@ -140,15 +140,15 @@ func set_theme(new_theme: ThemeColors) -> void:
 		theme_res.set_stylebox("pressed", clazz, shadow.call(new_flat(theme.surface_press, [base_spacing], [base_spacing])))
 		theme_res.set_stylebox("hover_pressed", clazz, shadow.call(new_flat(theme.surface_press, [base_spacing], [base_spacing])))
 		theme_res.set_stylebox("disabled", clazz, new_flat(disabled_surface, [base_spacing], [base_spacing]))
-	
+
 	theme_res.set_color("font_color", "ProgressBar", theme.text)
 	theme_res.set_stylebox("background", "ProgressBar", new_flat(theme.surface, [base_spacing], [base_spacing]))
 	theme_res.set_stylebox("fill", "ProgressBar", new_flat(theme.overlay, [base_spacing], [base_spacing]))
-	
+
 	theme_res.set_stylebox("panel", "PopupPanel", shadow.call(new_flat(theme.background_1, [base_spacing], [base_spacing])))
-	
+
 	theme_res.set_stylebox("panel", "AcceptDialog", new_flat(theme.background_1, [base_spacing], [base_spacing]))
-	
+
 	theme_res.set_color("font_color", "LineEdit", theme.text)
 	theme_res.set_color("caret_color", "LineEdit", theme.text)
 	theme_res.set_color("font_selected_color", "LineEdit", theme.text)
@@ -157,13 +157,13 @@ func set_theme(new_theme: ThemeColors) -> void:
 	theme_res.set_color("selection_color", "LineEdit", selection)
 	theme_res.set_stylebox("normal", "LineEdit", new_flat(theme.surface, [base_spacing], [base_spacing]))
 	theme_res.set_stylebox("read_only", "LineEdit", new_flat(disabled_surface, [base_spacing], [base_spacing]))
-	
+
 	theme_res.set_color("font_color", "TextEdit", theme.text)
 	theme_res.set_color("font_selected_color", "TextEdit", theme.text)
 	theme_res.set_color("font_uneditable_color", "TextEdit", theme.subtext)
 	theme_res.set_color("selection_color", "TextEdit", selection)
 	theme_res.set_stylebox("normal", "TextEdit", new_flat(theme.surface, [base_spacing], [base_spacing]))
-	
+
 	var tab_radii: PackedInt32Array = [base_spacing, base_spacing, 0, 0]
 	theme_res.set_stylebox("panel", "TabContainer", new_flat(theme.background_0, tab_radii, [base_spacing]))
 	theme_res.set_stylebox("tab_disabled", "TabContainer", blended(new_flat(theme.background_1, tab_radii, [base_spacing], [0, 0, 0, 8], theme.background_0)))
@@ -174,38 +174,38 @@ func set_theme(new_theme: ThemeColors) -> void:
 	theme_res.set_color("font_hovered_color", "TabContainer", theme.text)
 	theme_res.set_color("font_selected_color", "TabContainer", theme.text)
 	theme_res.set_color("font_unselected_color", "TabContainer", theme.text)
-	
+
 	theme_res.set_stylebox("panel", "SliderCombo", new_flat(theme.background_1, [base_spacing], [base_spacing]))
-	
+
 	theme_res.set_stylebox("slider", "HSlider", new_flat(theme.surface, [base_spacing / 2], [0, base_spacing / 2]))
 	theme_res.set_stylebox("grabber_area", "HSlider", new_flat(theme.overlay_hover, [base_spacing / 2], [0, base_spacing / 2]))
 	theme_res.set_stylebox("grabber_area_highlight", "HSlider", new_flat(theme.overlay_press, [base_spacing / 2], [0, base_spacing / 2]))
-	
+
 	theme_res.set_stylebox("slider", "VSlider", new_flat(theme.surface, [base_spacing / 2], [base_spacing / 2, 0]))
 	theme_res.set_stylebox("grabber_area", "VSlider", new_flat(theme.overlay_hover, [base_spacing / 2], [base_spacing / 2, 0]))
 	theme_res.set_stylebox("grabber_area_highlight", "VSlider", new_flat(theme.overlay_press, [base_spacing / 2], [base_spacing / 2, 0]))
 	theme_res.set_icon("grabber", "VSlider", theme_res.get_icon("grabber", "HSlider"))
 	theme_res.set_icon("grabber_highlight", "VSlider", theme_res.get_icon("grabber_highlight", "HSlider"))
-	
+
 	theme_res.set_stylebox("grabber", "HScrollBar", new_flat(theme.overlay, [base_spacing / 2], [0, base_spacing / 2]))
 	theme_res.set_stylebox("grabber_highlight", "HScrollBar", new_flat(theme.overlay_hover, [base_spacing / 2], [0, base_spacing / 2]))
 	theme_res.set_stylebox("grabber_pressed", "HScrollBar", new_flat(theme.overlay_press, [base_spacing / 2], [0, base_spacing / 2]))
 	theme_res.set_stylebox("scroll", "HScrollBar", new_flat(theme.surface, [base_spacing / 2], [0, base_spacing / 2]))
-	
+
 	theme_res.set_stylebox("grabber", "VScrollBar", new_flat(theme.overlay, [base_spacing / 2], [base_spacing / 2, 0]))
 	theme_res.set_stylebox("grabber_highlight", "VScrollBar", new_flat(theme.overlay_hover, [base_spacing / 2], [base_spacing / 2, 0]))
 	theme_res.set_stylebox("grabber_pressed", "VScrollBar", new_flat(theme.overlay_press, [base_spacing / 2], [base_spacing / 2, 0]))
 	theme_res.set_stylebox("scroll", "VScrollBar", new_flat(theme.surface, [base_spacing / 2], [base_spacing / 2, 0]))
-	
+
 	theme_res.set_stylebox("separator", "VSeparator", new_flat(disabled_surface, [1], [1, 0], [0, 0]))
 	theme_res.set_stylebox("separator", "HSeparator", new_flat(disabled_surface, [1], [0, 1], [0, 0]))
-	
+
 	theme_res.set_color("font_color", "PopupMenu", theme.text)
 	theme_res.set_color("font_disabled_color", "PopupMenu", theme.subtext)
 	theme_res.set_color("font_accelerator_color", "PopupMenu", theme.subtext)
 	theme_res.set_color("font_hover_color", "PopupMenu", theme.text)
 	theme_res.set_color("font_separator_color", "PopupMenu", theme.subtext)
-	
+
 	theme_res.set_stylebox("panel", "PopupMenu", shadow.call(new_flat(theme.background_1, [base_spacing * 2], [base_spacing])))
 	theme_res.set_stylebox("hover", "PopupMenu", shadow.call(new_flat(theme.overlay, [base_spacing], [base_spacing])))
 	theme_res.set_stylebox("separator", "PopupMenu", new_flat(theme.surface, [1], [0, 1], [0, 0]))
@@ -216,7 +216,7 @@ func set_theme(new_theme: ThemeColors) -> void:
 			for suffix in PackedStringArray(["", "_disabled"]):
 				var icon_name := prefix + icon + suffix
 				theme_res.set_icon(icon_name, "PopupMenu", theme_res.get_icon(icon_name, "CheckBox"))
-	
+
 	# is this wasteful?  yes
 	# does it work? also yes
 	var focus_sb := new_flat(Color.TRANSPARENT, [base_spacing + 1], [base_spacing], [base_spacing / 2], theme.subtext, [base_spacing / 2])
@@ -228,7 +228,7 @@ func set_theme(new_theme: ThemeColors) -> void:
 	for prop in ThemeDB.get_default_theme().get_property_list():
 		if prop.class_name == "StyleBox" and prop.name.match("*/focus"):
 			theme_res.set(prop.name, focus_sb)
-	
+
 	theme_res.set_block_signals(false)
 	theme_res.emit_changed()
 	background_color_changed.emit(theme.background_1)
@@ -242,7 +242,7 @@ func set_theme(new_theme: ThemeColors) -> void:
 		Color("#00ffff"): theme.accent_1,
 	}
 	IconTexture2D.SignalBus.instance.update.emit()
-	
+
 	if Engine.is_editor_hint():
 		ResourceSaver.save(theme_res, theme_res.resource_path)
 @warning_ignore_restore("integer_division")
@@ -275,28 +275,28 @@ func new_flat(
 	sb.corner_radius_top_right = maxi(0, int(radii[-3 % radii.size()]))
 	sb.corner_radius_bottom_left = maxi(0, int(radii[-2 % radii.size()]))
 	sb.corner_radius_bottom_right = maxi(0, int(radii[-1 % radii.size()]))
-	
+
 	sb.content_margin_left = maxi(-1, int(margins[-4 % margins.size()]))
 	sb.content_margin_top = maxi(-1, int(margins[-3 % margins.size()]))
 	sb.content_margin_right = maxi(-1, int(margins[-2 % margins.size()]))
 	sb.content_margin_bottom = maxi(-1, int(margins[-1 % margins.size()]))
-	
+
 	sb.border_width_left = int(border_width[-4 % border_width.size()])
 	sb.border_width_top = int(border_width[-3 % border_width.size()])
 	sb.border_width_right = int(border_width[-2 % border_width.size()])
 	sb.border_width_bottom = int(border_width[-1 % border_width.size()])
-	
+
 	sb.expand_margin_left = maxi(-1, int(expand_margins[-4 % expand_margins.size()]))
 	sb.expand_margin_top = maxi(-1, int(expand_margins[-3 % expand_margins.size()]))
 	sb.expand_margin_right = maxi(-1, int(expand_margins[-2 % expand_margins.size()]))
 	sb.expand_margin_bottom = maxi(-1, int(expand_margins[-1 % expand_margins.size()]))
-	
+
 	sb.border_color = border_color
-	
+
 	sb.bg_color = bg_color
-	
+
 	sb.draw_center = true
-	
+
 	return sb
 
 

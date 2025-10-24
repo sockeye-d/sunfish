@@ -33,6 +33,21 @@ func _ready() -> void:
 		tool_buttons[tool].button_pressed = true
 	)
 
+	whiteboard.gui_input.connect(_whiteboard_gui_input)
+
+
+func _whiteboard_gui_input(event: InputEvent) -> void:
+	for tool_id in WhiteboardManager.tools:
+		var setting_key := "shortcuts.tools/" + tool_id
+		var shortcut_event := Settings.get_safe(setting_key)
+		if not shortcut_event.is_empty() and shortcut_event[0] != null:
+			if event.is_match(shortcut_event[0]):
+				var tool := WhiteboardManager.tools[tool_id]
+				active_tool_changed.emit(tool)
+				tool_buttons[tool].button_pressed = true
+				whiteboard.accept_event()
+				return
+
 
 func _update_tools() -> void:
 	for tool in tool_buttons:
@@ -49,11 +64,11 @@ func _update_tools() -> void:
 		btn.toggle_mode = true
 		btn.icon = icon
 		btn.button_group = tool_button_group
-		
+
 		if selected_tool_id == tool_id:
 			btn.button_pressed = true
 			active_tool_changed.emit(tool)
-		
+
 		tool_buttons[tool] = btn
 		btn.pressed.connect(func():
 			selected_tool_id = tool_id

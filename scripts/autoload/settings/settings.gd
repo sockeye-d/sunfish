@@ -67,28 +67,32 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 	var has_tree_worthy_properties := false
 	var has_created_shortcut_header := false
 	for property in config.get_property_list():
-		if not property.usage & PROPERTY_USAGE_SCRIPT_VARIABLE or not property.usage & PROPERTY_USAGE_STORAGE:
+		var property_usage: PropertyUsageFlags = property.usage
+		if not property_usage & PROPERTY_USAGE_SCRIPT_VARIABLE or not property_usage & PROPERTY_USAGE_STORAGE:
 			continue
 		var property_name: StringName = property.name
-		var value = config.get(property_name)
+		var property_class: StringName = property.class_name
+
+		var value = config.property_get_revert(property_name)
+		if value == null: value = config.get(property_name)
 		var property_key := StringName(id + "/" + property_name)
-		var is_shortcut := ClassDB.is_parent_class(property.class_name, "InputEvent")
-		if ClassDB.is_parent_class(property.class_name, "Resource") and value is Configuration:
+		var is_shortcut := ClassDB.is_parent_class(property_class, "InputEvent")
+		if ClassDB.is_parent_class(property_class, "Resource") and value is Configuration:
 			create_settings_for(tree_item, value, serialized_data)
 		else:
 			var initial_value = value
-			var default_value = initial_value
+			var default_value = value
 			if serialized_data and serialized_data.has(property_key):
 				initial_value = serialized_data.get_safe(property_key)
 				config.set(property_name, initial_value)
 
-			if property.usage & PROPERTY_USAGE_EDITOR:
+			if property_usage & PROPERTY_USAGE_EDITOR:
 				var label_container := HBoxContainer.new()
 				label_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 				var label := Label.new()
 				label.tooltip_text = property_key
 				label.mouse_filter = Control.MOUSE_FILTER_PASS
-				label.text = Util.pretty_print_property(property_name)
+				label.text = Util.pretty_print_property(ReverseDNSUtil.pretty_print(property_name))
 				label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 				label_container.add_child(label)
 				var edit_container := HBoxContainer.new()
@@ -99,7 +103,10 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 				var update_reset_button := func():
 					var config_value = config.get(property_name)
 					if is_shortcut:
-						reset_button.visible = not (config_value == default_value or config_value != null and (config_value).is_match(default_value))
+						reset_button.visible = not (
+							config_value == default_value
+							or config_value != null and config_value.is_match(default_value)
+						)
 					else:
 						reset_button.visible = config_value != default_value
 				var last_value: Array = [initial_value]
@@ -141,13 +148,9 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 						edit_container.visible = not failed_filter
 					)
 					if not has_created_shortcut_header:
-						#var header_left_container := PanelContainer.new()
-						#header_left_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-						#header_left_container.theme_type_variation = "AltPanelContainer"
 						var header_label := Label.new()
 						header_label.text = ReverseDNSUtil.pretty_print(config.get_id())
 						header_label.theme_type_variation = "HeaderMedium"
-						#header_left_container.add_child(header_label)
 						var header_right := Control.new()
 						header_right.size_flags_horizontal = Control.SIZE_SHRINK_END
 						shortcut_container.add_child(header_label)

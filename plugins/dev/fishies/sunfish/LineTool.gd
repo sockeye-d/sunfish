@@ -13,6 +13,9 @@ var preview := PlainPreviewElement.new()
 static func get_id() -> StringName: return "dev.fishies.sunfish.LineTool"
 
 
+static func get_shortcut() -> InputEvent: return Shortcuts.key(KEY_L)
+
+
 func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 	var draw_width := width / wb.draw_scale
 	color = wb.primary_color
@@ -51,25 +54,25 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 class LineElement extends WhiteboardTool.Element:
 	static func _static_init() -> void:
 		WhiteboardManager.register_deserializer(LineElement)
-	
+
 	var color: Color
 	var width: float
-	
+
 	var start_pos: Vector2
 	var end_pos: Vector2
-	
+
 	static func get_id() -> StringName: return "dev.fishies.sunfish.LineElement"
-	
+
 	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard) -> void:
 		Util.unused(wb)
 		canvas.draw_circle(start_pos, width * 0.5, color)
 		canvas.draw_line(start_pos, end_pos, color, width)
 		canvas.draw_circle(end_pos, width * 0.5, color)
-	
+
 	func get_bounding_box() -> Rect2:
 		return Rect2(start_pos, end_pos - start_pos).abs().grow(width)
-	
-	
+
+
 	func serialize() -> Dictionary:
 		return {
 			"color": color,
@@ -77,8 +80,8 @@ class LineElement extends WhiteboardTool.Element:
 			"start_pos": start_pos,
 			"end_pos": end_pos,
 		}
-	
-	
+
+
 	static func deserialize(data: Dictionary) -> Element:
 		var el := LineElement.new()
 		el.color = data.color

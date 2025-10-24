@@ -4,8 +4,10 @@ extends WhiteboardTool
 @export_range(1, 32, 1, "or_greater") var font_size: int = 16
 @export var font_name: String = "serif"
 
+
 var preview: TextPreviewElement
 var last_found_element: TextElement
+
 
 func _validate_property(property: Dictionary) -> void:
 	if property.name == "font_name":
@@ -14,6 +16,9 @@ func _validate_property(property: Dictionary) -> void:
 
 
 static func get_id() -> StringName: return "dev.fishies.sunfish.TextTool"
+
+
+static func get_shortcut() -> InputEvent: return Shortcuts.key(KEY_T)
 
 
 func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
@@ -76,7 +81,7 @@ class TextPreviewElement extends WhiteboardTool.PreviewElement:
 	var font: Font
 	var font_size: int
 	var color: Color
-	
+
 	func draw(canvas: CanvasItem, wb: Whiteboard):
 		var rect := Inner.font_get_rect(font, text, font_size)
 		Util.unused(wb)
@@ -86,7 +91,7 @@ class TextPreviewElement extends WhiteboardTool.PreviewElement:
 class TextElement extends WhiteboardTool.Element:
 	static func _static_init() -> void:
 		WhiteboardManager.register_deserializer(TextElement)
-	
+
 	var text: String
 	var position: Vector2
 	var font_name: String:
@@ -96,19 +101,19 @@ class TextElement extends WhiteboardTool.Element:
 	var font: Font
 	var font_size: int
 	var color: Color
-	
+
 	static func get_id() -> StringName: return "dev.fishies.sunfish.TextElement"
-	
+
 	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard):
 		Util.unused(wb)
 		var rect := Inner.font_get_rect(font, text, font_size)
 		canvas.draw_multiline_string(font, position - rect.get_center(), text, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size, -1, color)
-	
+
 	func get_bounding_box() -> Rect2:
 		var rect := Inner.font_get_rect(font, text, font_size)
 		rect.position += position - rect.get_center()
 		return rect
-	
+
 	func serialize() -> Dictionary:
 		return {
 			"text": text,
@@ -117,7 +122,7 @@ class TextElement extends WhiteboardTool.Element:
 			"font_size": font_size,
 			"color": color,
 		}
-	
+
 	static func deserialize(data: Dictionary) -> Element:
 		var el := TextElement.new()
 		el.text = data.text
@@ -158,7 +163,7 @@ class Inner:
 		sys_font.multichannel_signed_distance_field = true
 		font_cache[name] = sys_font
 		return sys_font
-	
+
 	static func font_get_rect(font: Font, text: String, font_size: int) -> Rect2:
 		var string_size := font.get_multiline_string_size(text, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size)
 		return Rect2(Vector2(0, font.get_descent(font_size) - font.get_height(font_size)), string_size)

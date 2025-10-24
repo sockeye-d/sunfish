@@ -7,6 +7,9 @@ const BrushTool = preload("BrushTool.gd")
 static func get_id() -> StringName: return "dev.fishies.sunfish.EraserTool"
 
 
+static func get_shortcut() -> InputEvent: return Shortcuts.key(KEY_E)
+
+
 func should_hide_mouse() -> bool: return true
 
 
@@ -26,13 +29,13 @@ func _validate_property(property: Dictionary) -> void:
 class EraserElement extends BrushTool.BrushElement:
 	static func _static_init() -> void:
 		WhiteboardManager.register_deserializer(EraserElement)
-	
+
 	static func get_id() -> StringName: return "dev.fishies.sunfish.EraserElement"
-	
+
 	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard) -> void:
 		canvas.material = Inner.erase_material
 		super.draw(canvas, wb)
-	
+
 	static func deserialize(data: Dictionary) -> Element:
 		var el := EraserElement.new()
 		_deserialize(el, data)
@@ -42,13 +45,13 @@ class EraserElement extends BrushTool.BrushElement:
 class EraserDotElement extends BrushTool.BrushDotElement:
 	static func _static_init() -> void:
 		WhiteboardManager.register_deserializer(EraserDotElement)
-	
+
 	static func get_id() -> StringName: return "dev.fishies.sunfish.EraserDotElement"
-	
+
 	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard) -> void:
 		canvas.material = Inner.erase_material
 		super.draw(canvas, wb)
-	
+
 	static func deserialize(data: Dictionary) -> Element:
 		var el := EraserDotElement.new()
 		_deserialize(el, data)

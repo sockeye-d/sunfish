@@ -44,7 +44,7 @@ func _ready() -> void:
 	add_separator("View")
 	var reset_zoom := add_item("Reset zoom", "reset_zoom", "shortcuts/reset_zoom")
 	var reset_view := add_item("Reset view", "reset_view", "shortcuts/reset_view")
-	
+
 	get_popup().index_pressed.connect(func(index: int):
 		match index:
 			open:
@@ -64,12 +64,12 @@ func _ready() -> void:
 			plugins:
 				pass
 	)
-	
+
 	debug.reparent(get_popup())
 	if Settings["core/show_debug_menu"]:
 		last_show_debug_menu = true
 		_add_debug_menu()
-	
+
 	Settings.setting_changed("core/show_debug_menu").connect(func(new_value: bool):
 		if new_value and not last_show_debug_menu:
 			_add_debug_menu()
