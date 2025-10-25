@@ -40,7 +40,8 @@ func _ready() -> void:
 	var save := add_item("Save as", "save", "shortcuts/save_as")
 	var new := add_item("New", "new", "shortcuts/new")
 	add_separator("Edit")
-	var undo := add_item("Undo", "save", "shortcuts/undo")
+	var undo := add_item("Undo", "undo", "shortcuts/undo")
+	var redo := add_item("Redo", "redo", "shortcuts/redo")
 	var preferences := add_item("Preferences", "config", "shortcuts/show_preferences")
 	var shortcuts := add_item("Shortcuts", "shortcuts", "shortcuts/show_shortcuts")
 	var plugins := add_item("Plugins", "plugins", "shortcuts/show_plugins")
@@ -58,6 +59,8 @@ func _ready() -> void:
 				WhiteboardBus.create_new_file()
 			undo:
 				WhiteboardBus.undo.emit()
+			redo:
+				WhiteboardBus.redo.emit()
 			reset_zoom:
 				WhiteboardBus.view_reset_zoom.emit()
 			reset_view:

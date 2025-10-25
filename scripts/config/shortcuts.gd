@@ -7,6 +7,7 @@ static func _static_init() -> void:
 
 @warning_ignore_start("int_as_enum_without_cast", "int_as_enum_without_match")
 @export var undo := Shortcuts.key(KEY_Z, KEY_MASK_CTRL)
+@export var redo := Shortcuts.key(KEY_Z, KEY_MASK_CTRL | KEY_MASK_SHIFT)
 
 @export var open := Shortcuts.key(KEY_O, KEY_MASK_CTRL)
 @export var save_as := Shortcuts.key(KEY_S, KEY_MASK_CTRL)

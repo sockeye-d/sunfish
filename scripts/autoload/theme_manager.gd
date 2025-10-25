@@ -222,15 +222,17 @@ func set_theme(new_theme: ThemeColors) -> void:
 
 	# is this wasteful?  yes
 	# does it work? also yes
-	var focus_sb := new_flat(Color.TRANSPARENT, [base_spacing + 1], [base_spacing], [base_spacing / 2], theme.subtext, [base_spacing / 2])
 	for prop in theme_res.get_property_list():
 		if prop.class_name == "Texture2D" and prop.name.match("?Slider/icons/grabber*"):
 			var val := theme_res.get(prop.name) as IconTexture2D
 			if val:
 				val.secondary_icon_scale = base_spacing / 4.0
+
+	var focus_sb := new_flat(Color.TRANSPARENT, [base_spacing], [0], [1], theme.accent_0, [0])
 	for prop in ThemeDB.get_default_theme().get_property_list():
-		if prop.class_name == "StyleBox" and prop.name.match("*/focus"):
-			theme_res.set(prop.name, focus_sb)
+		if prop.class_name == "StyleBox" and prop.name.ends_with("/focus"):
+			theme_res.set_stylebox("focus", prop.name.get_slice("/", 0), focus_sb)
+	theme_res.set_stylebox("focus", "TabBar", focus_sb)
 
 	theme_res.set_block_signals(false)
 	theme_res.emit_changed()

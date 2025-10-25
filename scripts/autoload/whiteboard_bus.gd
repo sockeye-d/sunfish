@@ -10,6 +10,7 @@ signal view_reset_zoom
 signal view_reset_view
 
 signal undo
+signal redo
 
 signal save_status_changed(saved: bool)
 @warning_ignore_restore("unused_signal")

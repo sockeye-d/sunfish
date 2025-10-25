@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://be1l162hdbq5b" path="res://scripts/scroll_container_spacer_component.gd" id="3_uu5hy"]
 [ext_resource type="Script" uid="uid://oss6ipx4baxl" path="res://scripts/window_auto_scaler.gd" id="4_dh64r"]
 
-[node name="Settings" type="Window" unique_id=1222024932]
+[node name="Settings" type="Window"]
 oversampling_override = 1.0
 title = "Settings"
 position = Vector2i(176, 74)
@@ -16,91 +16,91 @@ exclusive = true
 popup_window = true
 script = ExtResource("1_nlfgh")
 
-[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1950761502]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TabContainer" type="TabContainer" parent="MarginContainer" unique_id=42462048]
+[node name="TabContainer" type="TabContainer" parent="MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"FlatTabContainer"
 current_tab = 1
 
-[node name="Settings" type="SplitContainer" parent="MarginContainer/TabContainer" unique_id=2033601052]
+[node name="Settings" type="SplitContainer" parent="MarginContainer/TabContainer"]
 visible = false
 layout_mode = 2
 split_offset = 300
 metadata/_tab_index = 0
 
-[node name="Tree" type="Tree" parent="MarginContainer/TabContainer/Settings" unique_id=942342671]
+[node name="Tree" type="Tree" parent="MarginContainer/TabContainer/Settings"]
 unique_name_in_owner = true
 layout_mode = 2
 hide_root = true
 
-[node name="SettingsContainer" type="PanelContainer" parent="MarginContainer/TabContainer/Settings" unique_id=237323013]
+[node name="SettingsContainer" type="PanelContainer" parent="MarginContainer/TabContainer/Settings"]
 layout_mode = 2
 
-[node name="SettingsContainer" type="ScrollContainer" parent="MarginContainer/TabContainer/Settings/SettingsContainer" unique_id=1340258046]
+[node name="SettingsContainer" type="ScrollContainer" parent="MarginContainer/TabContainer/Settings/SettingsContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="Shortcuts" type="PanelContainer" parent="MarginContainer/TabContainer" unique_id=1256963595]
+[node name="Shortcuts" type="PanelContainer" parent="MarginContainer/TabContainer"]
 layout_mode = 2
 theme_type_variation = &"SettingsPanelContainer"
 metadata/_tab_index = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TabContainer/Shortcuts" unique_id=1236251371]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TabContainer/Shortcuts"]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/TabContainer/Shortcuts/VBoxContainer" unique_id=44457007]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/TabContainer/Shortcuts/VBoxContainer"]
 layout_mode = 2
 
-[node name="ShortcutSearchText" type="LineEdit" parent="MarginContainer/TabContainer/Shortcuts/VBoxContainer/HBoxContainer" unique_id=629768538]
+[node name="ShortcutSearchText" type="LineEdit" parent="MarginContainer/TabContainer/Shortcuts/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Filter shortcuts"
 
-[node name="ShortcutSearchEvent" type="HBoxContainer" parent="MarginContainer/TabContainer/Shortcuts/VBoxContainer/HBoxContainer" unique_id=744628040]
+[node name="ShortcutSearchEvent" type="HBoxContainer" parent="MarginContainer/TabContainer/Shortcuts/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 script = ExtResource("2_5o5ow")
 metadata/_custom_type_script = "uid://cyewsxvhxivf"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/TabContainer/Shortcuts/VBoxContainer" unique_id=129546636]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/TabContainer/Shortcuts/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/TabContainer/Shortcuts/VBoxContainer/ScrollContainer" unique_id=1996766858]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/TabContainer/Shortcuts/VBoxContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ShortcutContainer" type="GridContainer" parent="MarginContainer/TabContainer/Shortcuts/VBoxContainer/ScrollContainer/HBoxContainer" unique_id=99729936]
+[node name="ShortcutContainer" type="GridContainer" parent="MarginContainer/TabContainer/Shortcuts/VBoxContainer/ScrollContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 columns = 2
 
-[node name="VSeparator" type="VSeparator" parent="MarginContainer/TabContainer/Shortcuts/VBoxContainer/ScrollContainer/HBoxContainer" unique_id=295646417]
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/TabContainer/Shortcuts/VBoxContainer/ScrollContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
 theme_type_variation = &"VSeparatorEmpty"
 
-[node name="ScrollContainerSpacerComponent" type="Node" parent="MarginContainer/TabContainer/Shortcuts/VBoxContainer/ScrollContainer" unique_id=67522197 node_paths=PackedStringArray("scroll_container", "separator")]
+[node name="ScrollContainerSpacerComponent" type="Node" parent="MarginContainer/TabContainer/Shortcuts/VBoxContainer/ScrollContainer" node_paths=PackedStringArray("scroll_container", "separator")]
 script = ExtResource("3_uu5hy")
 scroll_container = NodePath("..")
 separator = NodePath("../HBoxContainer/VSeparator")
 metadata/_custom_type_script = "uid://be1l162hdbq5b"
 
-[node name="WindowAutoScaler" type="Node" parent="." unique_id=1923513585]
+[node name="WindowAutoScaler" type="Node" parent="."]
 script = ExtResource("4_dh64r")
 metadata/_custom_type_script = "uid://oss6ipx4baxl"
 

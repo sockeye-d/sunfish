@@ -2,7 +2,10 @@
 class_name Whiteboard extends Control
 
 const WHITEBOARD_BACKGROUND = preload("uid://h1qiidxtgcs0")
-const NOTIFICATION_UPDATE_VISIBILITY = 20000
+enum {
+	NOTIFICATION_UPDATE_VISIBILITY = 20000,
+	NOTIFICATION_FREE_INVISIBLE,
+}
 
 signal xform_changed
 signal active_tools_changed
@@ -175,6 +178,7 @@ func _ready() -> void:
 	)
 
 	WhiteboardBus.undo.connect(undo)
+	WhiteboardBus.redo.connect(redo)
 
 	save_timer.timeout.connect(serialize_or_new)
 
@@ -204,6 +208,7 @@ func _gui_input(e: InputEvent) -> void:
 
 		if not tool_output.elements.is_empty():
 			if elements.slice(elements.size() - tool_output.elements.size()) != tool_output.elements:
+				clear_undone_layers()
 				var old_element_size := elements.size()
 				elements.append_array(tool_output.elements)
 				for element_index in range(old_element_size, elements.size()):
@@ -224,24 +229,25 @@ func _gui_input(e: InputEvent) -> void:
 		preview.queue_redraw()
 
 
-func _update_viewport_size(new_value: float) -> void:
-	viewport.size = size * new_value
-	print(size)
-	print(viewport.size)
-	draw_xform = draw_xform
-	print(new_value)
-
-
 func _update_mouse_hidden() -> void:
 	if active_tools.any(func(e: WhiteboardTool): return e.should_hide_mouse()):
 		Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 
 
 func undo() -> void:
-	elements.pop_back()
-	layer_container.remove_child(layer_container.get_child(layer_container.get_child_count() - 1))
-	save()
-	queue_redraw()
+	if element_undo_offset < elements.size():
+		element_undo_offset += 1
+		viewport.propagate_notification(NOTIFICATION_UPDATE_VISIBILITY)
+		save()
+		queue_redraw()
+
+
+func redo() -> void:
+	if element_undo_offset > 0:
+		element_undo_offset -= 1
+		viewport.propagate_notification(NOTIFICATION_UPDATE_VISIBILITY)
+		save()
+		queue_redraw()
 
 
 func redraw_preview() -> void:
@@ -278,6 +284,7 @@ func serialize(
 	) -> void:
 	var json := var_to_bytes({
 		"xform": draw_xform,
+		"element_undo_offset": element_undo_offset,
 		"elements": WhiteboardManager.serialize(elements),
 	})
 	var json_compressed := json.compress(FileAccess.COMPRESSION_ZSTD)
@@ -297,10 +304,12 @@ func deserialize(file: FileAccess) -> void:
 	elements = WhiteboardManager.deserialize(data.elements)
 	for element_index in elements.size():
 		create_layer(element_index)
+	element_undo_offset = data.element_undo_offset
 	draw_xform = data.xform
 
 
 func reset() -> void:
+	element_undo_offset = 0
 	draw_xform = Transform2D()
 	elements.clear()
 	preview_elements.clear()
@@ -314,6 +323,14 @@ func create_layer(index: int) -> void:
 	layer.index = index
 	layer.whiteboard = self
 	layer_container.add_child(layer)
+
+
+func clear_undone_layers() -> void:
+	if element_undo_offset > 0:
+		viewport.propagate_notification(NOTIFICATION_FREE_INVISIBLE)
+		for i in element_undo_offset:
+			elements.pop_back()
+		element_undo_offset = 0
 
 
 class PreviewControl extends Node2D:
@@ -330,7 +347,13 @@ class ElementLayer extends Node2D:
 
 	func _notification(what: int) -> void:
 		if what == NOTIFICATION_UPDATE_VISIBILITY:
-			visible = index < whiteboard.elements.size() - whiteboard.element_undo_offset
+			visible = _is_visible()
+		if what == NOTIFICATION_FREE_INVISIBLE:
+			if not _is_visible():
+				queue_free()
+
+	func _is_visible() -> bool:
+		return index < whiteboard.elements.size() - whiteboard.element_undo_offset
 
 	func _draw() -> void:
 		var element := whiteboard.elements[index]

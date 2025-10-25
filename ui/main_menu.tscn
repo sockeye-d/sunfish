@@ -7,6 +7,15 @@
 [sub_resource type="DPITexture" id="DPITexture_06s8x"]
 _source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M5.90165 3.770324C5.016594 3.882602 3.614248 1.453672 3.184542 1.467214 2.754839 1.480756 2.483299 1.651061 2.567601 1.976763 2.651904 2.302467 3.387586 4.534363 4.261595 5.331085\" id=\"path22\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M12.925703 4.512431C13.45014 7.349494 11.445356 8.921427 10.909997 9.230517 10.374641 9.539603 9.92219 9.819201 9.093535 10.040644 8.264888 10.262094 7.707672 10.483873 7.258415 10.843182 6.380517 10.336426 3.712727 8.460385 4.261595 5.331085c.717204-.275188 1.375609-1.179667 1.640055-1.560761.575313-.289342 2.56609-1.587225 4.490751-1.060929.473621.129513 1.704614.244063 1.704614.244063L11.391297 4.439535Z\" id=\"path21\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M9.270459 9.990849C10.081267 12.1705 10.808713 13.676526 10.649409 13.99977 10.490106 14.323019 10.206271 14.215075 10.024831 14.072749 9.843383 13.930412 8.58763 13.025048 7.76932 11.693293 7.507297 11.266894 7.258426 10.843175 7.258426 10.843175\" id=\"path23\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M4.023579 5.678284C2.035905 5.587254 2.511596 7.726075 4.30467 7.321034 2.289439 8.674661 4.276815 10.924219 5.776551 9.814847 4.52485 11.762281 6.494178 12.624407 7.25843 10.843175\" id=\"path24\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle id=\"path25\" cx=\"-6.145384\" cy=\"8.605107\" r=\".500002\" transform=\"matrix(-.866025.5.5.866025 0 0)\" fill=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M10.084804 6.176622C9.514511 6.384734 9.131588 6.146295 8.732522 6.524588 8.305711 6.929176 8.353469 7.392263 8.62956 7.775897 9.105766 8.437594 9.749174 7.716346 10.286325 7.297782\" id=\"path26\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
 base_scale = 1.5
+color_map = Dictionary[Color, Color]({
+Color(1, 1, 1, 1): Color(0.8039216, 0.8392157, 0.95686275, 1),
+Color(0, 0, 0, 1): Color(0.11764706, 0.11764706, 0.18039216, 1),
+Color(0, 1, 0, 1): Color(0.6509804, 0.8901961, 0.6313726, 1),
+Color(1, 1, 0, 1): Color(0.9764706, 0.8862745, 0.6862745, 1),
+Color(1, 0, 0, 1): Color(0.9529412, 0.54509807, 0.65882355, 1),
+Color(0, 0, 1, 1): Color(0.79607844, 0.6509804, 0.96862745, 1),
+Color(0, 1, 1, 1): Color(0.5372549, 0.7058824, 0.98039216, 1)
+})
 script = ExtResource("1_0dkrt")
 icon = "sunfish"
 icon_scale = 1.5
@@ -30,13 +39,13 @@ func _ready() -> void:
 	)
 "
 
-[node name="MainMenu" type="MenuButton" unique_id=442572562]
+[node name="MainMenu" type="MenuButton"]
 icon = SubResource("DPITexture_06s8x")
 flat = false
 icon_alignment = 1
 script = ExtResource("2_wk0pr")
 
-[node name="Debug" type="PopupMenu" parent="." unique_id=1728632799]
+[node name="Debug" type="PopupMenu" parent="."]
 oversampling_override = 1.0
 size = Vector2i(196, 100)
 hide_on_checkable_item_selection = false
@@ -51,6 +60,6 @@ item_2/checkable = 1
 item_2/id = 2
 script = SubResource("GDScript_0dkrt")
 
-[node name="PluginWindow" parent="." unique_id=100290597 instance=ExtResource("3_wk0pr")]
+[node name="PluginWindow" parent="." instance=ExtResource("3_wk0pr")]
 unique_name_in_owner = true
 visible = false

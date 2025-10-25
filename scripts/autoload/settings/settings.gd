@@ -9,6 +9,7 @@ const RESET_ICON = preload("uid://dmah5fp6rgtqt")
 const SettingsSerializer = preload("uid://cphoy3o8egue5")
 
 var config_path := OS.get_config_dir().path_join("sunfish/settings.tres")
+var local_path := OS.get_user_data_dir().path_join("state.tres")
 
 
 @onready var tree: Tree = %Tree
@@ -29,10 +30,16 @@ func _ready() -> void:
 	if OS.has_feature("mobile"):
 		size = Vector2i(500, 275)
 		position = get_tree().root.size / 2.0 / get_tree().root.content_scale_factor - size / 2.0
-	reload_settings(ResourceLoader.load(config_path, "", ResourceLoader.CACHE_MODE_IGNORE_DEEP) as SettingsSerializer)
+	reload_settings(SettingsSerializer.merge(_load(config_path), _load(local_path)))
 	has_deserialized = true
 	shortcut_search_text.text_changed.connect(_emit_shortcut_search_changed)
 	shortcut_search_event.event_changed.connect(_emit_shortcut_search_changed)
+
+
+func _load(path: String) -> SettingsSerializer:
+	if not FileAccess.file_exists(path):
+		return null
+	return ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_IGNORE_DEEP)
 
 
 func _emit_shortcut_search_changed(_v) -> void:
@@ -44,7 +51,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		hide()
 
 
-func reload_settings(serialized_data: SettingsSerializer) -> void:
+func reload_settings(serialized_data: Dictionary[StringName, Variant]) -> void:
 	for key in config_data:
 		var data := config_data[key]
 		data.control.queue_free()
@@ -57,7 +64,7 @@ func reload_settings(serialized_data: SettingsSerializer) -> void:
 		create_settings_for(root, PluginManager.configurations[config], serialized_data)
 
 
-func create_settings_for(parent: TreeItem, config: Configuration, serialized_data: SettingsSerializer) -> void:
+func create_settings_for(parent: TreeItem, config: Configuration, serialized_data: Dictionary[StringName, Variant]) -> void:
 	var id := config.get_id()
 	var tree_item := parent.create_child()
 	var grid_container := GridContainer.new()
@@ -84,8 +91,8 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 		else:
 			var initial_value = value
 			var default_value = value
-			if serialized_data and serialized_data.has(property_key):
-				initial_value = serialized_data.get_safe(property_key)
+			if property_key in serialized_data:
+				initial_value = serialized_data[property_key]
 				config.set(property_name, initial_value)
 
 			if property_usage & PROPERTY_USAGE_EDITOR:
@@ -237,10 +244,15 @@ func _on_tree_item_selected() -> void:
 	settings_container.add_child(config_data[id].control)
 
 
-func serialize(path: String = config_path) -> void:
-	var res := SettingsSerializer.new()
-	res.generate_values()
-	ResourceSaver.save(res, path)
+func serialize() -> void:
+	var config_res := SettingsSerializer.new()
+	config_res.location = Configuration.Location.CONFIG
+	config_res.generate_values()
+	ResourceSaver.save(config_res, config_path)
+	var local_res := SettingsSerializer.new()
+	local_res.location = Configuration.Location.LOCAL
+	local_res.generate_values()
+	ResourceSaver.save(local_res, local_path)
 
 
 func show_settings() -> void:
