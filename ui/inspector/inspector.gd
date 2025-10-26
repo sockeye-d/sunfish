@@ -167,20 +167,24 @@ func _update_inspector() -> void:
 		var prop_container := VBoxContainer.new()
 		outer_prop_container.add_child(prop_container)
 		for property: Dictionary in properties:
+			var delegate: Control
 			var label := Label.new()
 			label.text = Util.pretty_print_property(property.name)
 			prop_container.add_child(label)
-			var property_value = single_tool_properties[property.name] if property.name in single_tool_properties else tool.get(property.name)
-			property_dict[property.name] = property_value
-			var delegate: Control = create_delegate(
-				property, property_value,
-				func(new_value):
-					new_value = type_convert(new_value, property.type)
-					property_dict[property.name] = new_value
-					tool.set(property.name, new_value)
-					Settings["state/tool_properties"] = tool_properties
-			)
-			delegate.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			if property.hint == WhiteboardTool.PROPERTY_HINT_EXT_CUSTOM_INSPECTOR and tool.has_method(property.hint_string):
+				delegate = tool.call(property.hint_string)
+			else:
+				var property_value = single_tool_properties[property.name] if property.name in single_tool_properties else tool.get(property.name)
+				property_dict[property.name] = property_value
+				delegate = create_delegate(
+					property, property_value,
+					func(new_value):
+						new_value = type_convert(new_value, property.type)
+						property_dict[property.name] = new_value
+						tool.set(property.name, new_value)
+						Settings["state/tool_properties"] = tool_properties
+				)
+				delegate.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			prop_container.add_child(delegate)
 		tool_properties[tool_id] = property_dict
 	Settings["state/tool_properties"] = tool_properties

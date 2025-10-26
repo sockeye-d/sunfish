@@ -8,3 +8,4 @@ static func _static_init() -> void:
 	WhiteboardManager.register_tool(preload("FilledRectangleTool.gd"))
 	WhiteboardManager.register_tool(preload("ImageTool.gd"))
 	WhiteboardManager.register_tool(preload("TextTool.gd"))
+	WhiteboardManager.register_tool(preload("BookmarkTool.gd"))

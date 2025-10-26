@@ -2,6 +2,9 @@
 class_name WhiteboardTool
 
 
+const PROPERTY_HINT_EXT_CUSTOM_INSPECTOR = 512
+
+
 ## Get a reverse-DNS (e.g. com.example.Tool) identifier specific to this tool
 static func get_id() -> StringName:
 	assert(false)

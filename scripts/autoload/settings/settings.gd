@@ -30,7 +30,8 @@ func _ready() -> void:
 	if OS.has_feature("mobile"):
 		size = Vector2i(500, 275)
 		position = get_tree().root.size / 2.0 / get_tree().root.content_scale_factor - size / 2.0
-	reload_settings(SettingsSerializer.merge(_load(config_path), _load(local_path)))
+	var deserialized_settings := SettingsSerializer.merge(_load(config_path), _load(local_path))
+	reload_settings(deserialized_settings)
 	has_deserialized = true
 	shortcut_search_text.text_changed.connect(_emit_shortcut_search_changed)
 	shortcut_search_event.event_changed.connect(_emit_shortcut_search_changed)
@@ -51,7 +52,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		hide()
 
 
-func reload_settings(serialized_data: Dictionary[StringName, Variant]) -> void:
+func reload_settings(serialized_data: Dictionary[StringName, Dictionary]) -> void:
+	const EMPTY_DATA: Dictionary[StringName, Variant] = {}
 	for key in config_data:
 		var data := config_data[key]
 		data.control.queue_free()
@@ -61,7 +63,7 @@ func reload_settings(serialized_data: Dictionary[StringName, Variant]) -> void:
 	tree.clear()
 	var root := tree.create_item()
 	for config in PluginManager.configurations:
-		create_settings_for(root, PluginManager.configurations[config], serialized_data)
+		create_settings_for(root, PluginManager.configurations[config], serialized_data.get(config, EMPTY_DATA))
 
 
 func create_settings_for(parent: TreeItem, config: Configuration, serialized_data: Dictionary[StringName, Variant]) -> void:
@@ -77,7 +79,7 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 	var has_created_shortcut_header := false
 	for property in config.get_property_list():
 		var property_usage: PropertyUsageFlags = property.usage
-		if not property_usage & PROPERTY_USAGE_SCRIPT_VARIABLE or not property_usage & PROPERTY_USAGE_STORAGE:
+		if SettingsSerializer.get_serialization_mode(property) <= SettingsSerializer.SerializationMode.NONE:
 			continue
 		var property_name: StringName = property.name
 		var property_class: StringName = property.class_name
@@ -91,8 +93,8 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 		else:
 			var initial_value = value
 			var default_value = value
-			if property_key in serialized_data:
-				initial_value = serialized_data[property_key]
+			if property_name in serialized_data:
+				initial_value = serialized_data[property_name]
 				config.set(property_name, initial_value)
 
 			if property_usage & PROPERTY_USAGE_EDITOR:

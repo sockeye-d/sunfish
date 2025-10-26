@@ -34,6 +34,7 @@ var elements: Array[WhiteboardTool.Element]
 var preview_elements: Array[WhiteboardTool.PreviewElement]
 var active_tools: Array[WhiteboardTool] = []
 var element_undo_offset: int
+var _tool_data: Dictionary[StringName, Variant]
 
 var active_element_count: int:
 	get: return elements.size()
@@ -107,6 +108,10 @@ func _init() -> void:
 	viewport.msaa_2d = Viewport.MSAA_4X
 	viewport.canvas_item_default_texture_filter = Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 	resized.connect(func(): viewport.size = size * Settings["core/ui_scale"])
+	Settings.setting_changed("core/ui_scale").connect(func(new_value: float):
+		viewport.size = size * new_value
+		draw_xform = draw_xform
+	)
 	var render_mat := ShaderMaterial.new()
 	render_mat.shader = preload("whiteboard_render.gdshader")
 	render_mat["shader_parameter/canvas_texture"] = viewport.get_texture()
@@ -230,6 +235,9 @@ func _gui_input(e: InputEvent) -> void:
 
 
 func _update_mouse_hidden() -> void:
+	if not has_focus():
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		return
 	if active_tools.any(func(e: WhiteboardTool): return e.should_hide_mouse()):
 		Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 
@@ -249,9 +257,11 @@ func redo() -> void:
 		save()
 		queue_redraw()
 
-
-func redraw_preview() -> void:
+## [param new_preview_elements]: [code]Array[WhiteboardTool.PreviewElement] | Nil[/code]
+func redraw_preview(new_preview_elements: Variant = null) -> void:
 	if preview:
+		if new_preview_elements != null:
+			preview_elements.assign(new_preview_elements)
 		preview.queue_redraw()
 
 
@@ -286,6 +296,7 @@ func serialize(
 		"xform": draw_xform,
 		"element_undo_offset": element_undo_offset,
 		"elements": WhiteboardManager.serialize(elements),
+		"tool_data": _tool_data,
 	})
 	var json_compressed := json.compress(FileAccess.COMPRESSION_ZSTD)
 	var arr := PackedByteArray()
@@ -306,6 +317,8 @@ func deserialize(file: FileAccess) -> void:
 		create_layer(element_index)
 	element_undo_offset = data.element_undo_offset
 	draw_xform = data.xform
+	_tool_data = data.tool_data
+	viewport.propagate_notification(NOTIFICATION_UPDATE_VISIBILITY)
 
 
 func reset() -> void:
@@ -333,6 +346,19 @@ func clear_undone_layers() -> void:
 		element_undo_offset = 0
 
 
+func set_tool_data(tool: WhiteboardTool, data, trigger_save: bool = true) -> void:
+	_tool_data[tool.get_id()] = data
+	if trigger_save: save()
+
+
+func get_tool_data(tool: WhiteboardTool) -> Variant:
+	return _tool_data[tool.get_id()]
+
+
+func has_tool_data(tool: WhiteboardTool) -> Variant:
+	return tool.get_id() in _tool_data
+
+
 class PreviewControl extends Node2D:
 	var wb: Whiteboard
 
@@ -354,6 +380,9 @@ class ElementLayer extends Node2D:
 
 	func _is_visible() -> bool:
 		return index < whiteboard.elements.size() - whiteboard.element_undo_offset
+
+	func _ready() -> void:
+		visible = _is_visible()
 
 	func _draw() -> void:
 		var element := whiteboard.elements[index]

@@ -14,6 +14,7 @@ const SERIF_BOLD = preload("uid://y3da3t84kupb")
 const SERIF_BOLD_ITALIC = preload("uid://codfjr5fnfhy8")
 const SERIF_ITALIC = preload("uid://dgk7hn73us187")
 const SERIF = preload("uid://dyte8f36cqfjo")
+const TWITTER_COLOR_EMOJI_SV_GIN_OT = preload("uid://da8qy3bcxoyq7")
 
 
 @onready var theme_res: Theme = load("res://main_theme.tres")
@@ -38,6 +39,23 @@ func _ready() -> void:
 	ui_scale = Settings["core/ui_scale"]
 
 	set_theme_id(Settings["core/theme"])
+
+	var font_fallbacks: Array[Font] = [TWITTER_COLOR_EMOJI_SV_GIN_OT]
+	for font: Font in [
+			CODE_BOLD,
+			CODE_BOLD_ITALIC,
+			CODE_ITALIC,
+			CODE,
+			SANS_BOLD,
+			SANS_BOLD_ITALIC,
+			SANS_ITALIC,
+			SANS,
+			SERIF_BOLD,
+			SERIF_BOLD_ITALIC,
+			SERIF_ITALIC,
+			SERIF,
+		]:
+		font.fallbacks = font_fallbacks
 
 
 func unregister_theme(id: StringName) -> void:
