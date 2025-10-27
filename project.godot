@@ -17,6 +17,7 @@ config/custom_user_dir_name="sunfish"
 config/auto_accept_quit=false
 config/features=PackedStringArray("4.5")
 run/low_processor_mode=true
+run/low_processor_mode_sleep_usec=0
 boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/fullsize=false
 boot_splash/image="uid://dbwfrypgduehx"
@@ -44,7 +45,6 @@ window/energy_saving/keep_screen_on=false
 window/subwindows/embed_subwindows=false
 window/per_pixel_transparency/allowed=true
 display_server/driver.linuxbsd="wayland"
-window/vsync/vsync_mode=0
 window/stretch/scale.mobile=3.0
 
 [gui]

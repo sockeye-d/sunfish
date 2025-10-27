@@ -36,7 +36,7 @@ var active_theme: ThemeColors
 func _ready() -> void:
 	ui_scale_changed.connect(func(): RenderingServer.global_shader_parameter_set("ui_scale", ui_scale))
 	ui_scale_changed.connect(func(): get_tree().root.content_scale_factor = ui_scale)
-	ui_scale = Settings["core/ui_scale"]
+	ui_scale = Settings["display/ui_scale"]
 
 	set_theme_id(Settings["core/theme"])
 

@@ -23,7 +23,7 @@ var draw_xform: Transform2D:
 		draw_origin = draw_xform.get_origin()
 		xform_changed.emit()
 		if viewport:
-			viewport.canvas_transform = draw_xform * Settings["core/ui_scale"]
+			viewport.canvas_transform = draw_xform * Settings["display/ui_scale"]
 		save.call_deferred()
 		redraw_preview()
 var inv_draw_xform: Transform2D
@@ -107,8 +107,8 @@ func _init() -> void:
 	viewport.transparent_bg = true
 	viewport.msaa_2d = Viewport.MSAA_4X
 	viewport.canvas_item_default_texture_filter = Viewport.DEFAULT_CANVAS_ITEM_TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
-	resized.connect(func(): viewport.size = size * Settings["core/ui_scale"])
-	Settings.setting_changed("core/ui_scale").connect(func(new_value: float):
+	resized.connect(func(): viewport.size = size * Settings["display/ui_scale"])
+	Settings.setting_changed("display/ui_scale").connect(func(new_value: float):
 		viewport.size = size * new_value
 		draw_xform = draw_xform
 	)
