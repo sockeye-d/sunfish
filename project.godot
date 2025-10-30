@@ -47,6 +47,10 @@ window/per_pixel_transparency/allowed=true
 display_server/driver.linuxbsd="wayland"
 window/stretch/scale.mobile=3.0
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/plugin_exporter/plugin.cfg")
+
 [gui]
 
 theme/custom="uid://6m1sumf80mct"
