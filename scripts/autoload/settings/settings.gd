@@ -250,6 +250,8 @@ func serialize() -> void:
 	var config_res := SettingsSerializer.new()
 	config_res.location = Configuration.Location.CONFIG
 	config_res.generate_values()
+	if not DirAccess.dir_exists_absolute(config_path.get_base_dir()):
+		DirAccess.make_dir_recursive_absolute(config_path.get_base_dir())
 	ResourceSaver.save(config_res, config_path)
 	var local_res := SettingsSerializer.new()
 	local_res.location = Configuration.Location.LOCAL

@@ -77,6 +77,8 @@ static func load_plugins() -> void:
 
 
 static func deserialize_plugins() -> void:
+	if not FileAccess.file_exists(plugin_meta_path):
+		return
 	var json = JSON.parse_string(FileAccess.get_file_as_string(plugin_meta_path))
 	if json == null:
 		return
