@@ -1,5 +1,5 @@
 @tool
-class_name WhiteboardManager
+class_name WhiteboardManager extends Object
 
 
 signal tools_changed
@@ -15,8 +15,10 @@ static var instance: WhiteboardManager:
 static var tools: Dictionary[String, Script]
 static var passive_tools: Dictionary[String, WhiteboardTool]
 static var _passive_tool_initialized: Dictionary[WhiteboardTool, bool]
-static var _deserializers: Dictionary[String, Callable]
 static var _register_tool_guard: int = 0
+
+
+var _deserializers: Dictionary[String, Callable]
 
 
 static func _static_init() -> void:
@@ -54,7 +56,7 @@ static func register_deserializer(script: Script) -> void:
 
 
 static func register_deserializer_for_id(id: String, deserializer: Callable) -> void:
-	_deserializers[id] = deserializer
+	instance._deserializers[id] = deserializer
 
 
 static func serialize(elements: Array[WhiteboardTool.Element]) -> Dictionary:
@@ -75,7 +77,7 @@ static func serialize(elements: Array[WhiteboardTool.Element]) -> Dictionary:
 static func deserialize(data: Dictionary) -> Array[WhiteboardTool.Element]:
 	var elements: Array[WhiteboardTool.Element]
 	for element in data.elements:
-		elements.append(_deserializers[element.id].call(element.data))
+		elements.append(instance._deserializers[element.id].call(element.data))
 	return elements
 
 
