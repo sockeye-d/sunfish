@@ -57,7 +57,12 @@ func setup_signals() -> void:
 
 
 func _get_svg_path() -> PackedStringArray:
-	return ["res://assets/%s.svg" % icon, "res://plugins/%s.svg" % ReverseDNSUtil.id_to_path(icon)]
+	var icon_path := ReverseDNSUtil.id_to_path(icon) + ".svg"
+	return [
+		"res://assets/%s.svg" % icon,
+		PluginManager.PLUGIN_PREFIX + icon_path,
+		PluginManager.CORE_PLUGIN_PREFIX + icon_path,
+	]
 
 
 static func create(icon_name: String, scale: float = 1.0) -> IconTexture2D:

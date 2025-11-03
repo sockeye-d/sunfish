@@ -45,6 +45,8 @@ class_name ThemeColors extends Resource
 @export var id: String:
 	set(value):
 		ThemeManager.unregister_theme(id)
+		if name == ReverseDNSUtil.tail(id).capitalize():
+			name = ReverseDNSUtil.tail(value).capitalize()
 		id = value
 		ThemeManager.register_theme(self)
 

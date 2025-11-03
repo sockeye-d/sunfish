@@ -25,6 +25,7 @@ static var plugin_path := OS.get_config_dir().path_join("sunfish/plugins/")
 
 
 const PLUGIN_PREFIX := "res://plugins/"
+const CORE_PLUGIN_PREFIX := "res://core_plugins/"
 
 
 static func scan_plugins(paths: PackedStringArray = [PLUGIN_PREFIX]) -> void:
