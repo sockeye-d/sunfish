@@ -21,6 +21,11 @@ static func get_id() -> StringName: return "dev.fishies.sunfish.ScreenshotTool"
 var start_pos: Vector2
 var preview := ScreenshotPreviewElement.new()
 var dragging_side: SelectionSide
+var whiteboard: Whiteboard
+
+
+func activated(wb: Whiteboard) -> void:
+	whiteboard = wb
 
 
 func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
@@ -32,7 +37,7 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 	if mb:
 		if mb.button_index == MOUSE_BUTTON_LEFT:
 			if mb.pressed:
-				if preview.rect.grow(-handle_size).has_point(mb.position):
+				if preview.rect.grow(-handle_size).abs().has_point(mb.position):
 					dragging_side = SelectionSide.INNER
 				else:
 					var closest_side: Array[SelectionSide]
@@ -45,7 +50,7 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 			else:
 				dragging_side = SelectionSide.NONE
 				preview.rect = preview.rect.abs()
-				if preview.rect.grow(-handle_size).has_point(mb.position):
+				if preview.rect.grow(-handle_size).abs().has_point(mb.position):
 					display.cursor_shape = get_cursor_shape(SelectionSide.INNER, false)
 	var mm := event as InputEventMouseMotion
 	if mm:
@@ -57,7 +62,7 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 		if dragging_side != SelectionSide.NONE:
 			display.cursor_shape = get_cursor_shape(dragging_side, mm.button_mask & MOUSE_BUTTON_MASK_LEFT)
 		else:
-			if preview.rect.grow(-handle_size).has_point(mm.position):
+			if preview.rect.grow(-handle_size).abs().has_point(mm.position):
 				display.cursor_shape = get_cursor_shape(SelectionSide.INNER, false)
 			else:
 				var closest_side: Array[SelectionSide]
@@ -140,7 +145,23 @@ static func get_closest_side(mouse_pos: Vector2, rect: Rect2, out_side: Array[Se
 class ScreenshotPreviewElement extends StaticPreviewElement:
 	var rect: Rect2
 	func draw(wb: Whiteboard) -> void:
+		const ARC_LENGTHS: PackedVector2Array = [
+			Vector2(PI * 0.5, PI * 1.5),
+			Vector2(PI * 0.5, TAU),
+			Vector2(0.0, -PI),
+			Vector2(-PI, PI * 0.5),
+			Vector2(-PI * 0.5, PI * 0.5),
+			Vector2(-PI * 0.5, PI),
+			Vector2(0.0, PI),
+			Vector2(0.0, PI * 1.5),
+		]
 		var xformed_rect := wb.draw_xform * rect
 		wb.draw_rect(xformed_rect, ThemeManager.active_theme.accent_0, false, 2.0)
 		for side in range(SelectionSide.LEFT, SelectionSide.size()):
-			wb.draw_circle(ScreenshotTool.get_side_rect_pos(xformed_rect, side as SelectionSide), 4.0, ThemeManager.active_theme.accent_0, true, -1.0, true)
+			var arc_length := ARC_LENGTHS[side - 2]
+			wb.draw_arc(
+				ScreenshotTool.get_side_rect_pos(xformed_rect, side as SelectionSide),
+				8.0,
+				arc_length.x, arc_length.y, 16,
+				ThemeManager.active_theme.accent_0, 1.0, true
+			)
