@@ -16,11 +16,13 @@ static func is_visible() -> bool:
 
 
 func receive_input(wb: Whiteboard, event: InputEvent) -> WhiteboardTool.Display:
+	var cursor_shape: Control.CursorShape = Control.CURSOR_ARROW
 	var mb := event as InputEventMouseButton
 	if mb:
 		match mb.button_index:
 			MOUSE_BUTTON_MIDDLE:
-				wb.mouse_default_cursor_shape = Control.CURSOR_DRAG if mb.pressed else Control.CURSOR_ARROW
+				if mb.pressed:
+					cursor_shape = Control.CURSOR_DRAG
 				drag_start_pos = mb.position
 				is_dragging = mb.pressed
 			MOUSE_BUTTON_WHEEL_UP:
@@ -48,6 +50,7 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> WhiteboardTool.Display:
 	var mm := event as InputEventMouseMotion
 	if mm:
 		if is_dragging:
+			cursor_shape = Control.CURSOR_DRAG
 			if mm.ctrl_pressed:
 				zoom(wb, drag_start_pos, exp(- mm.relative.y * 0.005 * wb.draw_scale))
 			else:
@@ -63,7 +66,7 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> WhiteboardTool.Display:
 	var zg := event as InputEventMagnifyGesture
 	if zg:
 		zoom(wb, zg.position, zg.factor)
-	return null
+	return Display.new().with_cursor_shape(cursor_shape)
 
 
 func pan(wb: Whiteboard, e: InputEventMouseButton, x: float, y: float) -> void:

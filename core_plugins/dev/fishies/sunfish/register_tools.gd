@@ -1,11 +1,18 @@
+const TOOLS: Array[Script] = [
+	preload("BrushTool.gd"),
+	preload("EraserTool.gd"),
+	preload("LineTool.gd"),
+	preload("CircleTool.gd"),
+	preload("FilledCircleTool.gd"),
+	preload("RectangleTool.gd"),
+	preload("FilledRectangleTool.gd"),
+	preload("ImageTool.gd"),
+	preload("TextTool.gd"),
+	preload("BookmarkTool.gd"),
+	preload("ScreenshotTool.gd"),
+]
+
+
 static func _static_init() -> void:
-	WhiteboardManager.register_tool(preload("BrushTool.gd"))
-	WhiteboardManager.register_tool(preload("EraserTool.gd"))
-	WhiteboardManager.register_tool(preload("LineTool.gd"))
-	WhiteboardManager.register_tool(preload("CircleTool.gd"))
-	WhiteboardManager.register_tool(preload("FilledCircleTool.gd"))
-	WhiteboardManager.register_tool(preload("RectangleTool.gd"))
-	WhiteboardManager.register_tool(preload("FilledRectangleTool.gd"))
-	WhiteboardManager.register_tool(preload("ImageTool.gd"))
-	WhiteboardManager.register_tool(preload("TextTool.gd"))
-	WhiteboardManager.register_tool(preload("BookmarkTool.gd"))
+	for tool in TOOLS:
+		WhiteboardManager.register_tool(tool)

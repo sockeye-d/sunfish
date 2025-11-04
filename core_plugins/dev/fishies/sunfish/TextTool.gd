@@ -82,7 +82,7 @@ class TextPreviewElement extends WhiteboardTool.PreviewElement:
 	var font_size: int
 	var color: Color
 
-	func draw(canvas: CanvasItem, wb: Whiteboard):
+	func draw(canvas: CanvasItem, wb: Whiteboard) -> void:
 		var rect := Inner.font_get_rect(font, text, font_size)
 		Util.unused(wb)
 		canvas.draw_multiline_string(font, position - rect.get_center(), text, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size, -1, color)
@@ -104,7 +104,7 @@ class TextElement extends WhiteboardTool.Element:
 
 	static func get_id() -> StringName: return "dev.fishies.sunfish.TextElement"
 
-	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard):
+	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard) -> void:
 		Util.unused(wb)
 		var rect := Inner.font_get_rect(font, text, font_size)
 		canvas.draw_multiline_string(font, position - rect.get_center(), text, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size, -1, color)

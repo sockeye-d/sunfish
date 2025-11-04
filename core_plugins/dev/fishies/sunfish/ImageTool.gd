@@ -79,7 +79,7 @@ class ImagePreviewElement extends WhiteboardTool.PreviewElement:
 	var image_texture: ImageTexture
 	var center_position: Vector2
 
-	func draw(canvas: CanvasItem, wb: Whiteboard):
+	func draw(canvas: CanvasItem, wb: Whiteboard) -> void:
 		var rect := get_rect(image, center_position, wb.draw_scale)
 		canvas.draw_texture_rect(image_texture, rect, false, Color(1.0, 1.0, 1.0, 0.5 * opacity))
 
@@ -105,7 +105,7 @@ class ImageElement extends WhiteboardTool.Element:
 
 	static func get_id() -> StringName: return "dev.fishies.sunfish.ImageElement"
 
-	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard):
+	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard) -> void:
 		Util.unused(wb)
 		if image_texture:
 			canvas.draw_texture_rect(image_texture, rect, false, Color(1, 1, 1, opacity))

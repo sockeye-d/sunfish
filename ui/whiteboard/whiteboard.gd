@@ -32,6 +32,7 @@ var draw_origin: Vector2
 
 var elements: Array[WhiteboardTool.Element]
 var preview_elements: Array[WhiteboardTool.PreviewElement]
+var static_preview_elements: Array[WhiteboardTool.StaticPreviewElement]
 var active_tools: Array[WhiteboardTool] = []
 var element_undo_offset: int
 var _tool_data: Dictionary[StringName, Variant]
@@ -171,6 +172,7 @@ func _ready() -> void:
 	WhiteboardBus.file_new.connect(func():
 		reset()
 		serialize_or_new()
+		WhiteboardBus.update_window_title()
 	)
 
 	WhiteboardBus.view_reset_view.connect(func():
@@ -191,17 +193,20 @@ func _ready() -> void:
 
 
 var _preview_draw_twice := false
+var _static_preview_draw_twice := false
 func _gui_input(e: InputEvent) -> void:
 	if e is InputEventMouseMotion and not has_focus():
 		grab_focus()
 	var new_preview_elements: Array[WhiteboardTool.PreviewElement]
+	var new_static_preview_elements: Array[WhiteboardTool.StaticPreviewElement]
 	var tools: Array[WhiteboardTool]
 	tools.append_array(WhiteboardManager.passive_tools.values())
 	tools.append_array(active_tools)
+	var cursor_shape := CursorShape.CURSOR_ARROW
 	if e.is_match(Settings["shortcuts/show_tool_pie"]):
 		tool_popup.center_pos = get_global_mouse_position() + 200.0 * Vector2.ONE
 		tool_popup.mouse_pos = Vector2.ZERO
-		tool_popup.selected_tools.assign(active_tools.map(func(el): return el.get_script()))
+		tool_popup.selected_tools.assign(active_tools.map(func(el: Object): return el.get_script()))
 		tool_popup.popup(get_viewport_rect().grow(200.0))
 		accept_event()
 		return
@@ -225,13 +230,26 @@ func _gui_input(e: InputEvent) -> void:
 					(layer_container.get_child(layer_index) as ElementLayer).queue_redraw()
 				save()
 
-		if not tool_output.preview_elements.is_empty():
-			new_preview_elements.append_array(tool_output.preview_elements)
+		if cursor_shape == CursorShape.CURSOR_ARROW:
+			cursor_shape = tool_output.cursor_shape
+
+		new_preview_elements.append_array(tool_output.preview_elements)
+		new_static_preview_elements.append_array(tool_output.static_preview_elements)
 
 	preview_elements = new_preview_elements
+	static_preview_elements = new_static_preview_elements
 	if not preview_elements.is_empty() or _preview_draw_twice:
 		_preview_draw_twice = not preview_elements.is_empty()
 		preview.queue_redraw()
+	if not static_preview_elements.is_empty() or _static_preview_draw_twice:
+		_static_preview_draw_twice = not static_preview_elements.is_empty()
+		queue_redraw()
+	mouse_default_cursor_shape = cursor_shape
+
+
+func _draw() -> void:
+	for element in static_preview_elements:
+		element.draw(self)
 
 
 func _update_mouse_hidden() -> void:

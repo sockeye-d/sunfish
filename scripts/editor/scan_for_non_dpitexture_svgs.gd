@@ -4,6 +4,7 @@ class_name ScanForNonDPITextureSVGs extends EditorScript
 
 const SEARCH_PATHS = [
 	"res://assets/",
+	"res://core_plugins/",
 	"res://plugins/",
 ]
 
@@ -11,10 +12,8 @@ const SEARCH_PATHS = [
 func _run() -> void:
 	var errors: PackedStringArray
 	for path in SEARCH_PATHS:
-		errors.append_array(scan_dir(path))
-	#if not errors:
-		#print_rich("[color=green]No misimported textures found 👍[/color]")
-	#else:
+		if DirAccess.dir_exists_absolute(path):
+			errors.append_array(scan_dir(path))
 	var window := Window.new()
 	var label := RichTextLabel.new()
 	if errors:
@@ -48,7 +47,6 @@ func scan_dir(path: String) -> PackedStringArray:
 		if file.match("*.svg"):
 			var res := load(path.path_join(file))
 			if res is not DPITexture:
-				#print_rich("[url]%s[/url] is not a DPITexture" % res.resource_path)
 				errors.append(res.resource_path)
 	for dir in DirAccess.get_directories_at(path):
 		errors.append_array(scan_dir(path.path_join(dir)))

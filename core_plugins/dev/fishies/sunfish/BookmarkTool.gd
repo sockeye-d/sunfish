@@ -109,7 +109,7 @@ func _create_bookmark_delegate(bookmark: Dictionary) -> Control:
 class BookmarkPreviewElement extends PlainPreviewElement:
 	var tool: BookmarkTool
 
-	func draw(canvas: CanvasItem, wb: Whiteboard):
+	func draw(canvas: CanvasItem, wb: Whiteboard) -> void:
 		var size := Vector2(BookmarkTool.bookmark_icon.get_size())
 		canvas.draw_set_transform_matrix(wb.inv_draw_xform)
 		if tool:
