@@ -117,6 +117,9 @@ func set_theme(new_theme: ThemeColors) -> void:
 
 	theme_res.set_constant("scrollbar_h_separation", "Tree", base_spacing)
 
+	theme_res.set_constant("scrollbar_h_separation", "ScrollContainer", base_spacing)
+	theme_res.set_constant("scrollbar_v_separation", "ScrollContainer", base_spacing)
+
 	theme_res.set_color("font_color", "Tree", theme.text)
 	theme_res.set_color("font_disabled_color", "Tree", theme.subtext)
 	theme_res.set_color("font_hovered_color", "Tree", theme.text)

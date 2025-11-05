@@ -2,8 +2,6 @@
 extends ColorRect
 
 @onready var container: Control = %MarginContainer
-@onready var tool_scroll_container: ScrollContainer = %ToolScrollContainer
-@onready var tool_scrollbar_separator: VSeparator = %ToolScrollbarSeparator
 
 @warning_ignore("unused_private_class_variable")
 @export_tool_button("Reload theme", "Search") var ___ := func():
@@ -31,9 +29,6 @@ func _ready() -> void:
 	ThemeManager.background_color_changed.connect(func(new_color: Color): color = new_color)
 	if ThemeManager.active_theme:
 		color = ThemeManager.active_theme.background_1
-	tool_scroll_container.get_v_scroll_bar().visibility_changed.connect(func():
-		tool_scrollbar_separator.visible = tool_scroll_container.get_v_scroll_bar().is_visible_in_tree()
-	)
 	if not Engine.is_editor_hint():
 		get_tree().root.close_requested.connect(func():
 			get_tree().root.propagate_notification(Util.NOTIFICATION_WINDOW_CLOSING)
