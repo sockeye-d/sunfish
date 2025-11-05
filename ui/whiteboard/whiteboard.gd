@@ -253,11 +253,10 @@ func _draw() -> void:
 
 
 func _update_mouse_hidden() -> void:
-	if not has_focus():
+	if has_focus():
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-		return
-	if active_tools.any(func(e: WhiteboardTool): return e.should_hide_mouse()):
-		Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+		if active_tools.any(func(e: WhiteboardTool): return e.should_hide_mouse()):
+			Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 
 
 func undo() -> void:
@@ -275,12 +274,17 @@ func redo() -> void:
 		save()
 		queue_redraw()
 
-## [param new_preview_elements]: [code]Array[WhiteboardTool.PreviewElement] | Nil[/code]
-func redraw_preview(new_preview_elements: Variant = null) -> void:
+func redraw_preview(
+	new_preview_elements: Array[WhiteboardTool.PreviewElement] = [null],
+	new_static_preview_elements: Array[WhiteboardTool.StaticPreviewElement] = [null]
+) -> void:
 	if preview:
-		if new_preview_elements != null:
+		if null not in new_preview_elements:
 			preview_elements.assign(new_preview_elements)
-		preview.queue_redraw()
+			preview.queue_redraw()
+	if null not in new_static_preview_elements:
+		static_preview_elements.assign(new_static_preview_elements)
+		queue_redraw()
 
 
 func set_active_tools(new_active_tools: Array[WhiteboardTool]) -> void:

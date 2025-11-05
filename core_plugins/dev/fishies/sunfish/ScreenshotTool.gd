@@ -1,6 +1,11 @@
 extends WhiteboardTool
 
+
+const PROPERTY_HINT_EXT_TAKE_SCREENSHOT_BUTTON = 3369335536
+
+
 const ScreenshotTool = preload("ScreenshotTool.gd")
+
 
 enum SelectionSide {
 	NONE,
@@ -16,7 +21,33 @@ enum SelectionSide {
 }
 
 
+static func _static_init() -> void:
+	Inspector.register_delegate(PROPERTY_HINT_EXT_TAKE_SCREENSHOT_BUTTON, func(prop: Dictionary, initial_value, set_prop: Callable) -> Control:
+		Util.unused(prop)
+		var container := HBoxContainer.new()
+		var screenshot_button := Button.new()
+		screenshot_button.text = "Capture"
+		screenshot_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		screenshot_button.pressed.connect(Crimes.instance.take_screenshot.emit)
+		container.add_child(screenshot_button)
+		var to_clipboard_button := Button.new()
+		to_clipboard_button.icon = IconTexture2D.create("clipboard")
+		to_clipboard_button.toggle_mode = true
+		to_clipboard_button.toggled.connect(func(mode):
+			set_prop.call(mode)
+		)
+		to_clipboard_button.button_pressed = initial_value
+		set_prop.call(initial_value)
+		container.add_child(to_clipboard_button)
+		return container
+	)
+
+
 static func get_id() -> StringName: return "dev.fishies.sunfish.ScreenshotTool"
+
+
+static func get_shortcut() -> InputEvent: return Shortcuts.key(KEY_S)
+
 
 var start_pos: Vector2
 var preview := ScreenshotPreviewElement.new()
@@ -24,8 +55,64 @@ var dragging_side: SelectionSide
 var whiteboard: Whiteboard
 
 
+@export_custom(
+	PROPERTY_HINT_EXT_TAKE_SCREENSHOT_BUTTON, "",
+	PROPERTY_USAGE_DEFAULT | Inspector.PROPERTY_USAGE_EXT_NO_LABEL
+) var take_screenshot: bool = true
+
+
+@export_range(500.0, 5000.0, 1.0, "or_greater") var resolution: float = 1000.0
+
+
+func _init() -> void:
+	Crimes.instance.take_screenshot.connect(func(): _render_screenshot(take_screenshot))
+
+
+func _render_screenshot(copy: bool) -> void:
+	var rect := preview.rect.abs()
+	if rect.size == Vector2.ZERO:
+		return
+	var vp := SubViewport.new()
+	TreeEvents.add_child(vp)
+	vp.msaa_2d = Viewport.MSAA_2X
+	vp.size = rect.size
+	vp.canvas_transform = Transform2D(0.0, -rect.position)
+	vp.render_target_update_mode = SubViewport.UPDATE_ONCE
+	var bg_layer := Node2D.new()
+	bg_layer.draw.connect(func():
+		bg_layer.draw_rect(rect.grow(10.0), ThemeManager.active_theme.background_0)
+	)
+	vp.add_child(bg_layer)
+	bg_layer.queue_redraw()
+	for el_index in whiteboard.elements.size():
+		var layer := Whiteboard.ElementLayer.new()
+		layer.whiteboard = whiteboard
+		layer.index = el_index
+		vp.add_child(layer)
+		layer.queue_redraw()
+	await RenderingServer.frame_post_draw
+	var image := vp.get_texture().get_image()
+	if copy:
+		var image_data := ClipboardUtils.ImageExportData.new()
+		image_data.format = "png"
+		image_data.image = image
+		var status := ClipboardUtils.copy_image(image_data)
+		if status.type != ClipboardUtils.ErrorType.Ok:
+			printerr(status.message)
+	else:
+		var path: PackedStringArray = await DialogUtil.open_file_dialog(["Images;*.png"], FileDialog.FILE_MODE_SAVE_FILE, "~")
+		if path:
+			image.save_png(path[0])
+	vp.queue_free()
+
+
 func activated(wb: Whiteboard) -> void:
 	whiteboard = wb
+	if preview:
+		wb.redraw_preview([], [preview])
+
+
+func should_hide_mouse() -> bool: return false
 
 
 func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
@@ -50,8 +137,8 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 			else:
 				dragging_side = SelectionSide.NONE
 				preview.rect = preview.rect.abs()
-				if preview.rect.grow(-handle_size).abs().has_point(mb.position):
-					display.cursor_shape = get_cursor_shape(SelectionSide.INNER, false)
+		if preview.rect.grow(-handle_size).abs().has_point(mb.position):
+			display.cursor_shape = get_cursor_shape(SelectionSide.INNER, false)
 	var mm := event as InputEventMouseMotion
 	if mm:
 		if mm.button_mask & MOUSE_BUTTON_MASK_LEFT:
@@ -68,6 +155,10 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 				var closest_side: Array[SelectionSide]
 				if get_closest_side(mm.position, preview.rect, closest_side) < handle_size:
 					display.cursor_shape = get_cursor_shape(closest_side[0], mm.button_mask & MOUSE_BUTTON_MASK_LEFT)
+	if event.is_match(Settings["dev.fishies.sunfish.ScreenshotTool.ScreenshotTool/capture_screenshot"]):
+		_render_screenshot(take_screenshot)
+	if event.is_match(Settings["dev.fishies.sunfish.ScreenshotTool.ScreenshotTool/copy_screenshot"]):
+		_render_screenshot(true)
 	return display
 
 
@@ -163,5 +254,24 @@ class ScreenshotPreviewElement extends StaticPreviewElement:
 				ScreenshotTool.get_side_rect_pos(xformed_rect, side as SelectionSide),
 				8.0,
 				arc_length.x, arc_length.y, 16,
-				ThemeManager.active_theme.accent_0, 1.0, true
+				ThemeManager.active_theme.accent_0, 0.9, true
 			)
+
+
+class ScreenshotToolShortcuts extends Configuration:
+	static func _static_init() -> void:
+		PluginManager.register_configuration(new())
+
+	func get_id() -> StringName: return "dev.fishies.sunfish.ScreenshotTool.ScreenshotTool"
+
+	@export var capture_screenshot := Shortcuts.key(KEY_S | KEY_MASK_SHIFT)
+	@export var copy_screenshot := Shortcuts.key(KEY_C | KEY_MASK_CTRL)
+
+
+class Crimes:
+	static var instance: Crimes:
+		get:
+			if not instance:
+				instance = Crimes.new()
+			return instance
+	signal take_screenshot

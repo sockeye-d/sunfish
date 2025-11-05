@@ -6,10 +6,10 @@ func _ready() -> void:
 	if not Engine.is_editor_hint():
 		PluginManager.load_plugins()
 		var plugin_paths: PackedStringArray
-		plugin_paths.append(PluginManager.CORE_PLUGIN_PREFIX)
 		if not OS.has_feature("editor"):
 			plugin_paths.append(PluginManager.PLUGIN_PREFIX)
 		plugin_paths.append("res://scripts/config")
+		plugin_paths.append(PluginManager.CORE_PLUGIN_PREFIX)
 		PluginManager.scan_plugins(plugin_paths)
 
 

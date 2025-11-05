@@ -214,6 +214,11 @@ func get_safe(property: StringName) -> Array[Variant]:
 	return []
 
 
+func get_default(property: StringName, default: Variant) -> Variant:
+	var result := get_safe(property)
+	return default if result.is_empty() else result[0]
+
+
 func _set(property: StringName, value: Variant) -> bool:
 	var data := property.split("/", true, 2)
 	if data.size() != 2:

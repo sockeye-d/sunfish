@@ -3,6 +3,8 @@ class_name Inspector extends PanelContainer
 enum {
 	PROPERTY_HINT_EXT_PRETTY_RDNS_ENUM = 256,
 	PROPERTY_HINT_EXT_RANGE_ENUM,
+
+	PROPERTY_USAGE_EXT_NO_LABEL = 1 << 30,
 }
 
 
@@ -51,9 +53,10 @@ func _update_inspector() -> void:
 		outer_prop_container.add_child(prop_container)
 		for property: Dictionary in properties:
 			var delegate: Control
-			var label := Label.new()
-			label.text = Util.pretty_print_property(property.name)
-			prop_container.add_child(label)
+			if not property.usage & PROPERTY_USAGE_EXT_NO_LABEL:
+				var label := Label.new()
+				label.text = Util.pretty_print_property(property.name)
+				prop_container.add_child(label)
 			if property.hint == WhiteboardTool.PROPERTY_HINT_EXT_CUSTOM_INSPECTOR and tool.has_method(property.hint_string):
 				delegate = tool.call(property.hint_string)
 			else:
@@ -65,16 +68,21 @@ func _update_inspector() -> void:
 						new_value = type_convert(new_value, property.type)
 						property_dict[property.name] = new_value
 						tool.set(property.name, new_value)
-						Settings["state/tool_properties"] = tool_properties
+						Settings["state/tool_properties"] = Settings.get_default("state/tool_properties", {}).merged(tool_properties, true)
 				)
 				delegate.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			prop_container.add_child(delegate)
 		tool_properties[tool_id] = property_dict
-	Settings["state/tool_properties"] = tool_properties
+	Settings["state/tool_properties"] = Settings.get_default("state/tool_properties", {}).merged(tool_properties, true)
 
 
 static func create_delegate(prop: Dictionary, initial_value, set_prop: Callable) -> Control:
 	return Manager.instance.hint_delegates[prop.hint].call(prop, initial_value, set_prop)
+
+
+static func register_delegate(property_hint: int, delegate: Callable) -> void:
+	if property_hint not in Manager.instance.hint_delegates:
+		Manager.instance.hint_delegates[property_hint] = delegate
 
 
 class Manager extends Object:
