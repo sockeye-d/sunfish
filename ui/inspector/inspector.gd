@@ -61,6 +61,7 @@ func _update_inspector() -> void:
 				delegate = tool.call(property.hint_string)
 			else:
 				var property_value = single_tool_properties[property.name] if property.name in single_tool_properties else tool.get(property.name)
+				tool.set(property.name, property_value)
 				property_dict[property.name] = property_value
 				delegate = create_delegate(
 					property, property_value,

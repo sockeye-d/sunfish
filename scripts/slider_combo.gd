@@ -17,10 +17,8 @@ enum DraggingState {
 
 @export var prefix: String = "":
 	set(v):
-		line_edit.text = prefix + str(slider_value)
 		prefix = v
-	get:
-		return prefix
+		_update_slider_text()
 @export var mouse_draggable: bool = true
 @export var mouse_threshold: float = 3
 @export var mouse_drag_scale: float = 0.001
@@ -29,31 +27,25 @@ enum DraggingState {
 		line_edit.editable = v
 		slider.editable = v
 		editable = v
-	get:
-		return editable
 
 @export var slider_visible: bool = true:
 	set(v):
 		slider.visible = v
 		slider_visible = v
 		_resize()
-	get:
-		return slider_visible
 var _slider_value: float:
-	get:
-		return _slider_value
 	set(v):
 		slider.value = v
-		line_edit.text = "%s%.*f" % [prefix, max(ceil(Util.log10(1.0 / step)), 0.0) + 1, v]
 		_slider_value = v
+		_update_slider_text()
 @export var slider_value: float:
+	get:
+		return _slider_value
 	set(v):
 		v = _constrain(v)
 		_slider_value = v
 		slider_value_changed.emit(v)
 		set_value_no_signal(v)
-	get:
-		return _slider_value
 
 var float_slider_value: float
 
@@ -126,13 +118,17 @@ func _init() -> void:
 
 
 func _ready() -> void:
-	line_edit.text = "%s%.*f" % [prefix, max(ceil(Util.log10(1.0 / step)), 0.0), slider_value]
+	_update_slider_text()
 
 
 func _notification(what: int) -> void:
 	match what:
 		NOTIFICATION_THEME_CHANGED:
 			outer_container.add_theme_stylebox_override(&"panel", get_theme_stylebox(&"panel", &"SliderCombo"))
+
+
+func _update_slider_text() -> void:
+	line_edit.text = "%s%.*f" % [prefix, max(ceil(-Util.log10(step)), 0.0), slider_value]
 
 
 func _on_changed() -> void:

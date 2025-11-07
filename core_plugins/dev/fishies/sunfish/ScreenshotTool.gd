@@ -61,22 +61,60 @@ var whiteboard: Whiteboard
 ) var take_screenshot: bool = true
 
 
-@export_range(500.0, 5000.0, 1.0, "or_greater") var resolution: float = 1000.0
+@export_range(500.0, 5000.0, 1.0, "or_greater") var resolution: float = 1000.0:
+	set(value):
+		resolution = value
+		_recalculate_resolution()
+var screenshot_rect: Rect2:
+	set(value):
+		screenshot_rect = value
+		abs_screenshot_rect = screenshot_rect.abs()
+		_recalculate_resolution()
+var abs_screenshot_rect: Rect2
+var scaling_factor: float
+var pixel_resolution: Vector2
+
+
+@export_custom(
+	PROPERTY_HINT_EXT_CUSTOM_INSPECTOR, "_create_resolution_widget",
+	PROPERTY_USAGE_DEFAULT | Inspector.PROPERTY_USAGE_EXT_NO_LABEL
+) var resolution_widget
+
+
+var label: Label
+func _create_resolution_widget() -> Control:
+	label = Label.new()
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_recalculate_resolution()
+	return label
 
 
 func _init() -> void:
 	Crimes.instance.take_screenshot.connect(func(): _render_screenshot(take_screenshot))
 
 
+func _recalculate_resolution() -> void:
+	var axis := abs_screenshot_rect.size.max_axis_index()
+	scaling_factor = resolution / abs_screenshot_rect.size[axis]
+	pixel_resolution = abs_screenshot_rect.size * scaling_factor
+	if label:
+		if not pixel_resolution.is_finite() or is_nan(pixel_resolution.x) or is_nan(pixel_resolution.y):
+			label.hide()
+		else:
+			label.show()
+			label.text = "%.f×%.f" % [pixel_resolution.x, pixel_resolution.y]
+
+
 func _render_screenshot(copy: bool) -> void:
-	var rect := preview.rect.abs()
+	var rect := abs_screenshot_rect
 	if rect.size == Vector2.ZERO:
 		return
 	var vp := SubViewport.new()
 	TreeEvents.add_child(vp)
 	vp.msaa_2d = Viewport.MSAA_2X
-	vp.size = rect.size
-	vp.canvas_transform = Transform2D(0.0, -rect.position)
+	vp.size = pixel_resolution
+	vp.canvas_transform = Transform2D(0.0, -rect.position).scaled(Vector2.ONE * scaling_factor)
 	vp.render_target_update_mode = SubViewport.UPDATE_ONCE
 	var bg_layer := Node2D.new()
 	bg_layer.draw.connect(func():
@@ -100,7 +138,7 @@ func _render_screenshot(copy: bool) -> void:
 		if status.type != ClipboardUtils.ErrorType.Ok:
 			printerr(status.message)
 	else:
-		var path: PackedStringArray = await DialogUtil.open_file_dialog(["Images;*.png"], FileDialog.FILE_MODE_SAVE_FILE, "~")
+		var path: PackedStringArray = await DialogUtil.open_file_dialog(["*.png;Images;image/png"], FileDialog.FILE_MODE_SAVE_FILE, "~")
 		if path:
 			image.save_png(path[0])
 	vp.queue_free()
@@ -124,37 +162,38 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 	if mb:
 		if mb.button_index == MOUSE_BUTTON_LEFT:
 			if mb.pressed:
-				if preview.rect.grow(-handle_size).abs().has_point(mb.position):
+				if screenshot_rect.grow(-handle_size).abs().has_point(mb.position):
 					dragging_side = SelectionSide.INNER
 				else:
 					var closest_side: Array[SelectionSide]
-					if get_closest_side(mb.position, preview.rect, closest_side) < handle_size:
+					if get_closest_side(mb.position, screenshot_rect, closest_side) < handle_size:
 						dragging_side = closest_side[0]
 					else:
-						preview.rect = Rect2(mb.position, Vector2())
+						screenshot_rect = Rect2(mb.position, Vector2.ONE)
 						dragging_side = SelectionSide.NONE
 				display.cursor_shape = get_cursor_shape(dragging_side, true)
 			else:
 				dragging_side = SelectionSide.NONE
-				preview.rect = preview.rect.abs()
-		if preview.rect.grow(-handle_size).abs().has_point(mb.position):
+				screenshot_rect = screenshot_rect.abs()
+		if screenshot_rect.grow(-handle_size).abs().has_point(mb.position):
 			display.cursor_shape = get_cursor_shape(SelectionSide.INNER, false)
 	var mm := event as InputEventMouseMotion
 	if mm:
 		if mm.button_mask & MOUSE_BUTTON_MASK_LEFT:
 			if dragging_side != SelectionSide.NONE:
-				preview.rect = grow_rect(preview.rect, dragging_side, mm.relative)
+				screenshot_rect = grow_rect(screenshot_rect, dragging_side, mm.relative)
 			else:
-				preview.rect.size = mm.position - preview.rect.position
+				screenshot_rect.size = mm.position - screenshot_rect.position
 		if dragging_side != SelectionSide.NONE:
 			display.cursor_shape = get_cursor_shape(dragging_side, mm.button_mask & MOUSE_BUTTON_MASK_LEFT)
 		else:
-			if preview.rect.grow(-handle_size).abs().has_point(mm.position):
+			if screenshot_rect.grow(-handle_size).abs().has_point(mm.position):
 				display.cursor_shape = get_cursor_shape(SelectionSide.INNER, false)
 			else:
 				var closest_side: Array[SelectionSide]
-				if get_closest_side(mm.position, preview.rect, closest_side) < handle_size:
+				if get_closest_side(mm.position, screenshot_rect, closest_side) < handle_size:
 					display.cursor_shape = get_cursor_shape(closest_side[0], mm.button_mask & MOUSE_BUTTON_MASK_LEFT)
+	preview.rect = screenshot_rect
 	if event.is_match(Settings["dev.fishies.sunfish.ScreenshotTool.ScreenshotTool/capture_screenshot"]):
 		_render_screenshot(take_screenshot)
 	if event.is_match(Settings["dev.fishies.sunfish.ScreenshotTool.ScreenshotTool/copy_screenshot"]):
