@@ -17,6 +17,9 @@ const SERIF = preload("uid://dyte8f36cqfjo")
 const TWITTER_COLOR_EMOJI_SV_GIN_OT = preload("uid://da8qy3bcxoyq7")
 
 
+const FALLBACK_THEME = "dev.fishies.sunfish.themes.CatppuccinMocha"
+
+
 @onready var theme_res: Theme = load("res://main_theme.tres")
 
 
@@ -289,6 +292,8 @@ func set_theme_id(id: StringName) -> void:
 	else:
 		printerr("Couldn't find theme %s" % id)
 		print("Available themes are ", " ".join(themes.keys()))
+		if not active_theme:
+			set_theme(themes[FALLBACK_THEME])
 
 
 func reload_theme() -> void:
