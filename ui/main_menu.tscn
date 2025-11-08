@@ -26,6 +26,7 @@ script/source = "extends PopupMenu
 
 
 func _ready() -> void:
+	set_item_shortcut(3, Shortcuts.key_shortcut(KEY_T | KEY_MASK_CTRL))
 	id_pressed.connect(func(id: int):
 		match id:
 			0:

@@ -77,15 +77,15 @@ script = ExtResource("1_ig7tw")
 color_picker = NodePath("../../SplitContainer/NiceColorPicker")
 metadata/_custom_type_script = "uid://byygqcqk1nokj"
 
-[node name="ToastControl" type="Control" parent="MarginContainer/VBoxContainer/BoxContainer/SplitContainer/VBoxContainer/Whiteboard" unique_id=427966590]
+[node name="ToastControl" type="Container" parent="MarginContainer/VBoxContainer/BoxContainer/SplitContainer/VBoxContainer/Whiteboard" unique_id=567166023]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 1
 script = ExtResource("5_nkjcf")
+metadata/_custom_type_script = "uid://dhrwo5xq6q0t3"
 
 [node name="SplitContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BoxContainer/SplitContainer" unique_id=493016557]
 layout_mode = 2

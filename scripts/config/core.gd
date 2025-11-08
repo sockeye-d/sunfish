@@ -16,6 +16,8 @@ func get_id() -> StringName: return "core"
 
 @export var show_debug_menu: bool = false
 
+@export_range(0.1, 10.0, 0.01, "or_greater") var toast_display_time: float = 5.0
+
 
 func _init() -> void:
 	ThemeManager.themes_changed.connect(notify_property_list_changed)

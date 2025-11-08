@@ -95,7 +95,7 @@ func _create_bookmark_delegate(bookmark: Dictionary) -> Control:
 	var delete_button := Button.new()
 	delete_button.icon = delete_red_icon
 	delete_button.pressed.connect(func():
-		bookmarks.remove_at(bookmarks.find(bookmark))
+		bookmarks.erase(bookmark)
 		container.queue_free()
 		redraw_preview.call()
 		save_bookmarks.call()

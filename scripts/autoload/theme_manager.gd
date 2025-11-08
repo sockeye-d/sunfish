@@ -108,6 +108,8 @@ func set_theme(new_theme: ThemeColors) -> void:
 	theme_res.set_constant("separation", "HBoxContainer", base_spacing)
 	theme_res.set_constant("separation", "VBoxContainer", base_spacing)
 
+	theme_res.set_constant("separation", "ToastControl", base_spacing)
+
 	theme_res.set_constant("margin_bottom", "MarginContainer", base_spacing)
 	theme_res.set_constant("margin_top", "MarginContainer", base_spacing)
 	theme_res.set_constant("margin_left", "MarginContainer", base_spacing)
@@ -117,6 +119,7 @@ func set_theme(new_theme: ThemeColors) -> void:
 	theme_res.set_stylebox("panel", "AltPanelContainer", new_flat(theme.background_1, [base_spacing * 2], [base_spacing]))
 	theme_res.set_stylebox("panel", "SettingsPanelContainer", new_flat(theme.background_0, [0, base_spacing * 2, base_spacing * 2, base_spacing * 2], [base_spacing]))
 	theme_res.set_stylebox("panel", "Panel", new_flat(theme.background_0, [base_spacing * 2], [base_spacing]))
+	theme_res.set_stylebox("panel", "Toast", new_flat(theme.background_0, [base_spacing], [base_spacing]))
 
 	theme_res.set_constant("scrollbar_h_separation", "Tree", base_spacing)
 
@@ -200,6 +203,9 @@ func set_theme(new_theme: ThemeColors) -> void:
 	theme_res.set_color("font_unselected_color", "TabContainer", theme.text)
 
 	theme_res.set_stylebox("panel", "SliderCombo", new_flat(theme.background_1, [base_spacing], [base_spacing]))
+
+	theme_res.set_stylebox("background", "MinimalProgressBar", new_flat(theme.surface, [base_spacing / 2], [0, base_spacing / 2]))
+	theme_res.set_stylebox("fill", "MinimalProgressBar", new_flat(theme.overlay_hover, [base_spacing / 2], [0, base_spacing / 2]))
 
 	theme_res.set_stylebox("slider", "HSlider", new_flat(theme.surface, [base_spacing / 2], [0, base_spacing / 2]))
 	theme_res.set_stylebox("grabber_area", "HSlider", new_flat(theme.overlay_hover, [base_spacing / 2], [0, base_spacing / 2]))

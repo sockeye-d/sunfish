@@ -1,5 +1,5 @@
 @tool
-extends Control
+class_name ToastControl extends Container
 
 
 @export var toast_severity: ToastManager.Severity
@@ -9,69 +9,67 @@ extends Control
 	for child in get_children():
 		if child.owner == null:
 			child.queue_free()
+@onready var separation: float = get_theme_constant("separation")
+
+var toast_rect: Rect2
+var paused: bool:
+	set(value):
+		if paused != value:
+			for child in get_children():
+				child.timer.paused = value
+		paused = value
+var toast_offset: float:
+	set(value):
+		toast_offset = value
+		queue_sort()
 var tween: Tween
 
 
 func _ready() -> void:
-	ToastManager.toasts_active = true
-	ToastManager.toast_pushed.connect(_on_toast_pushed)
+	ToastManager.register_toast_handler(_on_toast_pushed)
+	mouse_exited.connect(func(): paused = false)
 
 
-func _on_toast_pushed(severity: ToastManager.Severity, message: String, custom_control: Control) -> void:
-	var toast := _create_toast(severity, message, custom_control)
+func _on_toast_pushed(severity: ToastManager.Severity, message: String, additional_controls: Array[Control], custom_control: Control) -> void:
+	var toast := Toast.create(severity, message, additional_controls, custom_control)
+	toast.timer.paused = paused
 	add_child(toast)
-	toast.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
-	toast.anchor_left = 0.3
-	toast.anchor_right = 0.7
-	var height := -toast.offset_top
-	toast.offset_top = 0.0
 	if tween and tween.is_running():
 		tween.kill()
 	tween = create_tween()
-	tween.tween_property(toast, "offset_top", 0.0, 0.5)
+	toast_offset -= toast.size.y + separation
+	tween.tween_property(self, "toast_offset", 0.0, 0.5).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_EXPO)
 
 
-func _get_severity_color(severity: ToastManager.Severity) -> Color:
-	match severity:
-		ToastManager.Severity.INFO:
-			return ThemeManager.active_theme.subtext
-		ToastManager.Severity.SUCCESS:
-			return ThemeManager.active_theme.success
-		ToastManager.Severity.WARNING:
-			return ThemeManager.active_theme.warning
-		ToastManager.Severity.ERROR:
-			return ThemeManager.active_theme.error
-	return Color()
+func _process(delta: float) -> void:
+	Util.unused(delta)
+	paused = is_toast_rect_valid() and toast_rect.has_point(get_local_mouse_position())
 
 
-func _create_toast(severity: ToastManager.Severity, message: String, custom_control: Control) -> Control:
-	var severity_color := _get_severity_color(severity)
-	var panel := PanelContainer.new()
-	var highlight := panel.get_theme_stylebox("panel").duplicate() as StyleBoxFlat
-	highlight.set_border_width_all(2)
-	highlight.expand_margin_left = highlight.content_margin_left
-	highlight.expand_margin_right = highlight.content_margin_right
-	highlight.expand_margin_top = highlight.content_margin_top
-	highlight.expand_margin_bottom = highlight.content_margin_bottom
-	highlight.bg_color = Color.TRANSPARENT
-	highlight.border_color = severity_color
-	var highlight_panel := PanelContainer.new()
-	highlight_panel.add_theme_stylebox_override("panel", highlight)
-	highlight_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	highlight_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	panel.add_child(highlight_panel)
-	var container := HBoxContainer.new()
-	panel.resized.connect(func():
-		panel.queue_redraw()
-	)
-	if custom_control == null:
-		var label := Label.new()
-		label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		label.text = message
-		container.add_child(label)
-	else:
-		container.add_child(custom_control)
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_SORT_CHILDREN:
+		var toast_width := size.x / 3.0
+		var toast_height := 0.0
+		for child in get_children():
+			var control := child as Toast
+			if not control or not control.visible:
+				continue
+			toast_height = maxf(control.get_combined_minimum_size().y, toast_height)
+		var y := size.y - toast_offset
+		toast_rect = Rect2(0.0, 0.0, -1.0, -1.0)
+		for child in Util.reversed_in_place(get_children()):
+			var control := child as Toast
+			if not control or not control.visible:
+				continue
+			y -= toast_height + separation
+			var rect := Rect2(size.x * 0.5 - toast_width * 0.5, y, toast_width, toast_height)
+			toast_rect = toast_rect.merge(rect) if is_toast_rect_valid() else rect
+			fit_child_in_rect(control, rect)
+	if what == NOTIFICATION_THEME_CHANGED:
+		separation = get_theme_constant("separation", "ToastControl")
+		queue_sort()
+	if what == NOTIFICATION_PREDELETE:
+		ToastManager.unregister_toast_handler(_on_toast_pushed)
 
-	panel.add_child(container)
-	return panel
+
+func is_toast_rect_valid() -> bool: return toast_rect.size.x >= 0.0

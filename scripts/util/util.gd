@@ -38,3 +38,8 @@ static func get_default_save_path() -> String:
 
 static func centered_rect2(center: Vector2, size: Vector2) -> Rect2:
 	return Rect2(center - size * 0.5, size)
+
+
+static func reversed_in_place(array: Array) -> Array:
+	array.reverse()
+	return array

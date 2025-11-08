@@ -12,7 +12,7 @@ static func create(property_id: String) -> Shortcut:
 	#obj.events = [input_event]
 	return obj
 
-## Create a new InputEvent from the given [param keycode] and [param mods].
+## Create a new InputEvent from the given [param keycode].
 static func key(keycode: int) -> InputEvent:
 	var e := InputEventKey.new()
 	e.keycode = keycode & KEY_CODE_MASK as Key
@@ -21,3 +21,10 @@ static func key(keycode: int) -> InputEvent:
 	e.meta_pressed = keycode & KEY_MASK_META
 	e.shift_pressed = keycode & KEY_MASK_SHIFT
 	return e
+
+## Create a new [Shortcut] from the given [param keycodes].
+static func key_shortcut(...keycodes: Array) -> Shortcut:
+	var shortcut := Shortcut.new()
+	for keycode in keycodes:
+		shortcut.events.append(key(keycode))
+	return shortcut

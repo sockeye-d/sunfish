@@ -137,10 +137,33 @@ func _render_screenshot(copy: bool) -> void:
 		var status := ClipboardUtils.copy_image(image_data)
 		if status.type != ClipboardUtils.ErrorType.Ok:
 			printerr(status.message)
+			ToastManager.push_toast(
+				ToastManager.Severity.ERROR,
+				"Failed to copy: " + status.message,
+			)
+		else:
+			ToastManager.push_toast(
+				ToastManager.Severity.SUCCESS,
+				"Copied to clipboard",
+			)
 	else:
 		var path: PackedStringArray = await DialogUtil.open_file_dialog(["*.png;Images;image/png"], FileDialog.FILE_MODE_SAVE_FILE, "~")
 		if path:
-			image.save_png(path[0])
+			var err := image.save_png(path[0])
+			if err:
+				ToastManager.push_toast(
+					ToastManager.Severity.ERROR,
+					"Failed: " + error_string(err),
+				)
+			else:
+				var button := Button.new()
+				button.text = "Show"
+				button.pressed.connect(OS.shell_show_in_file_manager.bind(path[0]))
+				ToastManager.push_toast(
+					ToastManager.Severity.SUCCESS,
+					"Saved image",
+					[button]
+				)
 	vp.queue_free()
 
 
@@ -194,9 +217,9 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 				if get_closest_side(mm.position, screenshot_rect, closest_side) < handle_size:
 					display.cursor_shape = get_cursor_shape(closest_side[0], mm.button_mask & MOUSE_BUTTON_MASK_LEFT)
 	preview.rect = screenshot_rect
-	if event.is_match(Settings["dev.fishies.sunfish.ScreenshotTool.ScreenshotTool/capture_screenshot"]):
+	if event.is_match(Settings["dev.fishies.sunfish.ScreenshotTool.ScreenshotTool/capture_screenshot"]) and event.is_pressed():
 		_render_screenshot(take_screenshot)
-	if event.is_match(Settings["dev.fishies.sunfish.ScreenshotTool.ScreenshotTool/copy_screenshot"]):
+	if event.is_match(Settings["dev.fishies.sunfish.ScreenshotTool.ScreenshotTool/copy_screenshot"]) and event.is_pressed():
 		_render_screenshot(true)
 	return display
 

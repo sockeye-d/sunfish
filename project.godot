@@ -27,7 +27,6 @@ config/windows_native_icon="res://icons/sunfish.ico"
 
 [autoload]
 
-ToastManager="*res://scripts/autoload/toast_manager.gd"
 TreeEvents="*res://scripts/autoload/tree_events.gd"
 Settings="*res://scripts/autoload/settings/settings.tscn"
 DialogUtil="*res://scripts/autoload/dialog_util.gd"

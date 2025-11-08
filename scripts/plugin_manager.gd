@@ -58,7 +58,7 @@ static func add_plugin(source_path: String) -> void:
 
 
 static func remove_plugin(plugin: PluginData) -> void:
-	plugins.remove_at(plugins.find(plugin))
+	plugins.erase(plugin)
 	DirAccess.remove_absolute(plugin.get_absolute_path())
 	instance.plugin_removed.emit(plugin)
 	serialize_plugins()
@@ -71,7 +71,7 @@ static func load_plugins() -> void:
 			continue
 		var succeeded := ProjectSettings.load_resource_pack(plugin.get_absolute_path(), false)
 		if not succeeded:
-			#ToastManager.push_toast(ToastManager.Severity.ERROR, "Plugin %s failed to load" % plugin)
+			ToastManager.push_toast(ToastManager.Severity.ERROR, "Plugin %s failed to load, disabling" % plugin.name)
 			plugin.enabled = false
 	for plugin in plugins:
 		_plugins_on_load.append(PluginData.new(plugin.name, plugin.enabled))
