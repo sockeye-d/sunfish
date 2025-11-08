@@ -71,7 +71,7 @@ static func load_plugins() -> void:
 			continue
 		var succeeded := ProjectSettings.load_resource_pack(plugin.get_absolute_path(), false)
 		if not succeeded:
-			printerr("Plugin %s failed to load" % plugin)
+			#ToastManager.push_toast(ToastManager.Severity.ERROR, "Plugin %s failed to load" % plugin)
 			plugin.enabled = false
 	for plugin in plugins:
 		_plugins_on_load.append(PluginData.new(plugin.name, plugin.enabled))

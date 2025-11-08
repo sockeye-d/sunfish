@@ -36,20 +36,22 @@ func _ready() -> void:
 			2:
 				set_item_checked(id, not is_item_checked(id))
 				DebugManager.giant_brush_deadzone = is_item_checked(id)
+			3:
+				DebugManager.show_random_toast()
 	)
 "
 
-[node name="MainMenu" type="MenuButton"]
+[node name="MainMenu" type="MenuButton" unique_id=1453294921]
 icon = SubResource("DPITexture_06s8x")
 flat = false
 icon_alignment = 1
 script = ExtResource("2_wk0pr")
 
-[node name="Debug" type="PopupMenu" parent="."]
+[node name="Debug" type="PopupMenu" parent="." unique_id=2051812731]
 oversampling_override = 1.0
 size = Vector2i(196, 100)
 hide_on_checkable_item_selection = false
-item_count = 3
+item_count = 4
 item_0/text = "Reload theme"
 item_0/id = 0
 item_1/text = "Draw element bounds"
@@ -58,8 +60,10 @@ item_1/id = 1
 item_2/text = "Giant brush deadzone"
 item_2/checkable = 1
 item_2/id = 2
+item_3/text = "Push toast"
+item_3/id = 3
 script = SubResource("GDScript_0dkrt")
 
-[node name="PluginWindow" parent="." instance=ExtResource("3_wk0pr")]
+[node name="PluginWindow" parent="." unique_id=686938307 instance=ExtResource("3_wk0pr")]
 unique_name_in_owner = true
 visible = false

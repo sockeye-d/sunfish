@@ -38,7 +38,10 @@ func _ready() -> void:
 	ui_scale_changed.connect(func(): get_tree().root.content_scale_factor = ui_scale)
 	ui_scale = Settings["display/ui_scale"]
 
-	set_theme_id(Settings["core/theme"])
+	if Engine.is_editor_hint():
+		set_theme_id("dev.fishies.sunfish.themes.CatppuccinMocha")
+	else:
+		set_theme_id(Settings["core/theme"])
 
 	var font_fallbacks: Array[Font] = [TWITTER_COLOR_EMOJI_SV_GIN_OT]
 	for font: Font in [
@@ -279,6 +282,7 @@ func set_theme_id(id: StringName) -> void:
 		set_theme(themes[id])
 	else:
 		printerr("Couldn't find theme %s" % id)
+		print("Available themes are ", " ".join(themes.keys()))
 
 
 func reload_theme() -> void:
