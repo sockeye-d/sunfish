@@ -113,8 +113,7 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 			label.mouse_filter = Control.MOUSE_FILTER_PASS
 			label.text = Util.pretty_print_property(ReverseDNSUtil.pretty_print(property_name))
 			label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-			label.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
-			#label.vertical_alignment = VERTICAL_ALIGNMENT_TOP
+			label.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 			label_container.add_child(label)
 			var edit_container := HBoxContainer.new()
 			edit_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -144,7 +143,6 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 			data.set_value_funcs[property_name] = delegate.set_value_func
 			delegate.control.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			update_reset_button.call()
-			#var control: Array[Control] = [create_control.call(initial_value)]
 			edit_container.add_child(delegate.control)
 			reset_button.pressed.connect(set.bind(property_key, default_value))
 			reset_button.pressed.connect(update_reset_button)

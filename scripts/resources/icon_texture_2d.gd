@@ -36,12 +36,12 @@ func _update_image() -> void:
 		svg = _attempt_path(path)
 		if svg.is_empty():
 			continue
+		set_block_signals(true)
 		WorkerThreadPool.add_task(_update_svg.bind(svg))
 
 
 func _update_svg(source: String) -> void:
-	# This feelsl like a hack but it works
-	set_block_signals(true)
+	# This feels like a hack but it works
 	base_scale = icon_scale * secondary_icon_scale
 	color_map = global_color_map
 	set_source(source)
