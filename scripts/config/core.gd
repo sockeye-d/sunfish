@@ -11,7 +11,7 @@ func get_id() -> StringName: return "core"
 @export var theme := "dev.fishies.sunfish.themes.CatppuccinMocha":
 	set(value):
 		theme = value
-		update_theme.call_deferred()
+		update_theme()
 @export var default_tool := "dev.fishies.sunfish.BrushTool"
 
 @export var show_debug_menu: bool = false

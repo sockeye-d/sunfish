@@ -20,7 +20,7 @@ const TWITTER_COLOR_EMOJI_SV_GIN_OT = preload("uid://da8qy3bcxoyq7")
 const FALLBACK_THEME = "dev.fishies.sunfish.themes.CatppuccinMocha"
 
 
-@onready var theme_res: Theme = load("res://main_theme.tres")
+var theme_res: Theme = load("res://main_theme.tres")
 
 
 signal themes_changed
@@ -80,6 +80,8 @@ func register_theme(theme: ThemeColors) -> void:
 
 @warning_ignore_start("integer_division")
 func set_theme(new_theme: ThemeColors) -> void:
+	if active_theme and new_theme.id == active_theme.id and not Engine.is_editor_hint():
+		return
 	active_theme = new_theme
 	var theme: ThemeColors = new_theme.duplicate()
 	RenderingServer.set_default_clear_color(theme.background_1)
@@ -269,6 +271,7 @@ func set_theme(new_theme: ThemeColors) -> void:
 
 	theme_res.set_block_signals(false)
 	theme_res.emit_changed()
+	var timer := Stopwatch.start(false)
 	background_color_changed.emit(theme.background_1)
 	IconTexture2D.global_color_map = {
 		Color("#ffffff"): theme.text,
@@ -283,6 +286,8 @@ func set_theme(new_theme: ThemeColors) -> void:
 
 	if Engine.is_editor_hint():
 		ResourceSaver.save(theme_res, theme_res.resource_path)
+
+	timer.measure()
 @warning_ignore_restore("integer_division")
 
 

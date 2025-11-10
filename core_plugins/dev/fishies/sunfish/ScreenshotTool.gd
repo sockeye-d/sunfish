@@ -22,7 +22,7 @@ enum SelectionSide {
 
 
 static func _static_init() -> void:
-	Inspector.register_delegate(PROPERTY_HINT_EXT_TAKE_SCREENSHOT_BUTTON, func(prop: Dictionary, initial_value, set_prop: Callable) -> Control:
+	Inspector.register_delegate(PROPERTY_HINT_EXT_TAKE_SCREENSHOT_BUTTON, func(prop: Dictionary, initial_value, set_prop: Callable) -> Inspector.Delegate:
 		Util.unused(prop)
 		var container := HBoxContainer.new()
 		var screenshot_button := Button.new()
@@ -39,11 +39,11 @@ static func _static_init() -> void:
 		to_clipboard_button.button_pressed = initial_value
 		set_prop.call(initial_value)
 		container.add_child(to_clipboard_button)
-		return container
+		return Inspector.Delegate.new(container)
 	)
 
 
-static func get_id() -> StringName: return "dev.fishies.sunfish.ScreenshotTool"
+static func get_id() -> StringName: return "dev.fishies.s2unfish.ScreenshotTool"
 
 
 static func get_shortcut() -> InputEvent: return Shortcuts.key(KEY_S)

@@ -70,14 +70,14 @@ func _update_inspector() -> void:
 						property_dict[property.name] = new_value
 						tool.set(property.name, new_value)
 						Settings["state/tool_properties"] = Settings.get_default("state/tool_properties", {}).merged(tool_properties, true)
-				)
+				).control
 				delegate.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			prop_container.add_child(delegate)
 		tool_properties[tool_id] = property_dict
 	Settings["state/tool_properties"] = Settings.get_default("state/tool_properties", {}).merged(tool_properties, true)
 
 
-static func create_delegate(prop: Dictionary, initial_value, set_prop: Callable) -> Control:
+static func create_delegate(prop: Dictionary, initial_value, set_prop: Callable) -> Delegate:
 	return Manager.instance.hint_delegates[prop.hint].call(prop, initial_value, set_prop)
 
 
@@ -96,26 +96,26 @@ class Manager extends Object:
 	## [codeblock]
 	## Dictionary[PropertyHint, Callable[prop: Dictionary, intitial_value: Variant, set_prop: Callable[new_value: Variant]]]
 	##
-	## var delegate: Control = hint_delegates[property.hint].call(
+	## var delegate: Inspector.Delegate = hint_delegates[property.hint].call(
 	## 	property, tool.get(property.name),
 	## 	func(new_value): tool.set(property.name, convert(new_value, property.type))
 	## )
 	## [/codeblock]
 	var hint_delegates: Dictionary[int, Callable] = {
-		PROPERTY_HINT_NONE: func(prop: Dictionary, initial_value, set_prop: Callable) -> Control:
+		PROPERTY_HINT_NONE: func(prop: Dictionary, initial_value, set_prop: Callable) -> Delegate:
 			match prop.type as Variant.Type:
 				TYPE_BOOL:
 					var checkbox := CheckBox.new()
 					checkbox.button_pressed = initial_value
 					checkbox.toggled.connect(set_prop)
-					return checkbox
+					return Delegate.new(checkbox, func(new_value: bool): checkbox.button_pressed = new_value)
 				_:
 					var line_edit := LineEdit.new()
 					line_edit.text = str(initial_value)
 					line_edit.text_submitted.connect(func(new_text: String): set_prop.call(convert(new_text, prop.type)))
-					return line_edit
+					return Delegate.new(line_edit, func(new_value): line_edit.text = str(new_value))
 			,
-		PROPERTY_HINT_RANGE: func(prop: Dictionary, initial_value, set_prop: Callable) -> Control:
+		PROPERTY_HINT_RANGE: func(prop: Dictionary, initial_value, set_prop: Callable) -> Delegate:
 			assert(prop.type in [TYPE_INT, TYPE_FLOAT])
 			var data := (prop.hint_string as String).split(",", true, 4)
 			var min_value := float(data[0])
@@ -132,8 +132,8 @@ class Manager extends Object:
 			slider.slider_value = initial_value
 			slider.changed.emit()
 			slider.slider_value_changed.connect(set_prop)
-			return slider,
-		PROPERTY_HINT_ENUM: func(prop: Dictionary, initial_value, set_prop: Callable) -> Control:
+			return Delegate.new(slider, func(new_value): slider.set_value_no_signal_(new_value)),
+		PROPERTY_HINT_ENUM: func(prop: Dictionary, initial_value, set_prop: Callable) -> Delegate:
 			assert(prop.type in [TYPE_INT, TYPE_STRING])
 			var options := (prop.hint_string as String).split(",")
 			var btn := OptionButton.new()
@@ -146,20 +146,22 @@ class Manager extends Object:
 				elif prop.type == TYPE_STRING:
 					set_prop.call(options[index])
 			)
-			if prop.type == TYPE_INT:
-				btn.selected = initial_value
-			elif prop.type == TYPE_STRING:
-				btn.selected = options.find(initial_value)
-			return btn,
-		PROPERTY_HINT_RESOURCE_TYPE: func(prop: Dictionary, initial_value, set_prop: Callable) -> Control:
+			var set_value := func(new_value):
+				if prop.type == TYPE_INT:
+					btn.selected = new_value
+				elif prop.type == TYPE_STRING:
+					btn.selected = options.find(new_value)
+			set_value.call(initial_value)
+			return Delegate.new(btn, set_value),
+		PROPERTY_HINT_RESOURCE_TYPE: func(prop: Dictionary, initial_value, set_prop: Callable) -> Delegate:
 			var type: String = prop.hint_string
 			match type:
 				"InputEvent":
 					var event_btn := EventInput.new(initial_value)
 					event_btn.event_submitted.connect(func(event: InputEvent): set_prop.call(event))
-					return event_btn
+					return Delegate.new(event_btn)
 			return null,
-		PROPERTY_HINT_EXT_PRETTY_RDNS_ENUM: func(prop: Dictionary, initial_value, set_prop: Callable) -> Control:
+		PROPERTY_HINT_EXT_PRETTY_RDNS_ENUM: func(prop: Dictionary, initial_value, set_prop: Callable) -> Delegate:
 			assert(prop.type in [TYPE_INT, TYPE_STRING])
 			var options := (prop.hint_string as String).split(",")
 			var btn := OptionButton.new()
@@ -173,14 +175,16 @@ class Manager extends Object:
 					set_prop.call(options[index])
 				btn.tooltip_text = options[index]
 			)
-			if prop.type == TYPE_INT:
-				btn.selected = initial_value
-			elif prop.type == TYPE_STRING:
-				btn.selected = options.find(initial_value)
-			if btn.selected != -1:
-				btn.tooltip_text = options[btn.selected]
-			return btn,
-		PROPERTY_HINT_EXT_RANGE_ENUM: func(prop: Dictionary, initial_value, set_prop: Callable) -> Control:
+			var set_value := func(new_value):
+				if prop.type == TYPE_INT:
+					btn.selected = new_value
+				elif prop.type == TYPE_STRING:
+					btn.selected = options.find(new_value)
+				if btn.selected != -1:
+					btn.tooltip_text = options[btn.selected]
+			set_value.call(initial_value)
+			return Delegate.new(btn, set_value),
+		PROPERTY_HINT_EXT_RANGE_ENUM: func(prop: Dictionary, initial_value, set_prop: Callable) -> Delegate:
 			assert(prop.type in [TYPE_FLOAT])
 			var options = JSON.parse_string(prop.hint_string as String)
 			var btn := OptionButton.new()
@@ -195,17 +199,23 @@ class Manager extends Object:
 					btn.add_item("%.f%%" % (remap(i, 0.0, max_i, enum_range[0], enum_range[1]) * 100.0))
 				else:
 					btn.add_item("%.f" % remap(i, 0.0, max_i, enum_range[0], enum_range[1]))
-			#for op in options:
-				#btn.add_item("%.f%%" % (op.to_float() * 100.0))
 			btn.item_selected.connect(func(index: int) -> void:
 				set_prop.call(remap(index, 0, max_i, enum_range[0], enum_range[1]))
 			)
-			#if prop.type == TYPE_INT:
-				#btn.selected = initial_value
-			#elif prop.type == TYPE_STRING:
-				#btn.selected = options.find(initial_value)
-			#if btn.selected != -1:
-				#btn.tooltip_text = options[btn.selected]
-			btn.selected = int(remap(initial_value, enum_range[0], enum_range[1], 0, max_i))
-			return btn,
+			var set_value := func(new_value: float):
+				btn.selected = int(remap(new_value, enum_range[0], enum_range[1], 0, max_i))
+			set_value.call(initial_value)
+			return Delegate.new(btn, set_value),
 	}
+
+
+class Delegate:
+	var control: Control
+	var set_value_func: Callable
+
+	func _init(_control: Control, _set_value_func: Callable = func(value): Util.unused(value)) -> void:
+		self.control = _control
+		self.set_value_func = _set_value_func
+
+
+	func set_value(value) -> void: set_value_func.call(value)
