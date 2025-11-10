@@ -290,6 +290,10 @@ func set_theme_id(id: StringName) -> void:
 	if id in themes:
 		set_theme(themes[id])
 	else:
+		ToastManager.push_toast(
+			ToastManager.Severity.ERROR,
+			"Couldn't find theme %s" % id
+		)
 		printerr("Couldn't find theme %s" % id)
 		print("Available themes are ", " ".join(themes.keys()))
 		if not active_theme:

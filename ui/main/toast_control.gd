@@ -62,7 +62,8 @@ func _notification(what: int) -> void:
 			if not control or not control.visible:
 				continue
 			y -= toast_height + separation
-			var rect := Rect2(size.x * 0.5 - toast_width * 0.5, y, toast_width, toast_height)
+			var real_toast_width := maxf(toast_width, control.get_combined_minimum_size().x)
+			var rect := Rect2(size.x * 0.5 - real_toast_width * 0.5, y, real_toast_width, toast_height)
 			toast_rect = toast_rect.merge(rect) if is_toast_rect_valid() else rect
 			fit_child_in_rect(control, rect)
 	if what == NOTIFICATION_THEME_CHANGED:

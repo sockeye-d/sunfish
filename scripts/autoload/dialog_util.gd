@@ -6,9 +6,11 @@ func open_file_dialog(filters: PackedStringArray, mode: FileDialog.FileMode, sta
 	var handle := FileDialogHandle.new()
 	add_child(fd)
 	fd.use_native_dialog = true
-	fd.current_dir = start_path
+	print(Settings["state/last_filedialog_path"])
+	fd.current_dir = Settings["state/last_filedialog_path"] if start_path.is_empty() else start_path
+	fd.current_path = fd.current_dir
 	if not filters.is_empty() and start_file.is_empty():
-		start_file = filters[0].get_slice(";", 0).get_slice(",", 0).trim_prefix("*")
+		start_file = "file" + filters[0].get_slice(";", 0).get_slice(",", 0).trim_prefix("*")
 	fd.current_file = start_file
 	fd.file_mode = mode
 	fd.access = FileDialog.ACCESS_FILESYSTEM
@@ -17,13 +19,17 @@ func open_file_dialog(filters: PackedStringArray, mode: FileDialog.FileMode, sta
 	fd.file_selected.connect(func(selection: String): handle.selected.emit([selection]))
 	fd.dir_selected.connect(func(selection: String): handle.selected.emit(selection))
 	fd.canceled.connect(handle.selected.emit.bind([]))
-	handle.selected.connect(func(_x): fd.queue_free())
 	fd.popup_centered()
 	var cover := Control.new()
 	cover.mouse_filter = Control.MOUSE_FILTER_STOP
 	cover.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	get_tree().root.add_child(cover)
-	handle.selected.connect(func(__): cover.queue_free())
+	handle.selected.connect(func(paths: PackedStringArray):
+		Util.unused(paths)
+		Settings["state/last_filedialog_path"] = fd.current_dir
+		fd.queue_free()
+		cover.queue_free()
+	)
 	return handle.selected
 
 

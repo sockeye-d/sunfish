@@ -1,5 +1,4 @@
-@abstract
-extends WhiteboardTool
+@abstract extends WhiteboardTool
 
 
 @export_range(1.0, 5.0, 0.0, "or_greater") var width: float = 5.0
@@ -52,12 +51,10 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 func should_hide_mouse() -> bool: return true
 
 
-@abstract
-func create_element() -> ShapeElement
+@abstract func create_element() -> ShapeElement
 
 
-@abstract
-class ShapeElement extends WhiteboardTool.Element:
+@abstract class ShapeElement extends WhiteboardTool.Element:
 	var color: Color
 	var width: float
 

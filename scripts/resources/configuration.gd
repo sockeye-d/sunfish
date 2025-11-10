@@ -1,5 +1,4 @@
-@abstract
-class_name Configuration extends Resource
+@abstract class_name Configuration
 
 enum Location {
 	CONFIG,

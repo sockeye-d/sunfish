@@ -167,12 +167,14 @@ func _ready() -> void:
 
 	WhiteboardBus.file_load.connect(func(filepath: String):
 		deserialize(FileAccess.open(filepath, FileAccess.READ))
+		ToastManager.push_toast(ToastManager.Severity.INFO, "Loaded " + filepath)
 	)
 
 	WhiteboardBus.file_new.connect(func():
 		reset()
 		serialize_or_new()
 		WhiteboardBus.update_window_title()
+		ToastManager.push_toast(ToastManager.Severity.INFO, "New file created")
 	)
 
 	WhiteboardBus.view_reset_view.connect(func():

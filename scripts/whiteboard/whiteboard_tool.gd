@@ -1,5 +1,4 @@
-@abstract
-class_name WhiteboardTool
+@abstract class_name WhiteboardTool
 
 
 const PROPERTY_HINT_EXT_CUSTOM_INSPECTOR = 512
@@ -17,8 +16,7 @@ static func is_visible() -> bool: return true
 static func get_shortcut() -> InputEvent: return null
 
 
-@abstract
-func receive_input(wb: Whiteboard, event: InputEvent) -> Display
+@abstract func receive_input(wb: Whiteboard, event: InputEvent) -> Display
 
 
 func activated(wb: Whiteboard) -> void: Util.unused(wb)
@@ -27,28 +25,24 @@ func activated(wb: Whiteboard) -> void: Util.unused(wb)
 func should_hide_mouse() -> bool: return false
 
 
-@abstract
-class Element:
+@abstract class Element:
 	## Get a reverse-DNS (e.g. com.example.Tool) identifier specific to this tool
 	static func get_id() -> StringName:
 		assert(false)
 		return ""
 
 
-	@abstract
-	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard) -> void
+	@abstract func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard) -> void
 
 
-	@abstract
-	func get_bounding_box() -> Rect2
+	@abstract func get_bounding_box() -> Rect2
 
 
 	func dragged(delta: Vector2) -> void:
 		Util.unused(delta)
 
 
-	@abstract
-	func serialize() -> Dictionary
+	@abstract func serialize() -> Dictionary
 
 
 	static func deserialize(data: Dictionary) -> Element:
@@ -57,16 +51,12 @@ class Element:
 		return null
 
 
-@abstract
-class PreviewElement:
-	@abstract
-	func draw(canvas: CanvasItem, wb: Whiteboard)
+@abstract class PreviewElement:
+	@abstract func draw(canvas: CanvasItem, wb: Whiteboard)
 
 
-@abstract
-class StaticPreviewElement:
-	@abstract
-	func draw(wb: Whiteboard)
+@abstract class StaticPreviewElement:
+	@abstract func draw(wb: Whiteboard)
 
 
 class PlainPreviewElement extends WhiteboardTool.PreviewElement:

@@ -28,7 +28,6 @@ func load_file() -> void:
 	var filepath: PackedStringArray = await DialogUtil.open_file_dialog(
 		["*.sunfish;Sunfish files"],
 		FileDialog.FILE_MODE_OPEN_FILE,
-		Settings["state/last_opened_filepath"]
 	)
 	if filepath.is_empty():
 		return
@@ -41,7 +40,6 @@ func save_file_as() -> void:
 	var filepath: PackedStringArray = await DialogUtil.open_file_dialog(
 		["*.sunfish;Sunfish files"],
 		FileDialog.FILE_MODE_SAVE_FILE,
-		Settings["state/last_opened_filepath"]
 	)
 	if filepath.is_empty():
 		return
