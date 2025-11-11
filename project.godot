@@ -33,6 +33,7 @@ DialogUtil="*res://scripts/autoload/dialog_util.gd"
 WhiteboardBus="*res://scripts/autoload/whiteboard_bus.gd"
 ThemeManager="*res://scripts/autoload/theme_manager.gd"
 DebugManager="*res://scripts/autoload/debug_manager.gd"
+MainMenu="*res://ui/main_menu.tscn"
 
 [debug]
 

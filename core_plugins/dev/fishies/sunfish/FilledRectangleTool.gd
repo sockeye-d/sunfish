@@ -13,9 +13,9 @@ func create_element() -> ShapeElement:
 class FilledRectangleElement extends ShapeTool.ShapeElement:
 	static func _static_init() -> void:
 		WhiteboardManager.register_deserializer(FilledRectangleElement)
-	
+
 	static func get_id() -> StringName: return "dev.fishies.sunfish.FilledRectangleElement"
-	
+
 	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard) -> void:
 		Util.unused(wb)
 		var abs_rect := rect.abs()
@@ -33,5 +33,5 @@ class FilledRectangleElement extends ShapeTool.ShapeElement:
 			rect_pos - Vector2(0.0, width * 0.5),
 			rect_size + Vector2(0.0, width)
 		).abs(), color)
-	
+
 	static func deserialize(data: Dictionary) -> Element: return deserialize_into(new(), data)

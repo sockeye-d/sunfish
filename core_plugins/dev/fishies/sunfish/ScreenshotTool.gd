@@ -43,7 +43,7 @@ static func _static_init() -> void:
 	)
 
 
-static func get_id() -> StringName: return "dev.fishies.s2unfish.ScreenshotTool"
+static func get_id() -> StringName: return "dev.fishies.sunfish.ScreenshotTool"
 
 
 static func get_shortcut() -> InputEvent: return Shortcuts.key(KEY_S)

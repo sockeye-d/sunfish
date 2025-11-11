@@ -224,6 +224,7 @@ func _set(property: StringName, value: Variant) -> bool:
 		config_data[data[0]].set_value(data[1], value)
 		serialize.call_deferred()
 		any_setting_changed.emit(property, value)
+		_emit_value_changed(property, value)
 		return true
 	return false
 

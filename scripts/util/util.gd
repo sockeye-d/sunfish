@@ -2,6 +2,10 @@ class_name Util
 
 
 const NOTIFICATION_WINDOW_CLOSING = 10000
+const ALWAYS_UPPERCASE: PackedStringArray = [
+	"ui",
+	"gui",
+]
 
 
 static func unused(..._v) -> void:
@@ -20,7 +24,9 @@ static func pretty_print_property(property_name: String) -> String:
 	if property_name.length() == 0: return ""
 	if property_name.length() == 1: return property_name.to_upper()
 	property_name = property_name.capitalize().to_lower()
-	return property_name.substr(0, 1).to_upper() + property_name.substr(1)
+	var first_word := property_name.get_slice(" ", 0)
+	var substr_length := 1 if first_word.strip_edges() not in ALWAYS_UPPERCASE else first_word.length()
+	return property_name.substr(0, substr_length).to_upper() + property_name.substr(substr_length)
 
 
 static func default(value, default_value):

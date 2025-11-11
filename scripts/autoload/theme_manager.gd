@@ -271,7 +271,6 @@ func set_theme(new_theme: ThemeColors) -> void:
 
 	theme_res.set_block_signals(false)
 	theme_res.emit_changed()
-	var timer := Stopwatch.start(false)
 	background_color_changed.emit(theme.background_1)
 	IconTexture2D.global_color_map = {
 		Color("#ffffff"): theme.text,
@@ -287,7 +286,6 @@ func set_theme(new_theme: ThemeColors) -> void:
 	if Engine.is_editor_hint():
 		ResourceSaver.save(theme_res, theme_res.resource_path)
 
-	timer.measure()
 @warning_ignore_restore("integer_division")
 
 

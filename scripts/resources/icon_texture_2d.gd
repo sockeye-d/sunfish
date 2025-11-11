@@ -25,6 +25,9 @@ var secondary_icon_scale: float = 1.0:
 static var global_color_map: Dictionary[Color, Color]
 
 
+var last_task_handle := DeferredTask.INVALID_TASK
+
+
 func _init() -> void:
 	SignalBus.instance.update.connect(_update_image)
 
@@ -36,16 +39,13 @@ func _update_image() -> void:
 		svg = _attempt_path(path)
 		if svg.is_empty():
 			continue
-		set_block_signals(true)
-		WorkerThreadPool.add_task(_update_svg.bind(svg))
-
-
-func _update_svg(source: String) -> void:
-	# This feels like a hack but it works
-	base_scale = icon_scale * secondary_icon_scale
-	color_map = global_color_map
-	set_source(source)
-	set_block_signals(false)
+		#DeferredTask.cancel(last_task_handle)
+		last_task_handle = DeferredTask.create(func():
+			set_source(svg)
+			base_scale = icon_scale * secondary_icon_scale
+			color_map = global_color_map
+		)
+		return
 
 
 func _attempt_path(path: String) -> String:

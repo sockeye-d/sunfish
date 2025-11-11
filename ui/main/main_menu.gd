@@ -34,6 +34,11 @@ var debug_id: int = -1
 var last_show_debug_menu: bool = false
 
 
+func _init() -> void:
+	if not Engine.is_editor_hint():
+		hide()
+
+
 func _ready() -> void:
 	add_separator("File")
 	var open := add_item("Open", "open", "shortcuts/open")
@@ -101,7 +106,10 @@ func _remove_debug_menu() -> void:
 
 
 func add_item(item_text: String, item_icon_name: String, item_shortcut_id: String) -> int:
-	get_popup().add_icon_item(IconTexture2D.create(item_icon_name), item_text)
+	if item_icon_name.is_empty():
+		get_popup().add_item(item_text)
+	else:
+		get_popup().add_icon_item(IconTexture2D.create(item_icon_name), item_text)
 	get_popup().set_item_shortcut(item_count - 1, Shortcuts.create(item_shortcut_id))
 	return item_count - 1
 

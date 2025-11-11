@@ -2,6 +2,7 @@
 extends ColorRect
 
 @onready var container: Control = %MarginContainer
+@onready var main_menu_container: PanelContainer = %MainMenuContainer
 
 @warning_ignore("unused_private_class_variable")
 @export_tool_button("Reload theme", "Search") var ___ := func():
@@ -18,7 +19,6 @@ func _validate_property(property: Dictionary) -> void:
 
 
 func _ready() -> void:
-	Input.use_accumulated_input = false
 	if OS.has_feature("mobile"):
 		var safe_area := Rect2(DisplayServer.get_display_safe_area())
 		var display_area := Vector2(DisplayServer.screen_get_size())
@@ -30,6 +30,9 @@ func _ready() -> void:
 	if ThemeManager.active_theme:
 		color = ThemeManager.active_theme.background_1
 	if not Engine.is_editor_hint():
+		MainMenu.reparent.call_deferred(main_menu_container)
+		MainMenu.show.call_deferred()
+		Input.use_accumulated_input = false
 		get_tree().root.close_requested.connect(func():
 			get_tree().root.propagate_notification(Util.NOTIFICATION_WINDOW_CLOSING)
 			get_tree().quit()
