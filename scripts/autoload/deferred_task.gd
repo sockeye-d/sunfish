@@ -22,7 +22,7 @@ static func process_tasks() -> void:
 
 
 static func create(task: Callable) -> int:
-	if true: # back to queueing
+	if use_deferred_tasks:
 		Instance.instance.tasks[new_task_id] = task
 		new_task_id += 1
 		return new_task_id
