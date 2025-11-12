@@ -1,18 +1,14 @@
 [remap]
 
-importer="svg"
-type="DPITexture"
-uid="uid://b3bay35axrmvv"
-path="res://.godot/imported/reset_horizontal.svg-5ecc3a065afe2fb1a35e0943482c7a64.dpitex"
+importer="dev.fishies.svg_import_plugin"
+type="SVG"
+uid="uid://bwcu2geim70kk"
+path="res://.godot/imported/reset_horizontal.svg-5ecc3a065afe2fb1a35e0943482c7a64.svg"
 
 [deps]
 
 source_file="res://assets/reset_horizontal.svg"
-dest_files=["res://.godot/imported/reset_horizontal.svg-5ecc3a065afe2fb1a35e0943482c7a64.dpitex"]
+dest_files=["res://.godot/imported/reset_horizontal.svg-5ecc3a065afe2fb1a35e0943482c7a64.svg"]
 
 [params]
 
-base_scale=1.0
-saturation=1.0
-color_map={}
-compress=true

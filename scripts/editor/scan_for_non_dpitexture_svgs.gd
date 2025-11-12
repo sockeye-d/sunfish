@@ -46,7 +46,7 @@ func scan_dir(path: String) -> PackedStringArray:
 	for file in DirAccess.get_files_at(path):
 		if file.match("*.svg"):
 			var res := load(path.path_join(file))
-			if res is not DPITexture:
+			if res is not SVG:
 				errors.append(res.resource_path)
 	for dir in DirAccess.get_directories_at(path):
 		errors.append_array(scan_dir(path.path_join(dir)))

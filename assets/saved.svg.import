@@ -1,18 +1,14 @@
 [remap]
 
-importer="svg"
-type="DPITexture"
-uid="uid://bxenjrldy55qr"
-path="res://.godot/imported/saved.svg-9fa44332338b1d604336b14845c31919.dpitex"
+importer="dev.fishies.svg_import_plugin"
+type="SVG"
+uid="uid://cf8boq0i05vdi"
+path="res://.godot/imported/saved.svg-9fa44332338b1d604336b14845c31919.svg"
 
 [deps]
 
 source_file="res://assets/saved.svg"
-dest_files=["res://.godot/imported/saved.svg-9fa44332338b1d604336b14845c31919.dpitex"]
+dest_files=["res://.godot/imported/saved.svg-9fa44332338b1d604336b14845c31919.svg"]
 
 [params]
 
-base_scale=1.0
-saturation=1.0
-color_map={}
-compress=true

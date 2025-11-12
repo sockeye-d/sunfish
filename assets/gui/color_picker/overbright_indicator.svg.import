@@ -1,18 +1,14 @@
 [remap]
 
-importer="svg"
-type="DPITexture"
+importer="dev.fishies.svg_import_plugin"
+type="SVG"
 uid="uid://cy1dgsafr0x7a"
-path="res://.godot/imported/overbright_indicator.svg-8e42d27729d15f506ee19d709651f1ae.dpitex"
+path="res://.godot/imported/overbright_indicator.svg-8e42d27729d15f506ee19d709651f1ae.svg"
 
 [deps]
 
 source_file="res://assets/gui/color_picker/overbright_indicator.svg"
-dest_files=["res://.godot/imported/overbright_indicator.svg-8e42d27729d15f506ee19d709651f1ae.dpitex"]
+dest_files=["res://.godot/imported/overbright_indicator.svg-8e42d27729d15f506ee19d709651f1ae.svg"]
 
 [params]
 
-base_scale=1.0
-saturation=1.0
-color_map={}
-compress=true

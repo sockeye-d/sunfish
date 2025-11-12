@@ -1,18 +1,14 @@
 [remap]
 
-importer="svg"
-type="DPITexture"
+importer="dev.fishies.svg_import_plugin"
+type="SVG"
 uid="uid://f44sllvnrkf1"
-path="res://.godot/imported/sunfish_large.svg-011651482e93d90547feeffce876931f.dpitex"
+path="res://.godot/imported/sunfish_large.svg-011651482e93d90547feeffce876931f.svg"
 
 [deps]
 
 source_file="res://assets/sunfish_large.svg"
-dest_files=["res://.godot/imported/sunfish_large.svg-011651482e93d90547feeffce876931f.dpitex"]
+dest_files=["res://.godot/imported/sunfish_large.svg-011651482e93d90547feeffce876931f.svg"]
 
 [params]
 
-base_scale=1.0
-saturation=1.0
-color_map={}
-compress=true

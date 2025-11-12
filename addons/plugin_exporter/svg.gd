@@ -1,2 +1,2 @@
 class_name SVG extends Resource
-@export var source: String
+@export_multiline var source: String

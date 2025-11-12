@@ -1,18 +1,14 @@
 [remap]
 
-importer="svg"
-type="DPITexture"
-uid="uid://boro10krjqcnb"
-path="res://.godot/imported/checkbutton_checked.svg-78c4456cbbdca0eca2b0b3c91ef67769.dpitex"
+importer="dev.fishies.svg_import_plugin"
+type="SVG"
+uid="uid://d05nfmo132ntq"
+path="res://.godot/imported/checkbutton_checked.svg-78c4456cbbdca0eca2b0b3c91ef67769.svg"
 
 [deps]
 
 source_file="res://assets/gui/checkbutton_checked.svg"
-dest_files=["res://.godot/imported/checkbutton_checked.svg-78c4456cbbdca0eca2b0b3c91ef67769.dpitex"]
+dest_files=["res://.godot/imported/checkbutton_checked.svg-78c4456cbbdca0eca2b0b3c91ef67769.svg"]
 
 [params]
 
-base_scale=1.0
-saturation=1.0
-color_map={}
-compress=true

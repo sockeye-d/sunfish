@@ -1,18 +1,14 @@
 [remap]
 
-importer="svg"
-type="DPITexture"
-uid="uid://cki4434mm55w0"
-path="res://.godot/imported/slider_grabber.svg-37727b79a760416885b622a20350fcad.dpitex"
+importer="dev.fishies.svg_import_plugin"
+type="SVG"
+uid="uid://dgru4iw1byeaa"
+path="res://.godot/imported/slider_grabber.svg-37727b79a760416885b622a20350fcad.svg"
 
 [deps]
 
 source_file="res://assets/gui/slider_grabber.svg"
-dest_files=["res://.godot/imported/slider_grabber.svg-37727b79a760416885b622a20350fcad.dpitex"]
+dest_files=["res://.godot/imported/slider_grabber.svg-37727b79a760416885b622a20350fcad.svg"]
 
 [params]
 
-base_scale=1.0
-saturation=1.0
-color_map={}
-compress=true

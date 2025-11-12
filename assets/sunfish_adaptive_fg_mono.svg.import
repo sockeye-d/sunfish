@@ -1,18 +1,14 @@
 [remap]
 
-importer="svg"
-type="DPITexture"
-uid="uid://c1x4oqqetj3g5"
-path="res://.godot/imported/sunfish_adaptive_fg_mono.svg-3fa207907a8b6db1d1da03cfb085f67d.dpitex"
+importer="dev.fishies.svg_import_plugin"
+type="SVG"
+uid="uid://cirkhwcneddub"
+path="res://.godot/imported/sunfish_adaptive_fg_mono.svg-3fa207907a8b6db1d1da03cfb085f67d.svg"
 
 [deps]
 
 source_file="res://assets/sunfish_adaptive_fg_mono.svg"
-dest_files=["res://.godot/imported/sunfish_adaptive_fg_mono.svg-3fa207907a8b6db1d1da03cfb085f67d.dpitex"]
+dest_files=["res://.godot/imported/sunfish_adaptive_fg_mono.svg-3fa207907a8b6db1d1da03cfb085f67d.svg"]
 
 [params]
 
-base_scale=1.0
-saturation=1.0
-color_map={}
-compress=true

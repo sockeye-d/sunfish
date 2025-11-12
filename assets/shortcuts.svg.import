@@ -1,18 +1,14 @@
 [remap]
 
-importer="svg"
-type="DPITexture"
-uid="uid://bi1npetvfrf34"
-path="res://.godot/imported/shortcuts.svg-edbb9377db29e5afcaa4b1edc373af5c.dpitex"
+importer="dev.fishies.svg_import_plugin"
+type="SVG"
+uid="uid://jk72k0tlnolb"
+path="res://.godot/imported/shortcuts.svg-edbb9377db29e5afcaa4b1edc373af5c.svg"
 
 [deps]
 
 source_file="res://assets/shortcuts.svg"
-dest_files=["res://.godot/imported/shortcuts.svg-edbb9377db29e5afcaa4b1edc373af5c.dpitex"]
+dest_files=["res://.godot/imported/shortcuts.svg-edbb9377db29e5afcaa4b1edc373af5c.svg"]
 
 [params]
 
-base_scale=1.0
-saturation=1.0
-color_map={}
-compress=true

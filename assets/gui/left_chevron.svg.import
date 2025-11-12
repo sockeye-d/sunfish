@@ -1,18 +1,14 @@
 [remap]
 
-importer="svg"
-type="DPITexture"
+importer="dev.fishies.svg_import_plugin"
+type="SVG"
 uid="uid://dovp6o7m5d2gc"
-path="res://.godot/imported/left_chevron.svg-ddb5200dd327524207de14d9abcb80ef.dpitex"
+path="res://.godot/imported/left_chevron.svg-ddb5200dd327524207de14d9abcb80ef.svg"
 
 [deps]
 
 source_file="res://assets/gui/left_chevron.svg"
-dest_files=["res://.godot/imported/left_chevron.svg-ddb5200dd327524207de14d9abcb80ef.dpitex"]
+dest_files=["res://.godot/imported/left_chevron.svg-ddb5200dd327524207de14d9abcb80ef.svg"]
 
 [params]
 
-base_scale=1.0
-saturation=1.0
-color_map={}
-compress=true

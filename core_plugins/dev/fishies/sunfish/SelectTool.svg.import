@@ -1,18 +1,14 @@
 [remap]
 
-importer="svg"
-type="DPITexture"
-uid="uid://cy7s6i5sg4kto"
-path="res://.godot/imported/SelectTool.svg-130fee09fbab681b994ac26cb2b708a3.dpitex"
+importer="dev.fishies.svg_import_plugin"
+type="SVG"
+uid="uid://cum762r3a8r46"
+path="res://.godot/imported/SelectTool.svg-130fee09fbab681b994ac26cb2b708a3.svg"
 
 [deps]
 
 source_file="res://core_plugins/dev/fishies/sunfish/SelectTool.svg"
-dest_files=["res://.godot/imported/SelectTool.svg-130fee09fbab681b994ac26cb2b708a3.dpitex"]
+dest_files=["res://.godot/imported/SelectTool.svg-130fee09fbab681b994ac26cb2b708a3.svg"]
 
 [params]
 
-base_scale=1.0
-saturation=1.0
-color_map={}
-compress=true

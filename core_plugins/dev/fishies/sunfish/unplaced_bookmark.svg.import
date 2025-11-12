@@ -1,18 +1,14 @@
 [remap]
 
-importer="svg"
-type="DPITexture"
-uid="uid://cj1xqq227dtag"
-path="res://.godot/imported/unplaced_bookmark.svg-3b573f2ea98afe1e07f006bae28cb72a.dpitex"
+importer="dev.fishies.svg_import_plugin"
+type="SVG"
+uid="uid://b5bhofd0v6rkg"
+path="res://.godot/imported/unplaced_bookmark.svg-3b573f2ea98afe1e07f006bae28cb72a.svg"
 
 [deps]
 
 source_file="res://core_plugins/dev/fishies/sunfish/unplaced_bookmark.svg"
-dest_files=["res://.godot/imported/unplaced_bookmark.svg-3b573f2ea98afe1e07f006bae28cb72a.dpitex"]
+dest_files=["res://.godot/imported/unplaced_bookmark.svg-3b573f2ea98afe1e07f006bae28cb72a.svg"]
 
 [params]
 
-base_scale=1.0
-saturation=1.0
-color_map={}
-compress=true

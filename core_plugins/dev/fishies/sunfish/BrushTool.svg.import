@@ -1,18 +1,14 @@
 [remap]
 
-importer="svg"
-type="DPITexture"
-uid="uid://xdejwscaexqk"
-path="res://.godot/imported/BrushTool.svg-f92ecc6fe9fe0e2b9eb005a87ca0823d.dpitex"
+importer="dev.fishies.svg_import_plugin"
+type="SVG"
+uid="uid://cev60axpgp824"
+path="res://.godot/imported/BrushTool.svg-f92ecc6fe9fe0e2b9eb005a87ca0823d.svg"
 
 [deps]
 
 source_file="res://core_plugins/dev/fishies/sunfish/BrushTool.svg"
-dest_files=["res://.godot/imported/BrushTool.svg-f92ecc6fe9fe0e2b9eb005a87ca0823d.dpitex"]
+dest_files=["res://.godot/imported/BrushTool.svg-f92ecc6fe9fe0e2b9eb005a87ca0823d.svg"]
 
 [params]
 
-base_scale=1.0
-saturation=1.0
-color_map={}
-compress=true

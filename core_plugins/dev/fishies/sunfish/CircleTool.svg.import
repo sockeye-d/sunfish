@@ -1,18 +1,14 @@
 [remap]
 
-importer="svg"
-type="DPITexture"
-uid="uid://d0d15n7lp6se1"
-path="res://.godot/imported/CircleTool.svg-c57e4b8ac3bb3089db60f9e4de4ad240.dpitex"
+importer="dev.fishies.svg_import_plugin"
+type="SVG"
+uid="uid://b5ya3f1pdgeot"
+path="res://.godot/imported/CircleTool.svg-c57e4b8ac3bb3089db60f9e4de4ad240.svg"
 
 [deps]
 
 source_file="res://core_plugins/dev/fishies/sunfish/CircleTool.svg"
-dest_files=["res://.godot/imported/CircleTool.svg-c57e4b8ac3bb3089db60f9e4de4ad240.dpitex"]
+dest_files=["res://.godot/imported/CircleTool.svg-c57e4b8ac3bb3089db60f9e4de4ad240.svg"]
 
 [params]
 
-base_scale=1.0
-saturation=1.0
-color_map={}
-compress=true

@@ -1,18 +1,14 @@
 [remap]
 
-importer="svg"
-type="DPITexture"
+importer="dev.fishies.svg_import_plugin"
+type="SVG"
 uid="uid://c5wyqlvaqgiq3"
-path="res://.godot/imported/h_grabber.svg-7e73de2c7e8842fbc8a38b16e6fd9e4f.dpitex"
+path="res://.godot/imported/h_grabber.svg-7e73de2c7e8842fbc8a38b16e6fd9e4f.svg"
 
 [deps]
 
 source_file="res://assets/gui/split_container/h_grabber.svg"
-dest_files=["res://.godot/imported/h_grabber.svg-7e73de2c7e8842fbc8a38b16e6fd9e4f.dpitex"]
+dest_files=["res://.godot/imported/h_grabber.svg-7e73de2c7e8842fbc8a38b16e6fd9e4f.svg"]
 
 [params]
 
-base_scale=1.0
-saturation=1.0
-color_map={}
-compress=true

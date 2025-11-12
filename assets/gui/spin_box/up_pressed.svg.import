@@ -1,18 +1,14 @@
 [remap]
 
-importer="svg"
-type="DPITexture"
+importer="dev.fishies.svg_import_plugin"
+type="SVG"
 uid="uid://1nkngdwpcjf8"
-path="res://.godot/imported/up_pressed.svg-81757c6dca4dfe8e5e93640c6f917f50.dpitex"
+path="res://.godot/imported/up_pressed.svg-81757c6dca4dfe8e5e93640c6f917f50.svg"
 
 [deps]
 
 source_file="res://assets/gui/spin_box/up_pressed.svg"
-dest_files=["res://.godot/imported/up_pressed.svg-81757c6dca4dfe8e5e93640c6f917f50.dpitex"]
+dest_files=["res://.godot/imported/up_pressed.svg-81757c6dca4dfe8e5e93640c6f917f50.svg"]
 
 [params]
 
-base_scale=1.0
-saturation=1.0
-color_map={}
-compress=true

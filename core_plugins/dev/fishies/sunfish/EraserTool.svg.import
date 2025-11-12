@@ -1,18 +1,14 @@
 [remap]
 
-importer="svg"
-type="DPITexture"
-uid="uid://br6rvgx1mqqwx"
-path="res://.godot/imported/EraserTool.svg-4f59a288fbcf2f9ca3483ea74f8e6fc6.dpitex"
+importer="dev.fishies.svg_import_plugin"
+type="SVG"
+uid="uid://bymp1041a3iuq"
+path="res://.godot/imported/EraserTool.svg-4f59a288fbcf2f9ca3483ea74f8e6fc6.svg"
 
 [deps]
 
 source_file="res://core_plugins/dev/fishies/sunfish/EraserTool.svg"
-dest_files=["res://.godot/imported/EraserTool.svg-4f59a288fbcf2f9ca3483ea74f8e6fc6.dpitex"]
+dest_files=["res://.godot/imported/EraserTool.svg-4f59a288fbcf2f9ca3483ea74f8e6fc6.svg"]
 
 [params]
 
-base_scale=1.0
-saturation=1.0
-color_map={}
-compress=true

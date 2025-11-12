@@ -1,18 +1,14 @@
 [remap]
 
-importer="svg"
-type="DPITexture"
-uid="uid://bp8jhydnon7q7"
-path="res://.godot/imported/delete.svg-7468e1fd531faacf87fbcab3c899af2f.dpitex"
+importer="dev.fishies.svg_import_plugin"
+type="SVG"
+uid="uid://cm64ex7abxisv"
+path="res://.godot/imported/delete.svg-7468e1fd531faacf87fbcab3c899af2f.svg"
 
 [deps]
 
 source_file="res://assets/delete.svg"
-dest_files=["res://.godot/imported/delete.svg-7468e1fd531faacf87fbcab3c899af2f.dpitex"]
+dest_files=["res://.godot/imported/delete.svg-7468e1fd531faacf87fbcab3c899af2f.svg"]
 
 [params]
 
-base_scale=1.0
-saturation=1.0
-color_map={}
-compress=true

@@ -1,18 +1,14 @@
 [remap]
 
-importer="svg"
-type="DPITexture"
-uid="uid://cd66b6svp12l6"
-path="res://.godot/imported/reset_zoom.svg-9d67c88b5cf2d86277f941a457205c49.dpitex"
+importer="dev.fishies.svg_import_plugin"
+type="SVG"
+uid="uid://s0gopgfssgsm"
+path="res://.godot/imported/reset_zoom.svg-9d67c88b5cf2d86277f941a457205c49.svg"
 
 [deps]
 
 source_file="res://assets/reset_zoom.svg"
-dest_files=["res://.godot/imported/reset_zoom.svg-9d67c88b5cf2d86277f941a457205c49.dpitex"]
+dest_files=["res://.godot/imported/reset_zoom.svg-9d67c88b5cf2d86277f941a457205c49.svg"]
 
 [params]
 
-base_scale=1.0
-saturation=1.0
-color_map={}
-compress=true

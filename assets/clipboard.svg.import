@@ -1,18 +1,14 @@
 [remap]
 
-importer="svg"
-type="DPITexture"
+importer="dev.fishies.svg_import_plugin"
+type="SVG"
 uid="uid://dnser5l2j7ku8"
-path="res://.godot/imported/clipboard.svg-c6faffe758050be5bc05df2fd12bf477.dpitex"
+path="res://.godot/imported/clipboard.svg-c6faffe758050be5bc05df2fd12bf477.svg"
 
 [deps]
 
 source_file="res://assets/clipboard.svg"
-dest_files=["res://.godot/imported/clipboard.svg-c6faffe758050be5bc05df2fd12bf477.dpitex"]
+dest_files=["res://.godot/imported/clipboard.svg-c6faffe758050be5bc05df2fd12bf477.svg"]
 
 [params]
 
-base_scale=1.0
-saturation=1.0
-color_map={}
-compress=true

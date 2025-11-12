@@ -1,18 +1,14 @@
 [remap]
 
-importer="svg"
-type="DPITexture"
+importer="dev.fishies.svg_import_plugin"
+type="SVG"
 uid="uid://db0enf4tc6uno"
-path="res://.godot/imported/down_hover.svg-0713d27ccbd6e66d34743f6cecdf2e03.dpitex"
+path="res://.godot/imported/down_hover.svg-0713d27ccbd6e66d34743f6cecdf2e03.svg"
 
 [deps]
 
 source_file="res://assets/gui/spin_box/down_hover.svg"
-dest_files=["res://.godot/imported/down_hover.svg-0713d27ccbd6e66d34743f6cecdf2e03.dpitex"]
+dest_files=["res://.godot/imported/down_hover.svg-0713d27ccbd6e66d34743f6cecdf2e03.svg"]
 
 [params]
 
-base_scale=1.0
-saturation=1.0
-color_map={}
-compress=true

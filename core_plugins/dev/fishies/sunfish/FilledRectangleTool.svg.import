@@ -1,18 +1,14 @@
 [remap]
 
-importer="svg"
-type="DPITexture"
-uid="uid://dff27i7ag78x2"
-path="res://.godot/imported/FilledRectangleTool.svg-62c3ba8755db3deeeae457bc96a14ad7.dpitex"
+importer="dev.fishies.svg_import_plugin"
+type="SVG"
+uid="uid://dp2qeii4hyuoo"
+path="res://.godot/imported/FilledRectangleTool.svg-62c3ba8755db3deeeae457bc96a14ad7.svg"
 
 [deps]
 
 source_file="res://core_plugins/dev/fishies/sunfish/FilledRectangleTool.svg"
-dest_files=["res://.godot/imported/FilledRectangleTool.svg-62c3ba8755db3deeeae457bc96a14ad7.dpitex"]
+dest_files=["res://.godot/imported/FilledRectangleTool.svg-62c3ba8755db3deeeae457bc96a14ad7.svg"]
 
 [params]
 
-base_scale=1.0
-saturation=1.0
-color_map={}
-compress=true

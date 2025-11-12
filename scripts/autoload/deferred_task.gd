@@ -22,7 +22,7 @@ static func process_tasks() -> void:
 
 
 static func create(task: Callable) -> int:
-	if use_deferred_tasks:
+	if use_deferred_tasks and not Engine.is_editor_hint():
 		Instance.instance.tasks[new_task_id] = task
 		new_task_id += 1
 		return new_task_id
@@ -36,7 +36,9 @@ static func cancel(task_id: int) -> void:
 
 
 class Instance extends Object:
-	static func _static_init() -> void:
-		instance = new()
-	static var instance: Instance
+	static var instance: Instance:
+		get:
+			if not instance:
+				instance = new()
+			return instance
 	var tasks: Dictionary[int, Callable]

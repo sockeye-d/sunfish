@@ -1,18 +1,14 @@
 [remap]
 
-importer="svg"
-type="DPITexture"
+importer="dev.fishies.svg_import_plugin"
+type="SVG"
 uid="uid://bsgwhxbphbrs3"
-path="res://.godot/imported/down_disabled.svg-f55d5c294428f764448efcda1ce2adfd.dpitex"
+path="res://.godot/imported/down_disabled.svg-f55d5c294428f764448efcda1ce2adfd.svg"
 
 [deps]
 
 source_file="res://assets/gui/spin_box/down_disabled.svg"
-dest_files=["res://.godot/imported/down_disabled.svg-f55d5c294428f764448efcda1ce2adfd.dpitex"]
+dest_files=["res://.godot/imported/down_disabled.svg-f55d5c294428f764448efcda1ce2adfd.svg"]
 
 [params]
 
-base_scale=1.0
-saturation=1.0
-color_map={}
-compress=true
