@@ -3,6 +3,7 @@ extends ColorRect
 
 @onready var container: Control = %MarginContainer
 @onready var main_menu_container: PanelContainer = %MainMenuContainer
+@onready var tool_edit_container: ToolEditContainer = %ToolEditContainer
 
 @warning_ignore("unused_private_class_variable")
 @export_tool_button("Reload theme", "Search") var ___ := func():
@@ -43,3 +44,10 @@ func _process(delta: float) -> void:
 	Util.unused(delta)
 	if DisplayServer.has_feature(DisplayServer.FEATURE_VIRTUAL_KEYBOARD):
 		container.offset_bottom = -DisplayServer.virtual_keyboard_get_height() / get_tree().root.content_scale_factor
+
+
+func _on_tool_container_edit_button_toggled(toggled_on: bool) -> void:
+	if toggled_on:
+		tool_edit_container.begin_editing()
+	else:
+		tool_edit_container.end_editing()

@@ -12,18 +12,18 @@ static var instance: WhiteboardManager:
 		return instance
 
 
-static var tools: Dictionary[String, Script]
-static var passive_tools: Dictionary[String, WhiteboardTool]
+static var tools: Dictionary[StringName, Script]
+static var passive_tools: Dictionary[StringName, WhiteboardTool]
 static var _passive_tool_initialized: Dictionary[WhiteboardTool, bool]
 static var _register_tool_guard: int = 0
 
 
-var _deserializers: Dictionary[String, Callable]
+var _deserializers: Dictionary[StringName, Callable]
 
 
 static func _static_init() -> void:
-	PluginManager.instance.pre_scan.connect(func(): begin_register_tool())
-	PluginManager.instance.post_scan.connect(func(): end_register_tool())
+	PluginManager.instance.pre_scan.connect(begin_register_tool)
+	PluginManager.instance.post_scan.connect(end_register_tool)
 
 
 static func register_passive_tool(tool: WhiteboardTool) -> void:
@@ -55,7 +55,7 @@ static func register_deserializer(script: Script) -> void:
 	register_deserializer_for_id(script.get_id(), script.deserialize)
 
 
-static func register_deserializer_for_id(id: String, deserializer: Callable) -> void:
+static func register_deserializer_for_id(id: StringName, deserializer: Callable) -> void:
 	instance._deserializers[id] = deserializer
 
 

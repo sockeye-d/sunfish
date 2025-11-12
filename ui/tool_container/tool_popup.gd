@@ -15,9 +15,6 @@ var tool_instances: Dictionary[Script, WhiteboardTool]
 
 
 @export var whiteboard: Whiteboard
-@warning_ignore("unused_private_class_variable")
-@export_tool_button("Update tools") var __ := _update_tools
-
 
 var tools: Dictionary[Script, ToolButtonState]
 var selected_tool_id: String
@@ -41,13 +38,14 @@ func _ready() -> void:
 	about_to_popup.connect(func():
 		add_theme_stylebox_override("panel", get_theme_stylebox("panel", "ToolPopup"))
 	)
+	Settings.setting_changed("core/tool_layout").connect(func(_new_value): update_tools())
 
 
-func _update_tools() -> void:
+func update_tools() -> void:
 	tools.clear()
-	if WhiteboardManager.tools.is_empty():
+	if not Settings["core/tool_layout"]:
 		return
-	for tool_id in WhiteboardManager.tools:
+	for tool_id: StringName in Settings["core/tool_layout"]:
 		var tool := WhiteboardManager.tools[tool_id]
 		if not tool.is_visible():
 			continue

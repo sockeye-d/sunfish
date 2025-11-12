@@ -98,11 +98,9 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 
 		# Initial values come from serialized data if it exists, default values are what the
 		# property gets reset to
-		var initial_value = value
 		var default_value = value
-		if property_name in serialized_data:
-			initial_value = serialized_data[property_name]
-			config.set(property_name, initial_value)
+		var initial_value = serialized_data.get(property_name, default_value)
+		config.set(property_name, initial_value)
 
 		if property_usage & PROPERTY_USAGE_EDITOR:
 			var label_container := HBoxContainer.new()

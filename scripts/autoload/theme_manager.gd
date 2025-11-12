@@ -122,6 +122,7 @@ func set_theme(new_theme: ThemeColors) -> void:
 
 	theme_res.set_stylebox("panel", "PanelContainer", new_flat(theme.background_0, [base_spacing * 2], [base_spacing]))
 	theme_res.set_stylebox("panel", "AltPanelContainer", new_flat(theme.background_1, [base_spacing * 2], [base_spacing]))
+	theme_res.set_stylebox("panel", "LightPanelContainer", new_flat(theme.surface, [base_spacing], [base_spacing]))
 	theme_res.set_stylebox("panel", "SettingsPanelContainer", new_flat(theme.background_0, [0, base_spacing * 2, base_spacing * 2, base_spacing * 2], [base_spacing]))
 	theme_res.set_stylebox("panel", "Panel", new_flat(theme.background_0, [base_spacing * 2], [base_spacing]))
 	theme_res.set_stylebox("panel", "Toast", new_flat(theme.background_0, [base_spacing], [base_spacing]))
@@ -234,6 +235,7 @@ func set_theme(new_theme: ThemeColors) -> void:
 
 	theme_res.set_stylebox("separator", "VSeparator", new_flat(disabled_surface, [1], [1, 0], [0, 0]))
 	theme_res.set_stylebox("separator", "HSeparator", new_flat(disabled_surface, [1], [0, 1], [0, 0]))
+	theme_res.set_stylebox("separator", "DropIndicator", new_flat(theme.accent_0, [1], [0, 1], [0, 0]))
 
 	theme_res.set_constant("minimum_grab_thickness", "SplitContainer", base_spacing)
 	theme_res.set_constant("separation", "SplitContainer", base_spacing)

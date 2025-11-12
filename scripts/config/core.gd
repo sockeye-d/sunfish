@@ -26,6 +26,9 @@ func get_id() -> StringName: return "core"
 		DeferredTask.use_deferred_tasks = use_deferred_tasks
 
 
+@export_storage var tool_layout: Array[StringName]
+
+
 func _init() -> void:
 	ThemeManager.themes_changed.connect(notify_property_list_changed)
 
@@ -33,6 +36,14 @@ func _init() -> void:
 func update_theme() -> void:
 	if theme in ThemeManager.themes:
 		ThemeManager.set_theme_id(theme)
+
+
+func _property_get_revert(property: StringName) -> Variant:
+	if property == &"tool_layout":
+		var tools: Array[StringName]
+		tools.assign(WhiteboardManager.tools.keys())
+		return tools
+	return null
 
 
 func _validate_property(property: Dictionary) -> void:

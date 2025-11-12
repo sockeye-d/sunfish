@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://bvp2q7bjnh3fe"]
+
+[ext_resource type="Script" uid="uid://bxy30ukv8rui" path="res://ui/main/tool_edit_container.gd" id="1_l4w3g"]
+[ext_resource type="Script" uid="uid://cg1d5ghvrv5un" path="res://scripts/resources/icon_texture_2d.gd" id="2_muc6c"]
+
+[sub_resource type="DPITexture" id="DPITexture_yj20o"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"8\"><path d=\"M11.75 6.75H16.5a1 1 0 000-3.5h-10.75m2-2-2 2 2 2\" stroke=\"#fff\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\"/></svg>"
+script = ExtResource("2_muc6c")
+icon = "reset_horizontal"
+metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
+
+[node name="ToolEditContainer" type="VBoxContainer" unique_id=1682508988]
+script = ExtResource("1_l4w3g")
+
+[node name="InnerContainer" type="HBoxContainer" parent="." unique_id=1554765038]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ResetButton" type="Button" parent="." unique_id=467241122]
+layout_mode = 2
+icon = SubResource("DPITexture_yj20o")
+icon_alignment = 1
+
+[connection signal="pressed" from="ResetButton" to="." method="_on_reset_button_pressed"]

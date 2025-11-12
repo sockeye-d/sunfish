@@ -52,8 +52,8 @@ func _attempt_path(path: String) -> String:
 	if OS.has_feature("editor"):
 		return FileAccess.get_file_as_string(path)
 	else:
-		if ResourceLoader.exists(path, "DPITexture"):
-			return (load(path) as DPITexture).get_source()
+		var res := load(path) as SVG
+		if res: return res.source
 	return ""
 
 
