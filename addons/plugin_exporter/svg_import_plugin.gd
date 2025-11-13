@@ -36,3 +36,57 @@ func _import(source_file: String, save_path: String, options: Dictionary, platfo
 	if not save_file.store_string(file.get_as_text()):
 		return FAILED
 	return OK
+
+class SVGInspectorPlugin extends EditorInspectorPlugin:
+	func _can_handle(object: Object) -> bool: return object is SVG
+
+	func _parse_property(object: Object, type: Variant.Type, name: String, hint_type: PropertyHint, hint_string: String, usage_flags: int, wide: bool) -> bool:
+		if name != "source":
+			return false
+		var svg := object as SVG
+		if svg == null:
+			return false
+		var svg_image := Image.new()
+		if svg_image.load_svg_from_string(svg.source) != OK:
+			return false
+		var label := Label.new()
+		label.text = "%s×%s" % [svg_image.get_width(), svg_image.get_height()]
+		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		var control := FlowContainer.new()
+		control.alignment = FlowContainer.ALIGNMENT_CENTER
+		for scale in PackedFloat32Array([1.0, 1.5, 2.0]):
+			var preview := SVGPreview.new()
+			preview.svg_source = svg.source
+			preview.svg_scale = scale
+			control.add_child(preview)
+		var btn := Button.new()
+		btn.text = "Show source"
+		btn.toggle_mode = true
+		var source_label := Label.new()
+		source_label.text = svg.source
+		source_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		source_label.hide()
+		btn.toggled.connect(func(toggled: bool): source_label.visible = toggled)
+		add_custom_control(label)
+		add_custom_control(control)
+		add_custom_control(btn)
+		add_custom_control(source_label)
+		return true
+
+
+class SVGPreview extends TextureRect:
+	var svg_source: String
+	var svg_scale: float
+
+	func _ready() -> void:
+		var svg_image := Image.new()
+		svg_image.load_svg_from_string(svg_source, svg_scale)
+		texture = ImageTexture.create_from_image(svg_image)
+		expand_mode = TextureRect.EXPAND_KEEP_SIZE
+		stretch_mode = TextureRect.STRETCH_KEEP_CENTERED
+		custom_minimum_size.y = 32
+		if texture.get_size().y > 128:
+			expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			stretch_mode = TextureRect.STRETCH_SCALE
+			custom_minimum_size.x = 128
+			custom_minimum_size.y = 128

@@ -20,9 +20,9 @@ func _ready() -> void:
 	whiteboard.active_tools_changed.connect(_update_text)
 	whiteboard.xform_changed.connect(_update_text)
 	whiteboard.element_count_changed.connect(_update_text)
-	
+
 	_update_text()
-	
+
 	WhiteboardBus.save_status_changed.connect(func(saved: bool):
 		saved_indicator.texture = saved_texture if saved else unsaved_texture
 	)
