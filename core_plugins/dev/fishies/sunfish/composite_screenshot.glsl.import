@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://cyg5165nwvw63"
+path="res://.godot/imported/composite_screenshot.glsl-ca052c174e29a7379dbac56230338216.res"
+
+[deps]
+
+source_file="res://core_plugins/dev/fishies/sunfish/composite_screenshot.glsl"
+dest_files=["res://.godot/imported/composite_screenshot.glsl-ca052c174e29a7379dbac56230338216.res"]
+
+[params]
+

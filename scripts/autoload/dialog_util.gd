@@ -60,11 +60,32 @@ func open_text_dialog(default_text: String = "", font: Font = null) -> Signal:
 	return handle.confirmed
 
 
+func open_accept_dialog(inner_control: Control) -> Signal:
+	var handle := AcceptDialogHandle.new()
+	var popup := ConfirmationDialog.new()
+	popup.title = "Enter text"
+	popup.confirmed.connect(func():
+		handle.closed.emit(true)
+		popup.queue_free()
+	)
+	popup.canceled.connect(func():
+		handle.closed.emit(false)
+		popup.queue_free()
+	)
+	add_child(popup)
+	popup.add_child(inner_control)
+	popup.popup_centered(Vector2i(300, 175))
+	return handle.closed
+
+
 class FileDialogHandle:
 	signal selected(files: PackedStringArray)
 
 class TextDialogHandle:
 	signal confirmed(text: String)
+
+class AcceptDialogHandle:
+	signal closed(accepted: bool)
 
 class ConfirmingTextEdit extends TextEdit:
 	signal confirmed

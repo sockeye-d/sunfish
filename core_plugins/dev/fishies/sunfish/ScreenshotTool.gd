@@ -5,6 +5,7 @@ const PROPERTY_HINT_EXT_TAKE_SCREENSHOT_BUTTON = 3369335536
 
 
 const ScreenshotTool = preload("ScreenshotTool.gd")
+const COMP_SHADER_FILE := preload("composite_screenshot.glsl")
 
 
 enum SelectionSide {
@@ -106,22 +107,21 @@ func _recalculate_resolution() -> void:
 			label.text = "%.f×%.f" % [pixel_resolution.x, pixel_resolution.y]
 
 
+var rd: RenderingDevice
+var shader: RID
+
+
 func _render_screenshot(copy: bool) -> void:
 	var rect := abs_screenshot_rect
 	if rect.size == Vector2.ZERO:
 		return
 	var vp := SubViewport.new()
 	TreeEvents.add_child(vp)
+	vp.transparent_bg = true
 	vp.msaa_2d = Viewport.MSAA_2X
 	vp.size = pixel_resolution
 	vp.canvas_transform = Transform2D(0.0, -rect.position).scaled(Vector2.ONE * scaling_factor)
 	vp.render_target_update_mode = SubViewport.UPDATE_ONCE
-	var bg_layer := Node2D.new()
-	bg_layer.draw.connect(func():
-		bg_layer.draw_rect(rect.grow(10.0), ThemeManager.active_theme.background_0)
-	)
-	vp.add_child(bg_layer)
-	bg_layer.queue_redraw()
 	for el_index in whiteboard.elements.size():
 		var layer := Whiteboard.ElementLayer.new()
 		layer.whiteboard = whiteboard
@@ -129,7 +129,67 @@ func _render_screenshot(copy: bool) -> void:
 		vp.add_child(layer)
 		layer.queue_redraw()
 	await RenderingServer.frame_post_draw
-	var image := vp.get_texture().get_image()
+	var vp_tex := vp.get_texture()
+
+	if not rd:
+		rd = RenderingServer.create_local_rendering_device()
+		shader = rd.shader_create_from_spirv(COMP_SHADER_FILE.get_spirv())
+
+	var viewport_format := RDTextureFormat.new()
+	viewport_format.format = RenderingDevice.DATA_FORMAT_R8G8B8A8_UNORM
+	viewport_format.width = vp.size.x
+	viewport_format.height = vp.size.y
+	viewport_format.usage_bits = RenderingDevice.TEXTURE_USAGE_STORAGE_BIT
+
+	var output_format := RDTextureFormat.new()
+	output_format.format = RenderingDevice.DATA_FORMAT_R8G8B8A8_UNORM
+	output_format.width = vp.size.x
+	output_format.height = vp.size.y
+	output_format.usage_bits = RenderingDevice.TEXTURE_USAGE_STORAGE_BIT | RenderingDevice.TEXTURE_USAGE_CAN_COPY_FROM_BIT
+
+	var output_rid := rd.texture_create(output_format, RDTextureView.new())
+
+	var viewport_uniform := RDUniform.new()
+	viewport_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_IMAGE
+	viewport_uniform.binding = 0
+	var viewport_image := rd.texture_create(viewport_format, RDTextureView.new(), [vp_tex.get_image().get_data()])
+	viewport_uniform.add_id(viewport_image)
+
+	var output_uniform := RDUniform.new()
+	output_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_IMAGE
+	output_uniform.binding = 1
+	output_uniform.add_id(output_rid)
+
+	var bg_color := ThemeManager.active_theme.background_0
+	var bg_color_bytes := PackedFloat32Array([bg_color.r, bg_color.g, bg_color.b, 0.0]).to_byte_array()
+
+	var bg_color_buffer := rd.uniform_buffer_create(bg_color_bytes.size(), bg_color_bytes)
+
+	var bg_color_uniform := RDUniform.new()
+	bg_color_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_UNIFORM_BUFFER
+	bg_color_uniform.binding = 2
+	bg_color_uniform.add_id(bg_color_buffer)
+
+	var pipeline := rd.compute_pipeline_create(shader)
+	var compute_list := rd.compute_list_begin()
+	rd.compute_list_bind_compute_pipeline(compute_list, pipeline)
+	var uniform_set := rd.uniform_set_create([viewport_uniform, output_uniform, bg_color_uniform], shader, 0)
+	rd.compute_list_bind_uniform_set(compute_list, uniform_set, 0)
+	rd.compute_list_dispatch(compute_list, vp.size.x, vp.size.y, 1)
+	rd.compute_list_end()
+
+	rd.submit()
+	rd.sync()
+
+	var data := rd.texture_get_data(output_rid, 0)
+	var image := Image.create_from_data(vp.size.x, vp.size.y, false, Image.FORMAT_RGBA8, data)
+	var texture_rect := TextureRect.new()
+	texture_rect.texture = ImageTexture.create_from_image(image)
+	texture_rect.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	texture_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	texture_rect.stretch_mode = TextureRect.STRETCH_SCALE
+
+	vp.queue_free()
 	if copy:
 		var image_data := ClipboardUtils.ImageExportData.new()
 		image_data.format = "png"
@@ -164,7 +224,6 @@ func _render_screenshot(copy: bool) -> void:
 					"Saved image",
 					[button]
 				)
-	vp.queue_free()
 
 
 func activated(wb: Whiteboard) -> void:

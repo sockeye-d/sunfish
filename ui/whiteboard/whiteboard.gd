@@ -283,10 +283,10 @@ func redraw_preview(
 	if preview:
 		if null not in new_preview_elements:
 			preview_elements.assign(new_preview_elements)
-			preview.queue_redraw()
+		preview.queue_redraw()
 	if null not in new_static_preview_elements:
 		static_preview_elements.assign(new_static_preview_elements)
-		queue_redraw()
+	queue_redraw()
 
 
 func set_active_tools(new_active_tools: Array[WhiteboardTool]) -> void:

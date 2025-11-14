@@ -39,7 +39,7 @@ func _update_image() -> void:
 		svg = _attempt_path(path)
 		if svg.is_empty():
 			continue
-		#DeferredTask.cancel(last_task_handle)
+		DeferredTask.cancel(last_task_handle)
 		last_task_handle = DeferredTask.create(func():
 			set_source(svg)
 			base_scale = icon_scale * secondary_icon_scale

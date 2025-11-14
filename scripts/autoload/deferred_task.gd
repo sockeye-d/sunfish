@@ -9,9 +9,11 @@ static var tasks: Dictionary[int, Callable]:
 	get: return Instance.instance.tasks
 static var new_task_id := INVALID_TASK + 1
 static var use_deferred_tasks: bool = true
+static var after_first_run: bool = false
 
 
 static func process_tasks() -> void:
+	after_first_run = true
 	if Instance.instance.tasks.size() > 0:
 		var start_time := Time.get_ticks_usec()
 		for task_id in Instance.instance.tasks.keys():
@@ -33,6 +35,12 @@ static func create(task: Callable) -> int:
 
 static func cancel(task_id: int) -> void:
 	Instance.instance.tasks.erase(task_id)
+
+
+static func run(task_id: int) -> void:
+	if task_id in Instance.instance.tasks:
+		Instance.instance.tasks[task_id].call()
+		Instance.instance.tasks.erase(task_id)
 
 
 class Instance extends Object:
