@@ -4,6 +4,13 @@ extends Node
 
 func _ready() -> void:
 	if not Engine.is_editor_hint():
+		for button: Button in get_parent().find_children("*", "Button", true, false):
+			button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		get_tree().node_added.connect(func(node: Node):
+			if node is Button:
+				node.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		)
+
 		PluginManager.load_plugins()
 	var plugin_paths: PackedStringArray
 	if not OS.has_feature("editor"):

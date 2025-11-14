@@ -1,6 +1,9 @@
 extends Configuration
 
 
+const Display = preload("display.gd")
+
+
 static func _static_init() -> void:
 	PluginManager.register_configuration(new())
 
@@ -27,6 +30,9 @@ func get_id() -> StringName: return "core"
 
 
 @export_storage var tool_layout: Array[StringName]
+
+
+@export var display := Display.new()
 
 
 func _init() -> void:

@@ -11,7 +11,7 @@ var preview := PlainPreviewElement.new()
 
 
 func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
-	var draw_width := width / wb.draw_scale
+	var draw_width := wb.calculate_brush_size(width, Settings["dev.fishies.sunfish.tools/use_screen_space_brush_sizes"])
 	color = wb.primary_color
 	preview.width = draw_width
 	preview.color = color

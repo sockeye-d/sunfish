@@ -65,7 +65,7 @@ class PlainPreviewElement extends WhiteboardTool.PreviewElement:
 	var width: float
 
 	func draw(canvas: CanvasItem, _wb: Whiteboard) -> void:
-		canvas.draw_circle(position, width * 0.5, color, false, -2.0, false)
+		canvas.draw_circle(position, width * 0.5, color, false, 1.0 / _wb.draw_scale)
 
 
 class Display:

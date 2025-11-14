@@ -27,13 +27,14 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 	if event.is_action_pressed("ui_cancel"):
 		preview = null
 	var mb := event as InputEventMouseButton
+	var draw_font_size := int(wb.calculate_brush_size(font_size, Settings["dev.fishies.sunfish.tools/use_screen_space_brush_sizes"]))
 	if mb:
 		if mb.button_index == MOUSE_BUTTON_LEFT and mb.pressed:
 			if preview:
 				var element := TextElement.new()
 				element.text = preview.text
 				element.font_name = font_name
-				element.font_size = int(font_size / float(wb.draw_scale))
+				element.font_size = draw_font_size
 				element.position = mb.position
 				element.color = wb.primary_color
 				display.elements = [element]
@@ -67,7 +68,7 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> Display:
 				wb.mouse_default_cursor_shape = Control.CURSOR_ARROW
 	if preview:
 		preview.color = wb.primary_color
-		preview.font_size = int(font_size / float(wb.draw_scale))
+		preview.font_size = draw_font_size
 		display.preview_elements = [preview]
 	return display
 

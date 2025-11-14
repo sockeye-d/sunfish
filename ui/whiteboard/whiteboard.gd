@@ -383,6 +383,10 @@ func has_tool_data(tool: WhiteboardTool) -> Variant:
 	return tool.get_id() in _tool_data
 
 
+func calculate_brush_size(brush_size: float, use_screen_space_size: bool) -> float:
+	return brush_size / draw_scale if use_screen_space_size else brush_size
+
+
 class PreviewControl extends Node2D:
 	var wb: Whiteboard
 

@@ -10,6 +10,6 @@ layout(set = 0, binding = 2, std140) readonly uniform BGColor { vec3 bg_color; }
 void main() {
 	ivec2 coords = ivec2(gl_GlobalInvocationID.xy);
 	vec4 src_color = imageLoad(input_texture, coords);
-	imageStore(output_texture, coords,
-			   vec4(mix(bg_color, src_color.rgb / max(0.001, src_color.a), src_color.aaa), 1.0));
+	// src_color here is premultiplied alpha. for some reason.
+	imageStore(output_texture, coords, vec4(bg_color * (1.0 - src_color.a) + src_color.rgb, 1.0));
 }

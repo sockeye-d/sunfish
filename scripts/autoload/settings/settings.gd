@@ -93,6 +93,10 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 		var value = config.property_get_revert(property_name)
 		if value == null: value = config.get(property_name)
 
+		if value is Configuration and property_usage & PROPERTY_USAGE_EDITOR:
+			create_settings_for(tree_item, value, serialized_data)
+			continue
+
 		var property_key := StringName(id + "/" + property_name)
 		var is_shortcut := ClassDB.is_parent_class(property_class, "InputEvent")
 

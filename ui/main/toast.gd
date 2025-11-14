@@ -73,9 +73,9 @@ func disappear() -> void:
 	pivot_offset_ratio = Vector2(0.5, 0.5)
 	panel.pivot_offset_ratio = pivot_offset_ratio
 	tween.tween_method(func(value: float):
-		panel.scale = value * Vector2.ONE
+		modulate.a = value
 		queue_redraw()
-	, 1.0, 0.0, 0.5).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_EXPO)
+	, 1.0, 0.0, 0.5).set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_EXPO)
 	tween.tween_callback(queue_free)
 
 

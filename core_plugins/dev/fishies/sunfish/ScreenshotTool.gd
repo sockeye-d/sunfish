@@ -5,7 +5,7 @@ const PROPERTY_HINT_EXT_TAKE_SCREENSHOT_BUTTON = 3369335536
 
 
 const ScreenshotTool = preload("ScreenshotTool.gd")
-const COMP_SHADER_FILE := preload("composite_screenshot.glsl")
+const COMPOSITE_SCREENSHOT_SHADER := preload("composite_screenshot.glsl")
 
 
 enum SelectionSide {
@@ -116,9 +116,11 @@ func _render_screenshot(copy: bool) -> void:
 	if rect.size == Vector2.ZERO:
 		return
 	var vp := SubViewport.new()
+	@warning_ignore("unused_variable")
+	var vp_queue_free_defer := Defer.new(vp.queue_free)
 	TreeEvents.add_child(vp)
 	vp.transparent_bg = true
-	vp.msaa_2d = Viewport.MSAA_2X
+	vp.msaa_2d = Viewport.MSAA_8X
 	vp.size = pixel_resolution
 	vp.canvas_transform = Transform2D(0.0, -rect.position).scaled(Vector2.ONE * scaling_factor)
 	vp.render_target_update_mode = SubViewport.UPDATE_ONCE
@@ -130,10 +132,17 @@ func _render_screenshot(copy: bool) -> void:
 		layer.queue_redraw()
 	await RenderingServer.frame_post_draw
 	var vp_tex := vp.get_texture()
+	var vp_image := vp_tex.get_image()
+	if vp_image == null:
+		ToastManager.push_toast(
+			ToastManager.Severity.ERROR,
+			"Failed to capture screenshot"
+		)
+		return
 
 	if not rd:
 		rd = RenderingServer.create_local_rendering_device()
-		shader = rd.shader_create_from_spirv(COMP_SHADER_FILE.get_spirv())
+		shader = rd.shader_create_from_spirv(COMPOSITE_SCREENSHOT_SHADER.get_spirv())
 
 	var viewport_format := RDTextureFormat.new()
 	viewport_format.format = RenderingDevice.DATA_FORMAT_R8G8B8A8_UNORM
@@ -148,12 +157,16 @@ func _render_screenshot(copy: bool) -> void:
 	output_format.usage_bits = RenderingDevice.TEXTURE_USAGE_STORAGE_BIT | RenderingDevice.TEXTURE_USAGE_CAN_COPY_FROM_BIT
 
 	var output_rid := rd.texture_create(output_format, RDTextureView.new())
+	@warning_ignore("unused_variable")
+	var output_rid_defer := Defer.new(rd.free_rid.bind(output_rid))
 
 	var viewport_uniform := RDUniform.new()
 	viewport_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_IMAGE
 	viewport_uniform.binding = 0
-	var viewport_image := rd.texture_create(viewport_format, RDTextureView.new(), [vp_tex.get_image().get_data()])
+	var viewport_image := rd.texture_create(viewport_format, RDTextureView.new(), [vp_image.get_data()])
 	viewport_uniform.add_id(viewport_image)
+	@warning_ignore("unused_variable")
+	var viewport_image_defer := Defer.new(rd.free_rid.bind(viewport_image))
 
 	var output_uniform := RDUniform.new()
 	output_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_IMAGE
@@ -164,6 +177,8 @@ func _render_screenshot(copy: bool) -> void:
 	var bg_color_bytes := PackedFloat32Array([bg_color.r, bg_color.g, bg_color.b, 0.0]).to_byte_array()
 
 	var bg_color_buffer := rd.uniform_buffer_create(bg_color_bytes.size(), bg_color_bytes)
+	@warning_ignore("unused_variable")
+	var bg_color_buffer_defer := Defer.new(rd.free_rid.bind(bg_color_buffer))
 
 	var bg_color_uniform := RDUniform.new()
 	bg_color_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_UNIFORM_BUFFER
@@ -171,9 +186,13 @@ func _render_screenshot(copy: bool) -> void:
 	bg_color_uniform.add_id(bg_color_buffer)
 
 	var pipeline := rd.compute_pipeline_create(shader)
+	@warning_ignore("unused_variable")
+	var pipeline_defer := Defer.new(rd.free_rid.bind(pipeline))
 	var compute_list := rd.compute_list_begin()
 	rd.compute_list_bind_compute_pipeline(compute_list, pipeline)
 	var uniform_set := rd.uniform_set_create([viewport_uniform, output_uniform, bg_color_uniform], shader, 0)
+	@warning_ignore("unused_variable")
+	var uniform_set_defer := Defer.new(rd.free_rid.bind(uniform_set))
 	rd.compute_list_bind_uniform_set(compute_list, uniform_set, 0)
 	rd.compute_list_dispatch(compute_list, vp.size.x, vp.size.y, 1)
 	rd.compute_list_end()
@@ -182,14 +201,20 @@ func _render_screenshot(copy: bool) -> void:
 	rd.sync()
 
 	var data := rd.texture_get_data(output_rid, 0)
+	if data.is_empty():
+		ToastManager.push_toast(
+			ToastManager.Severity.ERROR,
+			"Failed to retrieve data from GPU"
+		)
+		return
 	var image := Image.create_from_data(vp.size.x, vp.size.y, false, Image.FORMAT_RGBA8, data)
-	var texture_rect := TextureRect.new()
-	texture_rect.texture = ImageTexture.create_from_image(image)
-	texture_rect.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	texture_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	texture_rect.stretch_mode = TextureRect.STRETCH_SCALE
+	if image == null:
+		ToastManager.push_toast(
+			ToastManager.Severity.ERROR,
+			"Failed to create image from data"
+		)
+		return
 
-	vp.queue_free()
 	if copy:
 		var image_data := ClipboardUtils.ImageExportData.new()
 		image_data.format = "png"
@@ -206,24 +231,24 @@ func _render_screenshot(copy: bool) -> void:
 				ToastManager.Severity.SUCCESS,
 				"Copied to clipboard",
 			)
-	else:
-		var path: PackedStringArray = await DialogUtil.open_file_dialog(["*.png;Images;image/png"], FileDialog.FILE_MODE_SAVE_FILE, "~")
-		if path:
-			var err := image.save_png(path[0])
-			if err:
-				ToastManager.push_toast(
-					ToastManager.Severity.ERROR,
-					"Failed: " + error_string(err),
-				)
-			else:
-				var button := Button.new()
-				button.text = "Show"
-				button.pressed.connect(OS.shell_show_in_file_manager.bind(path[0]))
-				ToastManager.push_toast(
-					ToastManager.Severity.SUCCESS,
-					"Saved image",
-					[button]
-				)
+		return
+	var path: PackedStringArray = await DialogUtil.open_file_dialog(["*.png;Images;image/png"], FileDialog.FILE_MODE_SAVE_FILE, "~")
+	if path:
+		var err := image.save_png(path[0])
+		if err:
+			ToastManager.push_toast(
+				ToastManager.Severity.ERROR,
+				"Failed: " + error_string(err),
+			)
+		else:
+			var button := Button.new()
+			button.text = "Show folder"
+			button.pressed.connect(OS.shell_show_in_file_manager.bind(path[0]))
+			ToastManager.push_toast(
+				ToastManager.Severity.SUCCESS,
+				"Saved image",
+				[button]
+			)
 
 
 func activated(wb: Whiteboard) -> void:
