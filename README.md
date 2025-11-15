@@ -1,4 +1,4 @@
-# sunfish
+# <img alt="sunfish logo" src="https://raw.githubusercontent.com/sockeye-d/sunfish/refs/heads/main/assets/sunfish_legacy.svg" style="height: 1em; width: 1em"> sunfish
 
 ![an image](readme/sunfish.png)
 
