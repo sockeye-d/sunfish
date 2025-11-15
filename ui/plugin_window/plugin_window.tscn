@@ -6,7 +6,7 @@
 [node name="PluginWindow" type="Window" unique_id=100290597]
 oversampling_override = 1.0
 title = "Plugins"
-position = Vector2i(0, 36)
+initial_position = 1
 size = Vector2i(500, 400)
 transient = true
 exclusive = true

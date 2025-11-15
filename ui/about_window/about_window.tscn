@@ -1,0 +1,354 @@
+[gd_scene load_steps=5 format=3 uid="uid://jrckhdd3ayvt"]
+
+[ext_resource type="Script" uid="uid://87tntygwoicc" path="res://ui/about_window/about_window.gd" id="1_layit"]
+[ext_resource type="Script" uid="uid://oss6ipx4baxl" path="res://scripts/window_auto_scaler.gd" id="2_fh50o"]
+[ext_resource type="Script" uid="uid://cg1d5ghvrv5un" path="res://scripts/resources/icon_texture_2d.gd" id="2_lkwj1"]
+
+[sub_resource type="DPITexture" id="DPITexture_y3eme"]
+_source = "<svg width=\"16\" height=\"16\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M5.90165 3.770324C5.016594 3.882602 3.614248 1.453672 3.184542 1.467214 2.754839 1.480756 2.483299 1.651061 2.567601 1.976763 2.651904 2.302467 3.387586 4.534363 4.261595 5.331085\" id=\"path22\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M12.925703 4.512431C13.45014 7.349494 11.445356 8.921427 10.909997 9.230517 10.374641 9.539603 9.92219 9.819201 9.093535 10.040644 8.264888 10.262094 7.707672 10.483873 7.258415 10.843182 6.380517 10.336426 3.712727 8.460385 4.261595 5.331085c.717204-.275188 1.375609-1.179667 1.640055-1.560761.575313-.289342 2.56609-1.587225 4.490751-1.060929.473621.129513 1.704614.244063 1.704614.244063L11.391297 4.439535Z\" id=\"path21\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M9.270459 9.990849C10.081267 12.1705 10.808713 13.676526 10.649409 13.99977 10.490106 14.323019 10.206271 14.215075 10.024831 14.072749 9.843383 13.930412 8.58763 13.025048 7.76932 11.693293 7.507297 11.266894 7.258426 10.843175 7.258426 10.843175\" id=\"path23\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M4.023579 5.678284C2.035905 5.587254 2.511596 7.726075 4.30467 7.321034 2.289439 8.674661 4.276815 10.924219 5.776551 9.814847 4.52485 11.762281 6.494178 12.624407 7.25843 10.843175\" id=\"path24\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle id=\"path25\" cx=\"-6.145384\" cy=\"8.605107\" r=\".500002\" transform=\"matrix(-.866025.5.5.866025 0 0)\" fill=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M10.084804 6.176622C9.514511 6.384734 9.131588 6.146295 8.732522 6.524588 8.305711 6.929176 8.353469 7.392263 8.62956 7.775897 9.105766 8.437594 9.749174 7.716346 10.286325 7.297782\" id=\"path26\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
+base_scale = 3.0
+script = ExtResource("2_lkwj1")
+icon = "sunfish"
+icon_scale = 3.0
+metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
+
+[node name="AboutWindow" type="Window" unique_id=725596688]
+oversampling_override = 1.0
+initial_position = 1
+size = Vector2i(500, 400)
+transient = true
+exclusive = true
+popup_window = true
+script = ExtResource("1_layit")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1425921307]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=409340786]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer" unique_id=1944627133]
+layout_mode = 2
+
+[node name="sunfish" type="HBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer" unique_id=1378535638]
+layout_mode = 2
+alignment = 1
+
+[node name="Logo" type="TextureRect" parent="MarginContainer/VBoxContainer/PanelContainer/sunfish" unique_id=1933750855]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = SubResource("DPITexture_y3eme")
+stretch_mode = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/PanelContainer/sunfish" unique_id=1295249956]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="VersionLabel" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/sunfish/VBoxContainer" unique_id=362798896]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+text = "sunfish v1.0"
+
+[node name="CopyrightLabel" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/sunfish/VBoxContainer" unique_id=920580989]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "© 2025 sockeye-d"
+
+[node name="TabContainer" type="TabContainer" parent="MarginContainer/VBoxContainer" unique_id=1052965939]
+layout_mode = 2
+size_flags_vertical = 3
+current_tab = 0
+
+[node name="License" type="RichTextLabel" parent="MarginContainer/VBoxContainer/TabContainer" unique_id=1477853341]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 2
+text = "Copyright (c) 2025 sockeye-d
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+"
+selection_enabled = true
+metadata/_tab_index = 0
+
+[node name="Third-Party" type="TabContainer" parent="MarginContainer/VBoxContainer/TabContainer" unique_id=574397721]
+visible = false
+layout_mode = 2
+current_tab = 0
+metadata/_tab_index = 1
+
+[node name="Godot (MIT)" type="RichTextLabel" parent="MarginContainer/VBoxContainer/TabContainer/Third-Party" unique_id=86363664]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 2
+text = "Copyright (c) 2014-present Godot Engine contributors (see AUTHORS.md).
+Copyright (c) 2007-2014 Juan Linietsky, Ariel Manzur.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the \"Software\"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"
+selection_enabled = true
+metadata/_tab_index = 0
+
+[node name="Iosevka (OFL)" type="RichTextLabel" parent="MarginContainer/VBoxContainer/TabContainer/Third-Party" unique_id=974768901]
+visible = false
+layout_mode = 2
+focus_mode = 2
+text = "Copyright (c) 2015-2025, Renzhi Li (aka. Belleve Invis, belleve@typeof.net)
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+
+This license is copied below, and is also available with a FAQ at:
+http://scripts.sil.org/OFL
+
+--------------------------
+
+
+SIL Open Font License v1.1
+====================================================
+
+
+Preamble
+----------
+
+The goals of the Open Font License (OFL) are to stimulate worldwide
+development of collaborative font projects, to support the font creation
+efforts of academic and linguistic communities, and to provide a free and
+open framework in which fonts may be shared and improved in partnership
+with others.
+
+The OFL allows the licensed fonts to be used, studied, modified and
+redistributed freely as long as they are not sold by themselves. The
+fonts, including any derivative works, can be bundled, embedded, 
+redistributed and/or sold with any software provided that any reserved
+names are not used by derivative works. The fonts and derivatives,
+however, cannot be released under any other type of license. The
+requirement for fonts to remain under this license does not apply
+to any document created using the fonts or their derivatives.
+
+
+Definitions
+-------------
+
+`\"Font Software\"` refers to the set of files released by the Copyright
+Holder(s) under this license and clearly marked as such. This may
+include source files, build scripts and documentation.
+
+`\"Reserved Font Name\"` refers to any names specified as such after the
+copyright statement(s).
+
+`\"Original Version\"` refers to the collection of Font Software components as
+distributed by the Copyright Holder(s).
+
+`\"Modified Version\"` refers to any derivative made by adding to, deleting,
+or substituting -- in part or in whole -- any of the components of the
+Original Version, by changing formats or by porting the Font Software to a
+new environment.
+
+`\"Author\"` refers to any designer, engineer, programmer, technical
+writer or other person who contributed to the Font Software.
+
+
+Permission & Conditions
+------------------------
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of the Font Software, to use, study, copy, merge, embed, modify,
+redistribute, and sell modified and unmodified copies of the Font
+Software, subject to the following conditions:
+
+1. Neither the Font Software nor any of its individual components,
+   in Original or Modified Versions, may be sold by itself.
+
+2. Original or Modified Versions of the Font Software may be bundled,
+   redistributed and/or sold with any software, provided that each copy
+   contains the above copyright notice and this license. These can be
+   included either as stand-alone text files, human-readable headers or
+   in the appropriate machine-readable metadata fields within text or
+   binary files as long as those fields can be easily viewed by the user.
+
+3. No Modified Version of the Font Software may use the Reserved Font
+   Name(s) unless explicit written permission is granted by the corresponding
+   Copyright Holder. This restriction only applies to the primary font name as
+   presented to the users.
+
+4. The name(s) of the Copyright Holder(s) or the Author(s) of the Font
+   Software shall not be used to promote, endorse or advertise any
+   Modified Version, except to acknowledge the contribution(s) of the
+   Copyright Holder(s) and the Author(s) or with their explicit written
+   permission.
+
+5. The Font Software, modified or unmodified, in part or in whole,
+   must be distributed entirely under this license, and must not be
+   distributed under any other license. The requirement for fonts to
+   remain under this license does not apply to any document created
+   using the Font Software.
+
+
+
+Termination
+-----------
+
+This license becomes null and void if any of the above conditions are
+not met.
+
+
+    DISCLAIMER
+    
+    THE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,
+    EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF
+    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
+    OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE
+    COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+    INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL
+    DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+    FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
+    OTHER DEALINGS IN THE FONT SOFTWARE."
+selection_enabled = true
+metadata/_tab_index = 1
+
+[node name="Liberation Fonts (OFL)" type="RichTextLabel" parent="MarginContainer/VBoxContainer/TabContainer/Third-Party" unique_id=810236193]
+visible = false
+layout_mode = 2
+focus_mode = 2
+text = "Digitized data copyright (c) 2010 Google Corporation
+	with Reserved Font Arimo, Tinos and Cousine.
+Copyright (c) 2012 Red Hat, Inc.
+	with Reserved Font Name Liberation.
+
+This Font Software is licensed under the SIL Open Font License,
+Version 1.1.
+
+This license is copied below, and is also available with a FAQ at:
+http://scripts.sil.org/OFL
+
+SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
+
+PREAMBLE The goals of the Open Font License (OFL) are to stimulate
+worldwide development of collaborative font projects, to support the font
+creation efforts of academic and linguistic communities, and to provide
+a free and open framework in which fonts may be shared and improved in
+partnership with others.
+
+The OFL allows the licensed fonts to be used, studied, modified and
+redistributed freely as long as they are not sold by themselves.
+The fonts, including any derivative works, can be bundled, embedded,
+redistributed and/or sold with any software provided that any reserved
+names are not used by derivative works.  The fonts and derivatives,
+however, cannot be released under any other type of license.  The
+requirement for fonts to remain under this license does not apply to
+any document created using the fonts or their derivatives.
+
+ 
+
+DEFINITIONS
+\"Font Software\" refers to the set of files released by the Copyright
+Holder(s) under this license and clearly marked as such.
+This may include source files, build scripts and documentation.
+
+\"Reserved Font Name\" refers to any names specified as such after the
+copyright statement(s).
+
+\"Original Version\" refers to the collection of Font Software components
+as distributed by the Copyright Holder(s).
+
+\"Modified Version\" refers to any derivative made by adding to, deleting,
+or substituting ? in part or in whole ?
+any of the components of the Original Version, by changing formats or
+by porting the Font Software to a new environment.
+
+\"Author\" refers to any designer, engineer, programmer, technical writer
+or other person who contributed to the Font Software.
+
+
+PERMISSION & CONDITIONS
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of the Font Software, to use, study, copy, merge, embed, modify,
+redistribute, and sell modified and unmodified copies of the Font
+Software, subject to the following conditions:
+
+1) Neither the Font Software nor any of its individual components,in
+   Original or Modified Versions, may be sold by itself.
+
+2) Original or Modified Versions of the Font Software may be bundled,
+   redistributed and/or sold with any software, provided that each copy
+   contains the above copyright notice and this license. These can be
+   included either as stand-alone text files, human-readable headers or
+   in the appropriate machine-readable metadata fields within text or
+   binary files as long as those fields can be easily viewed by the user.
+
+3) No Modified Version of the Font Software may use the Reserved Font
+   Name(s) unless explicit written permission is granted by the
+   corresponding Copyright Holder. This restriction only applies to the
+   primary font name as presented to the users.
+
+4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font
+   Software shall not be used to promote, endorse or advertise any
+   Modified Version, except to acknowledge the contribution(s) of the
+   Copyright Holder(s) and the Author(s) or with their explicit written
+   permission.
+
+5) The Font Software, modified or unmodified, in part or in whole, must
+   be distributed entirely under this license, and must not be distributed
+   under any other license. The requirement for fonts to remain under
+   this license does not apply to any document created using the Font
+   Software.
+
+
+ 
+TERMINATION
+This license becomes null and void if any of the above conditions are not met.
+
+ 
+
+DISCLAIMER
+THE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
+OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT.  IN NO EVENT SHALL THE
+COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL
+DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM OTHER
+DEALINGS IN THE FONT SOFTWARE."
+selection_enabled = true
+metadata/_tab_index = 2
+
+[node name="Other" type="RichTextLabel" parent="MarginContainer/VBoxContainer/TabContainer/Third-Party" unique_id=2058296694]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+focus_mode = 2
+selection_enabled = true
+metadata/_tab_index = 3
+
+[node name="WindowAutoScaler" type="Node" parent="." unique_id=219904905]
+script = ExtResource("2_fh50o")
+metadata/_custom_type_script = "uid://oss6ipx4baxl"

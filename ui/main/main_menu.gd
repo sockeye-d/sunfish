@@ -8,27 +8,13 @@ static var bug_icon: IconTexture2D:
 		return bug_icon
 
 
-enum {
-	FILE_SPACER,
-	FILE_OPEN,
-	FILE_SAVE,
-	FILE_NEW,
-	EDIT_SPACER,
-	EDIT_UNDO,
-	VIEW_SPACER,
-	VIEW_RESET_ZOOM,
-	VIEW_RESET_VIEW,
-	OTHER_SPACER,
-	OTHER_PREFERENCES,
-	OTHER_PLUGINS,
-}
-
 var debug_spacer_id: int = -1
 var debug_id: int = -1
 
 
 @onready var debug := $Debug
 @onready var plugin_window: Window = %PluginWindow
+@onready var about_window: Window = %AboutWindow
 
 
 var last_show_debug_menu: bool = false
@@ -44,6 +30,7 @@ func _ready() -> void:
 	var open := add_item("Open", "open", "shortcuts/open")
 	var save := add_item("Save as", "save", "shortcuts/save_as")
 	var new := add_item("New", "new", "shortcuts/new")
+	var about := add_item("About", "sunfish")
 	add_separator("Edit")
 	var undo := add_item("Undo", "undo", "shortcuts/undo")
 	var redo := add_item("Redo", "redo", "shortcuts/redo")
@@ -62,6 +49,8 @@ func _ready() -> void:
 				WhiteboardBus.save_file_as()
 			new:
 				WhiteboardBus.create_new_file()
+			about:
+				about_window.show()
 			undo:
 				WhiteboardBus.undo.emit()
 			redo:
@@ -105,12 +94,13 @@ func _remove_debug_menu() -> void:
 	get_popup().remove_item(get_popup().item_count - 1)
 
 
-func add_item(item_text: String, item_icon_name: String, item_shortcut_id: String) -> int:
+func add_item(item_text: String, item_icon_name: String = "", item_shortcut_id: String = "") -> int:
 	if item_icon_name.is_empty():
 		get_popup().add_item(item_text)
 	else:
 		get_popup().add_icon_item(IconTexture2D.create(item_icon_name), item_text)
-	get_popup().set_item_shortcut(item_count - 1, Shortcuts.create(item_shortcut_id))
+	if not item_shortcut_id.is_empty():
+		get_popup().set_item_shortcut(item_count - 1, Shortcuts.create(item_shortcut_id))
 	return item_count - 1
 
 

@@ -149,6 +149,11 @@ func set_theme(new_theme: ThemeColors) -> void:
 	theme_res.set_stylebox("hovered_selected", "Tree", new_flat(theme.surface_press, [base_spacing], [base_spacing]))
 
 	theme_res.set_color("font_color", "Label", theme.text)
+	theme_res.set_color("default_color", "RichTextLabel", theme.text)
+	theme_res.set_color("selection_color", "RichTextLabel", Color(theme.accent_0, 0.3))
+	theme_res.set_color("table_border", "RichTextLabel", theme.surface)
+	theme_res.set_color("table_even_row_bg", "RichTextLabel", theme.background_0)
+	theme_res.set_color("table_odd_row_bg", "RichTextLabel", theme.background_1)
 
 	theme_res.set_color("font_color", "SubtextLabel", theme.subtext)
 

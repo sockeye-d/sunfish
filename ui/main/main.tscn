@@ -12,6 +12,15 @@
 
 [sub_resource type="DPITexture" id="DPITexture_qbxjj"]
 _source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"8\"><path d=\"M-4.875 2.75A1.5 1.5 0 00-6.25 4V16L-4 21.25-1.75 16V4A1.5 1.5 0 00-3 2.75ZM-5.5 5.5H-2.5M-5.5 16H-2.5\" stroke=\"#fff\" fill=\"none\" stroke-linejoin=\"round\" transform=\"rotate(-90)\" stroke-width=\"1.5\"/></svg>"
+color_map = Dictionary[Color, Color]({
+Color(1, 1, 1, 1): Color(0.8039216, 0.8392157, 0.95686275, 1),
+Color(0, 0, 0, 1): Color(0.11764706, 0.11764706, 0.18039216, 1),
+Color(0, 1, 0, 1): Color(0.6509804, 0.8901961, 0.6313726, 1),
+Color(1, 1, 0, 1): Color(0.9764706, 0.8862745, 0.6862745, 1),
+Color(1, 0, 0, 1): Color(0.9529412, 0.54509807, 0.65882355, 1),
+Color(0, 0, 1, 1): Color(0.79607844, 0.6509804, 0.96862745, 1),
+Color(0, 1, 1, 1): Color(0.5372549, 0.7058824, 0.98039216, 1)
+})
 script = ExtResource("3_nkjcf")
 icon = "edit_horizontal"
 metadata/_custom_type_script = "uid://cg1d5ghvrv5un"
