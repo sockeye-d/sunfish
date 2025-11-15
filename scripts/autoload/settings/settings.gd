@@ -35,6 +35,7 @@ func _ready() -> void:
 	has_deserialized = true
 	shortcut_search_text.text_changed.connect(_emit_shortcut_search_changed)
 	shortcut_search_event.event_changed.connect(_emit_shortcut_search_changed)
+	settings_container.add_child(config_data["core"].control)
 
 
 func _load(path: String) -> SettingsSerializer:
@@ -155,7 +156,7 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 						failed_filter = true
 					if filter_event and last_value[0] is InputEvent and not filter_event.is_match(last_value[0]):
 						failed_filter = true
-					label.visible = not failed_filter
+					label_container.visible = not failed_filter
 					edit_container.visible = not failed_filter
 				)
 				if not has_created_shortcut_header:
