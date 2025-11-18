@@ -781,6 +781,8 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_52mx2"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6ybe0"]
 content_margin_left = 4.0
 content_margin_top = 4.0
@@ -943,8 +945,6 @@ corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_52mx2"]
 
 [sub_resource type="DPITexture" id="DPITexture_qu8em"]
 _source = "<svg width=\"12\" height=\"12\" version=\"1.1\" id=\"svg1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M2 4 6 8 10 4\" fill=\"none\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
@@ -1321,6 +1321,8 @@ PopupPanel/styles/panel = SubResource("StyleBoxFlat_tq6wv")
 ProgressBar/colors/font_color = Color(0.8039216, 0.8392157, 0.95686275, 1)
 ProgressBar/styles/background = SubResource("StyleBoxFlat_lobyy")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_3hrxq")
+RadialPopup/base_type = &"PopupPanel"
+RadialPopup/styles/panel = SubResource("StyleBoxEmpty_52mx2")
 RichTextLabel/colors/default_color = Color(0.8039216, 0.8392157, 0.95686275, 1)
 RichTextLabel/colors/selection_color = Color(0.79607844, 0.6509804, 0.96862745, 0.3)
 RichTextLabel/colors/table_border = Color(0.19215687, 0.19607843, 0.26666668, 1)
@@ -1374,8 +1376,6 @@ TextEdit/styles/normal = SubResource("StyleBoxFlat_reyni")
 Toast/base_type = &"PanelContainer"
 Toast/styles/panel = SubResource("StyleBoxFlat_nj22i")
 ToastControl/constants/separation = 4
-ToolPopup/base_type = &"PopupPanel"
-ToolPopup/styles/panel = SubResource("StyleBoxEmpty_52mx2")
 Tree/colors/children_hl_line_color = Color(0.27058825, 0.2784314, 0.3529412, 1)
 Tree/colors/font_color = Color(0.8039216, 0.8392157, 0.95686275, 1)
 Tree/colors/font_disabled_color = Color(0.6509804, 0.6784314, 0.78431374, 1)

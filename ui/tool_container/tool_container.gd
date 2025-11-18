@@ -17,6 +17,11 @@ var tool_instances: Dictionary[Script, WhiteboardTool]
 
 var tool_buttons: Dictionary[Script, Button]
 var selected_tool_id: String
+var tool_popup := ToolPopup.new()
+
+
+func _init() -> void:
+	WhiteboardManager.register_radial_popup(tool_popup, "shortcuts/show_tool_pie")
 
 
 func _ready() -> void:
@@ -25,12 +30,13 @@ func _ready() -> void:
 			if new_tool not in tool_instances:
 				tool_instances[new_tool] = new_tool.new()
 			whiteboard.set_active_tools([tool_instances[new_tool]])
+			tool_popup.selected_tools = [tool_instances[new_tool].get_script()]
 	)
 	selected_tool_id = Settings["core/default_tool"]
 	update_tools.call_deferred()
-	whiteboard.tool_popup.tool_selected.connect(func(tool: Script):
-		active_tool_changed.emit(tool)
-		tool_buttons[tool].button_pressed = true
+	tool_popup.item_selected.connect(func(item: ToolPopup.ToolItem):
+		active_tool_changed.emit(item.tool)
+		tool_buttons[item.tool].button_pressed = true
 	)
 
 	whiteboard.gui_input.connect(_whiteboard_gui_input)
@@ -76,7 +82,7 @@ func update_tools() -> void:
 			active_tool_changed.emit(tool)
 		)
 		add_child(btn)
-	whiteboard.tool_popup.update_tools()
+	tool_popup.update_tools()
 
 
 func set_selected(tool: Script) -> void:

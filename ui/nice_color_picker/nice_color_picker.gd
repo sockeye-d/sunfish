@@ -54,7 +54,6 @@ func _init() -> void:
 	color_changed.connect(func(new_color: Color): _color_display.color = new_color)
 	add_child(_color_display)
 
-	#_color_display.toggle_mode = true
 	_color_display.pressed.connect(func():
 		_big_color_picker_panel.popup_on_parent(Rect2(_color_display.global_position + Vector2(0.0, _color_display.size.y), Vector2.ZERO))
 	)

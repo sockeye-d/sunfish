@@ -19,6 +19,7 @@ static func _static_init() -> void:
 @export var show_plugins := Shortcuts.key(KEY_X | KEY_MASK_CTRL | KEY_MASK_SHIFT)
 
 @export var show_tool_pie := Shortcuts.key(KEY_A)
+@export var show_color_pie := Shortcuts.key(KEY_Z)
 
 @export var text_accept := Shortcuts.key(KEY_ENTER | KEY_MASK_CTRL)
 

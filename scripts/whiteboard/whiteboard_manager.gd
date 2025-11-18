@@ -16,6 +16,7 @@ static var tools: Dictionary[StringName, Script]
 static var passive_tools: Dictionary[StringName, WhiteboardTool]
 static var _passive_tool_initialized: Dictionary[WhiteboardTool, bool]
 static var _register_tool_guard: int = 0
+static var _radial_popups: Dictionary[RadialPopup, StringName]
 
 
 var _deserializers: Dictionary[StringName, Callable]
@@ -95,3 +96,7 @@ static func initialize_passive_tool(wb: Whiteboard, tool: WhiteboardTool) -> voi
 static func intialize_passive_tools(wb: Whiteboard) -> void:
 	for tool_key in passive_tools:
 		initialize_passive_tool(wb, passive_tools[tool_key])
+
+
+static func register_radial_popup(menu: RadialPopup, shortcut_id: StringName) -> void:
+	_radial_popups[menu] = shortcut_id

@@ -55,7 +55,6 @@ var layer_container: Node2D
 
 
 var save_timer: Timer
-var tool_popup: ToolPopup
 
 
 func _init() -> void:
@@ -63,10 +62,6 @@ func _init() -> void:
 	save_timer.wait_time = 0.5
 	save_timer.one_shot = true
 	add_child(save_timer)
-
-	tool_popup = ToolPopup.new()
-	tool_popup.size = Vector2i(200, 200)
-	add_child(tool_popup)
 
 	clip_contents = true
 	draw_xform = Transform2D.IDENTITY
@@ -135,6 +130,10 @@ func _notification(what: int) -> void:
 
 
 func _ready() -> void:
+	for popup in WhiteboardManager._radial_popups:
+		popup.size = Vector2i(200, 200)
+		add_child(popup)
+
 	if not Engine.is_editor_hint():
 		get_window().focus_exited.connect(serialize_or_new)
 	if color_picker:
@@ -205,13 +204,13 @@ func _gui_input(e: InputEvent) -> void:
 	tools.append_array(WhiteboardManager.passive_tools.values())
 	tools.append_array(active_tools)
 	var cursor_shape := CursorShape.CURSOR_ARROW
-	if e.is_match(Settings["shortcuts/show_tool_pie"]):
-		tool_popup.center_pos = get_global_mouse_position()
-		tool_popup.mouse_pos = Vector2.ZERO
-		tool_popup.selected_tools.assign(active_tools.map(func(el: Object): return el.get_script()))
-		tool_popup.popup(get_viewport_rect())
-		accept_event()
-		return
+	for popup in WhiteboardManager._radial_popups:
+		if e.is_match(Settings[WhiteboardManager._radial_popups[popup]]):
+			popup.center_pos = get_global_mouse_position()
+			popup.mouse_pos = Vector2.ZERO
+			popup.popup(get_viewport_rect())
+			accept_event()
+			return
 	for tool in tools:
 		@warning_ignore("redundant_await") # I don't know why it thinks this isn't a coroutine
 		var tool_output := await tool.receive_input(self, e.xformed_by((draw_xform).affine_inverse()))
