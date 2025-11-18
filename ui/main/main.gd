@@ -4,6 +4,7 @@ extends ColorRect
 @onready var container: Control = %MarginContainer
 @onready var main_menu_container: PanelContainer = %MainMenuContainer
 @onready var tool_edit_container: ToolEditContainer = %ToolEditContainer
+@onready var nice_color_picker: NiceColorPicker = %NiceColorPicker
 
 @warning_ignore("unused_private_class_variable")
 @export_tool_button("Reload theme", "Search") var ___ := func():
@@ -38,6 +39,8 @@ func _ready() -> void:
 			get_tree().root.propagate_notification(Util.NOTIFICATION_WINDOW_CLOSING)
 			get_tree().quit()
 		)
+	ThemeManager.active_theme_changed.connect(_reset_color_picker_colors)
+	_reset_color_picker_colors()
 
 
 func _process(delta: float) -> void:
@@ -51,3 +54,15 @@ func _on_tool_container_edit_button_toggled(toggled_on: bool) -> void:
 		tool_edit_container.begin_editing()
 	else:
 		tool_edit_container.end_editing()
+
+
+func _reset_color_picker_colors() -> void:
+	nice_color_picker.set_swatches([
+		ThemeManager.active_theme.text,
+		ThemeManager.active_theme.subtext,
+		ThemeManager.active_theme.accent_0,
+		ThemeManager.active_theme.accent_1,
+		ThemeManager.active_theme.error,
+		ThemeManager.active_theme.warning,
+		ThemeManager.active_theme.success,
+	])

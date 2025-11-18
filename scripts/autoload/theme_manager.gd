@@ -23,6 +23,7 @@ const FALLBACK_THEME = "dev.fishies.sunfish.themes.CatppuccinMocha"
 var theme_res: Theme = load("res://main_theme.tres")
 
 
+signal active_theme_changed
 signal themes_changed
 signal ui_scale_changed
 signal background_color_changed(new_color: Color)
@@ -289,6 +290,7 @@ func set_theme(new_theme: ThemeColors) -> void:
 		Color("#00ffff"): theme.accent_1,
 	}
 	IconTexture2D.SignalBus.instance.update.emit()
+	active_theme_changed.emit(active_theme)
 
 	if Engine.is_editor_hint():
 		ResourceSaver.save(theme_res, theme_res.resource_path)

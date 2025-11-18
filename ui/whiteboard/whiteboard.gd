@@ -206,10 +206,10 @@ func _gui_input(e: InputEvent) -> void:
 	tools.append_array(active_tools)
 	var cursor_shape := CursorShape.CURSOR_ARROW
 	if e.is_match(Settings["shortcuts/show_tool_pie"]):
-		tool_popup.center_pos = get_global_mouse_position() + 200.0 * Vector2.ONE
+		tool_popup.center_pos = get_global_mouse_position()
 		tool_popup.mouse_pos = Vector2.ZERO
 		tool_popup.selected_tools.assign(active_tools.map(func(el: Object): return el.get_script()))
-		tool_popup.popup(get_viewport_rect().grow(200.0))
+		tool_popup.popup(get_viewport_rect())
 		accept_event()
 		return
 	for tool in tools:

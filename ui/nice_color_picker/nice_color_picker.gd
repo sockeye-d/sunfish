@@ -26,6 +26,7 @@ var _color_wheel: ColorWheel
 var _color_display: ColorDisplay
 var _big_color_picker: ColorPicker
 var _big_color_picker_panel: PopupPanel
+var _swatch_container: HBoxContainer
 
 
 func _init() -> void:
@@ -33,10 +34,10 @@ func _init() -> void:
 	_color_wheel.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	_color_wheel.gui_input.connect(_color_wheel_gui_input)
 	add_child(_color_wheel)
-	
+
 	_big_color_picker_panel = PopupPanel.new()
 	add_child(_big_color_picker_panel)
-	
+
 	_big_color_picker = ColorPicker.new()
 	_big_color_picker.edit_alpha = false
 	_big_color_picker.edit_intensity = false
@@ -47,21 +48,20 @@ func _init() -> void:
 	_big_color_picker.color = color
 	_big_color_picker.color_changed.connect(func(new_color: Color): color = new_color)
 	_big_color_picker_panel.add_child(_big_color_picker)
-	
+
 	_color_display = ColorDisplay.new()
 	_color_display.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	color_changed.connect(func(new_color: Color): _color_display.color = new_color)
 	add_child(_color_display)
-	
+
 	#_color_display.toggle_mode = true
 	_color_display.pressed.connect(func():
 		_big_color_picker_panel.popup_on_parent(Rect2(_color_display.global_position + Vector2(0.0, _color_display.size.y), Vector2.ZERO))
 	)
 
-
-func _notification(what: int) -> void:
-	if what == NOTIFICATION_SORT_CHILDREN:
-		fit_child_in_rect(_color_wheel, Rect2(Vector2.ZERO, Vector2(size.x, size.x)))
+	_swatch_container = HBoxContainer.new()
+	_swatch_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	add_child(_swatch_container)
 
 
 func _color_wheel_gui_input(e: InputEvent) -> void:
@@ -79,6 +79,17 @@ func _color_wheel_gui_input(e: InputEvent) -> void:
 		if _clicked_area != ClickedArea.NONE:
 			_set_colors(mm)
 			_color_wheel.accept_event()
+
+
+func set_swatches(swatches: PackedColorArray) -> void:
+	for child in _swatch_container.get_children():
+		child.queue_free()
+	for swatch in swatches:
+		var color_button := ColorDisplay.new()
+		color_button.color = swatch
+		color_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		color_button.pressed.connect(func(): color = swatch)
+		_swatch_container.add_child(color_button)
 
 
 func _set_colors(mm: InputEventMouse) -> void:
@@ -113,22 +124,22 @@ func _get_sat_val(click_pos: Vector2) -> Vector2:
 
 class ColorWheel extends Control:
 	const NICE_COLOR_PICKER_SHADER = preload("uid://bg1eurv6mma2w")
-	
+
 	func _init() -> void:
 		material = ShaderMaterial.new()
 		material.shader = NICE_COLOR_PICKER_SHADER
 		mouse_filter = Control.MOUSE_FILTER_PASS
-	
-	
+
+
 	func _notification(what: int) -> void:
 		if what == NOTIFICATION_RESIZED:
 			update_minimum_size()
-	
-	
+
+
 	func _draw() -> void:
 		draw_rect(Rect2(-Vector2.ONE, size + Vector2.ONE), Color.RED)
-	
-	
+
+
 	func _get_minimum_size() -> Vector2:
 		return Vector2(150, size.x)
 
@@ -138,10 +149,10 @@ class ColorDisplay extends Button:
 		set(value):
 			color = value
 			queue_redraw()
-	
+
 	func _ready() -> void:
 		resized.connect(_set_minimum_size)
-	
+
 	func _draw() -> void:
 		var sb := get_theme_stylebox("normal")
 		var sb2 := StyleBoxFlat.new()
@@ -150,7 +161,7 @@ class ColorDisplay extends Button:
 		var rect := Rect2(sb.get_offset(), size - sb.get_offset() - Vector2(sb.content_margin_right, sb.content_margin_bottom))
 		sb2.draw(get_canvas_item(), rect)
 		#draw_rect(, color)
-	
+
 	func _set_minimum_size() -> void:
 		var sb := get_theme_stylebox("normal")
 		var font_size := get_theme_font_size("font_size")
