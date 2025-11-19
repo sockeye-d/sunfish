@@ -196,6 +196,8 @@ func _ready() -> void:
 var _preview_draw_twice := false
 var _static_preview_draw_twice := false
 func _gui_input(e: InputEvent) -> void:
+	if DebugManager.print_whiteboard_inputs:
+		print(e)
 	if e is InputEventMouseMotion and not has_focus():
 		grab_focus()
 	var new_preview_elements: Array[WhiteboardTool.PreviewElement]

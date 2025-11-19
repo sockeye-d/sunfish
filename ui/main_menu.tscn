@@ -31,6 +31,9 @@ func _ready() -> void:
 				DebugManager.giant_brush_deadzone = is_item_checked(id)
 			3:
 				DebugManager.show_random_toast()
+			4:
+				set_item_checked(id, not is_item_checked(id))
+				DebugManager.print_whiteboard_inputs = is_item_checked(id)
 	)
 "
 
@@ -44,7 +47,7 @@ script = ExtResource("2_wk0pr")
 oversampling_override = 1.0
 size = Vector2i(196, 100)
 hide_on_checkable_item_selection = false
-item_count = 4
+item_count = 5
 item_0/text = "Reload theme"
 item_0/id = 0
 item_1/text = "Draw element bounds"
@@ -55,6 +58,9 @@ item_2/checkable = 1
 item_2/id = 2
 item_3/text = "Push toast"
 item_3/id = 3
+item_4/text = "Print whiteboard input events"
+item_4/checkable = 1
+item_4/id = 4
 script = SubResource("GDScript_0dkrt")
 
 [node name="PluginWindow" parent="." unique_id=686938307 instance=ExtResource("3_wk0pr")]

@@ -1,7 +1,7 @@
 class_name DrawingUtil
 
 
-const CIRCLE_RESOLUTION = 90
+const CIRCLE_RESOLUTION = 30
 
 
 static var rs := RenderingServer
