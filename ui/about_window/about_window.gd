@@ -1,7 +1,7 @@
 @tool
 extends Window
 
-const AppInfo = preload("uid://dfevfke0ys3j3")
+const APP_INFO = preload("uid://biro4psg4diun")
 
 @onready var version_label: Label = %VersionLabel
 @onready var license_label: RichTextLabel = %License
@@ -22,8 +22,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _update_text() -> void:
-	version_label.text = "sunfish v%s" % AppInfo.VERSION
-	license_label.text = AppInfo.LICENSE
+	version_label.text = "sunfish v%s (%s)" % [APP_INFO.VERSION, APP_INFO.git_hash_short]
+	license_label.text = APP_INFO.LICENSE
 	godot_license_label.text = Engine.get_license_text()
 
 	var licenses := Engine.get_license_info()

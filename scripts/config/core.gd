@@ -17,17 +17,16 @@ func get_id() -> StringName: return "core"
 		update_theme()
 @export var default_tool := "dev.fishies.sunfish.BrushTool"
 
-@export var show_debug_menu: bool = false
-
 @export_range(0.1, 10.0, 0.01, "or_greater") var toast_display_time: float = 5.0
 
 ## Whether or not to spread computation across multiple frames. This can increase responsiveness at
 ## the cost of a "pop-in" effect, especially when changing themes or GUI scales.
-@export var use_deferred_tasks: bool = true:
+@export var use_deferred_tasks: bool = false:
 	set(value):
 		use_deferred_tasks = value
 		DeferredTask.use_deferred_tasks = use_deferred_tasks
 
+@export var show_debug_menu: bool = false
 
 @export_storage var tool_layout: Array[StringName]
 

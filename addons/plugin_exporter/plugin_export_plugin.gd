@@ -4,6 +4,8 @@ class_name PluginExportPlugin extends EditorExportPlugin
 var should_apply_plugin: bool
 var include_core_plugins: bool
 
+func _get_name() -> String: return "AppInfoExportPlugin"
+
 
 func _export_begin(features: PackedStringArray, is_debug: bool, path: String, flags: int) -> void:
 	should_apply_plugin = "plugin" in features

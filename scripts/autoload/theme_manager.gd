@@ -290,7 +290,7 @@ func set_theme(new_theme: ThemeColors) -> void:
 		Color("#00ffff"): theme.accent_1,
 	}
 	IconTexture2D.SignalBus.instance.update.emit()
-	active_theme_changed.emit(active_theme)
+	active_theme_changed.emit()
 
 	if Engine.is_editor_hint():
 		ResourceSaver.save(theme_res, theme_res.resource_path)

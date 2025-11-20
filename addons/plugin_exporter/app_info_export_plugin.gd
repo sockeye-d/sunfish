@@ -1,0 +1,25 @@
+class_name AppInfoExportPlugin extends EditorExportPlugin
+
+
+const AppInfo = preload("uid://dfevfke0ys3j3")
+
+
+func _get_name() -> String: return "AppInfoExportPlugin"
+
+
+func _begin_customize_resources(platform: EditorExportPlatform, features: PackedStringArray) -> bool:
+	return true
+
+
+func _get_customization_configuration_hash() -> int:
+	return randi()
+
+
+func _customize_resource(resource: Resource, path: String) -> Resource:
+	if not resource.resource_path.is_empty():
+		print(resource.resource_path)
+	if path == "res://app_info.tres" and resource is AppInfoContainer:
+		var info := resource as AppInfoContainer
+		info.git_hash = AppInfoContainer.get_git_hash()
+		return info
+	return null
