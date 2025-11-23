@@ -192,7 +192,6 @@ func _render_screenshot(copy: bool) -> void:
 	rd.compute_list_bind_compute_pipeline(compute_list, pipeline)
 	var uniform_set := rd.uniform_set_create([viewport_uniform, output_uniform, bg_color_uniform], shader, 0)
 	@warning_ignore("unused_variable")
-	var uniform_set_defer := Defer.new(rd.free_rid.bind(uniform_set))
 	rd.compute_list_bind_uniform_set(compute_list, uniform_set, 0)
 	rd.compute_list_dispatch(compute_list, vp.size.x, vp.size.y, 1)
 	rd.compute_list_end()

@@ -106,7 +106,7 @@ func _init() -> void:
 		slider.max_value = max_value
 		slider.step = step
 		container.add_child(slider, false, Node.INTERNAL_MODE_BACK)
-		slider.drag_ended.connect(func(_v): changed_ended.emit())
+		slider.drag_ended.connect(changed_ended.emit.unbind(1))
 
 	if not value_changed.is_connected(_on_value_changed):
 		value_changed.connect(_on_value_changed)

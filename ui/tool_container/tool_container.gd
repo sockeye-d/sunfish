@@ -40,7 +40,7 @@ func _ready() -> void:
 	)
 
 	whiteboard.gui_input.connect(_whiteboard_gui_input)
-	Settings.setting_changed("core/tool_layout").connect(func(_new_value): update_tools())
+	Settings.setting_changed("core/tool_layout").connect(update_tools.unbind(1))
 
 
 func _whiteboard_gui_input(event: InputEvent) -> void:

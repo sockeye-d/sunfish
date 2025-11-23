@@ -206,13 +206,22 @@ func _gui_input(e: InputEvent) -> void:
 	tools.append_array(WhiteboardManager.passive_tools.values())
 	tools.append_array(active_tools)
 	var cursor_shape := CursorShape.CURSOR_ARROW
-	for popup in WhiteboardManager._radial_popups:
-		if e.is_match(Settings[WhiteboardManager._radial_popups[popup]]):
-			popup.center_pos = get_global_mouse_position()
-			popup.mouse_pos = Vector2.ZERO
-			popup.popup(get_viewport_rect())
-			accept_event()
-			return
+	if e.is_pressed():
+		for popup in WhiteboardManager._radial_popups:
+			if e.is_match(Settings[WhiteboardManager._radial_popups[popup]]):
+				popup.center_pos = get_global_mouse_position()
+				popup.mouse_pos = Vector2.ZERO
+				popup.popup(get_viewport_rect())
+				accept_event()
+				return
+	if e.is_match(Settings["shortcuts/undo"]) and e.is_pressed() and e.is_echo():
+		undo()
+		accept_event()
+		return
+	if e.is_match(Settings["shortcuts/redo"]) and e.is_pressed() and e.is_echo():
+		redo()
+		accept_event()
+		return
 	for tool in tools:
 		@warning_ignore("redundant_await") # I don't know why it thinks this isn't a coroutine
 		var tool_output := await tool.receive_input(self, e.xformed_by((draw_xform).affine_inverse()))
