@@ -58,10 +58,13 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> WhiteboardTool.Display:
 			wb.accept_event()
 	var pg := event as InputEventPanGesture
 	if pg:
+		var delta := pg.delta
+		if pg.alt_pressed:
+			delta *= 3.0
 		if pg.ctrl_pressed:
-			zoom(wb, pg.position, exp(-pg.delta.y * 0.05))
+			zoom(wb, pg.position, exp(-delta.y * 0.1))
 		else:
-			wb.draw_xform = wb.draw_xform.translated(-pg.delta * 2.0)
+			wb.draw_xform = wb.draw_xform.translated(-delta * 4.0)
 		wb.accept_event()
 	var zg := event as InputEventMagnifyGesture
 	if zg:

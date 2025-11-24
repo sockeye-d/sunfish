@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="AppInfoContainer" load_steps=2 format=3 uid="uid://biro4psg4diun"]
 
-[ext_resource type="Script" uid="uid://dfevfke0ys3j3" path="res://scripts/resources/app_info.gd" id="1_mx5xs"]
+[ext_resource type="Script" uid="uid://dfevfke0ys3j3" path="res://scripts/resources/app_info_container.gd" id="1_mx5xs"]
 
 [resource]
 script = ExtResource("1_mx5xs")
