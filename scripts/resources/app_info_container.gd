@@ -12,36 +12,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @export_storage var git_hash: String:
 	get:
 		if git_hash.is_empty() and OS.has_feature("editor"):
-			git_hash = get_git_hash()
+			git_hash = Util.get_git_hash()
 		return git_hash
 
 
 var git_hash_short: String:
-	get:
-		return git_hash.substr(0, 7)
-
-
-static func get_shell_arguments(working_dir: String) -> PackedStringArray:
-	match OS.get_name():
-		"Linux", "macOS", "FreeBSD", "NetBSD", "OpenBSD", "BSD":
-			return ["sh", "-c", "cd '%s' && git rev-parse HEAD" % working_dir]
-		"Windows":
-			return ["cmd.exe", "/C", "cd '%s' && git rev-parse HEAD" % working_dir]
-		"Android":
-			assert(false, "Android is not supported!")
-			return []
-		"iOS":
-			assert(false, "iOS is not supported!")
-			return []
-		"Web":
-			assert(false, "Web is not supported!")
-			return []
-	return []
-
-
-static func get_git_hash() -> String:
-	var wd := ProjectSettings.globalize_path("res://")
-	var output: Array[String] = []
-	var args := get_shell_arguments(wd)
-	OS.execute(args[0], args.slice(1), output, true)
-	return output[0].strip_edges()
+	get: return git_hash.substr(0, 7)

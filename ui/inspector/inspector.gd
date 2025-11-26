@@ -69,12 +69,12 @@ func _update_inspector() -> void:
 						new_value = type_convert(new_value, property.type)
 						property_dict[property.name] = new_value
 						tool.set(property.name, new_value)
-						Settings["state/tool_properties"] = Settings.get_default("state/tool_properties", {}).merged(tool_properties, true)
+						Settings["state/tool_properties"] = Settings.get_or_default("state/tool_properties", {}).merged(tool_properties, true)
 				).control
 				delegate.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			prop_container.add_child(delegate)
 		tool_properties[tool_id] = property_dict
-	Settings["state/tool_properties"] = Settings.get_default("state/tool_properties", {}).merged(tool_properties, true)
+	Settings["state/tool_properties"] = Settings.get_or_default("state/tool_properties", {}).merged(tool_properties, true)
 
 
 static func create_delegate(prop: Dictionary, initial_value, set_prop: Callable) -> Delegate:

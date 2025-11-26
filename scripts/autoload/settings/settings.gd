@@ -1,28 +1,32 @@
-@tool
-extends Window
+## The autoloaded settings window, used to set, get, and manage any serializable property. Used in
+## combination with [Configuration]s.
+@tool extends Window
 
+## Emitted when the setting specified by [param property] is changed to the value of [new_value].
+## Also emitted when using [method Object.set].
 signal any_setting_changed(property: StringName, new_value)
 
 signal _shortcut_search_changed(text_filter: String, event_filter: InputEvent)
 
-const RESET_ICON = preload("uid://dmah5fp6rgtqt")
-const SettingsSerializer = preload("uid://cphoy3o8egue5")
+const _RESET_ICON = preload("uid://dmah5fp6rgtqt")
+const _SettingsSerializer = preload("uid://cphoy3o8egue5")
 
+## The path to the config file.
 var config_path := OS.get_config_dir().path_join("sunfish/settings.tres")
+## The path to the state file.
 var local_path := OS.get_user_data_dir().path_join("state.tres")
 
 
-@onready var tree: Tree = %Tree
-@onready var settings_container: Container = %SettingsContainer
-@onready var shortcut_container: GridContainer = %ShortcutContainer
-@onready var shortcut_search_text: LineEdit = %ShortcutSearchText
-@onready var shortcut_search_event: EventInput = %ShortcutSearchEvent
-@onready var tab_container: TabContainer = %TabContainer
+@onready var _tree: Tree = %Tree
+@onready var _settings_container: Container = %SettingsContainer
+@onready var _shortcut_container: GridContainer = %ShortcutContainer
+@onready var _shortcut_search_text: LineEdit = %ShortcutSearchText
+@onready var _shortcut_search_event: EventInput = %ShortcutSearchEvent
+@onready var _tab_container: TabContainer = %TabContainer
 
 
-var config_data: Dictionary[StringName, ConfigurationData]
-var signals: Dictionary[StringName, Signal]
-var has_deserialized := false
+var _config_data: Dictionary[StringName, ConfigurationData]
+var _signals: Dictionary[StringName, Signal]
 
 
 func _ready() -> void:
@@ -30,22 +34,21 @@ func _ready() -> void:
 	if OS.has_feature("mobile"):
 		size = Vector2i(500, 275)
 		position = get_tree().root.size / 2.0 / get_tree().root.content_scale_factor - size / 2.0
-	var deserialized_settings := SettingsSerializer.merge(_load(config_path), _load(local_path))
-	reload_settings(deserialized_settings)
-	has_deserialized = true
-	shortcut_search_text.text_changed.connect(_emit_shortcut_search_changed)
-	shortcut_search_event.event_changed.connect(_emit_shortcut_search_changed)
-	settings_container.add_child(config_data["core"].control)
+	var deserialized_settings := _SettingsSerializer.merge(_load(config_path), _load(local_path))
+	_reload_settings(deserialized_settings)
+	_shortcut_search_text.text_changed.connect(_emit_shortcut_search_changed)
+	_shortcut_search_event.event_changed.connect(_emit_shortcut_search_changed)
+	_settings_container.add_child(_config_data["core"].control)
 
 
-func _load(path: String) -> SettingsSerializer:
+func _load(path: String) -> _SettingsSerializer:
 	if not FileAccess.file_exists(path):
 		return null
 	return ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_IGNORE_DEEP)
 
 
 func _emit_shortcut_search_changed(_v) -> void:
-	_shortcut_search_changed.emit(shortcut_search_text.text, shortcut_search_event.last_event)
+	_shortcut_search_changed.emit(_shortcut_search_text.text, _shortcut_search_event.last_event)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -53,21 +56,21 @@ func _unhandled_input(event: InputEvent) -> void:
 		hide()
 
 
-func reload_settings(serialized_data: Dictionary[StringName, Dictionary]) -> void:
+func _reload_settings(serialized_data: Dictionary[StringName, Dictionary]) -> void:
 	const EMPTY_DATA: Dictionary[StringName, Variant] = {}
-	for key in config_data:
-		var data := config_data[key]
+	for key in _config_data:
+		var data := _config_data[key]
 		data.control.queue_free()
-	for child in shortcut_container.get_children():
+	for child in _shortcut_container.get_children():
 		child.queue_free()
-	config_data.clear()
-	tree.clear()
-	var root := tree.create_item()
+	_config_data.clear()
+	_tree.clear()
+	var root := _tree.create_item()
 	for config in PluginManager.configurations:
-		create_settings_for(root, PluginManager.configurations[config], serialized_data.get(config, EMPTY_DATA))
+		_create_settings_for(root, PluginManager.configurations[config], serialized_data.get(config, EMPTY_DATA))
 
 
-func create_settings_for(parent: TreeItem, config: Configuration, serialized_data: Dictionary[StringName, Variant]) -> void:
+func _create_settings_for(parent: TreeItem, config: Configuration, serialized_data: Dictionary[StringName, Variant]) -> void:
 	var id := config.get_id()
 	var tree_item := parent.create_child()
 	var grid_container := GridContainer.new()
@@ -81,10 +84,10 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 	var data := ConfigurationData.new()
 	data.config = config
 	data.control = grid_container
-	config_data[id] = data
+	_config_data[id] = data
 	for property in config.get_property_list():
 		var property_usage: PropertyUsageFlags = property.usage
-		if SettingsSerializer.get_serialization_mode(property) <= SettingsSerializer.SerializationMode.NONE:
+		if _SettingsSerializer.get_serialization_mode(property) <= _SettingsSerializer.SerializationMode.NONE:
 			continue
 		var property_name: StringName = property.name
 		var property_class: StringName = property.class_name
@@ -95,7 +98,7 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 		if value == null: value = config.get(property_name)
 
 		if value is Configuration and property_usage & PROPERTY_USAGE_EDITOR:
-			create_settings_for(tree_item, value, serialized_data)
+			_create_settings_for(tree_item, value, serialized_data)
 			continue
 
 		var property_key := StringName(id + "/" + property_name)
@@ -121,7 +124,7 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 			var edit_container := HBoxContainer.new()
 			edit_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			var reset_button := Button.new()
-			reset_button.icon = RESET_ICON
+			reset_button.icon = _RESET_ICON
 			label_container.add_child(reset_button)
 			var update_reset_button := func():
 				var config_value = config.get(property_name)
@@ -165,11 +168,11 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 					header_label.theme_type_variation = "HeaderMedium"
 					var header_right := Control.new()
 					header_right.size_flags_horizontal = Control.SIZE_SHRINK_END
-					shortcut_container.add_child(header_label)
-					shortcut_container.add_child(header_right)
+					_shortcut_container.add_child(header_label)
+					_shortcut_container.add_child(header_right)
 					has_created_shortcut_header = true
-				shortcut_container.add_child(label_container)
-				shortcut_container.add_child(edit_container)
+				_shortcut_container.add_child(label_container)
+				_shortcut_container.add_child(edit_container)
 			else:
 				has_tree_worthy_properties = true
 				grid_container.add_child(label_container)
@@ -178,14 +181,96 @@ func create_settings_for(parent: TreeItem, config: Configuration, serialized_dat
 		parent.remove_child(tree_item)
 		tree_item.free()
 
-
-func setting_changed(setting_id: StringName) -> Signal:
-	if setting_id in signals:
-		return signals[setting_id]
-	add_user_signal(setting_id, [{ "name": "new_value" }])
-	var s := Signal(self, setting_id)
-	signals[setting_id] = s
+## Returns a signal that is emitted whenever [param property]'s value changes.
+## [codeblock]
+## Settings.setting_changed("core/ui_scale").connect(func(ui_scale: float):
+## 	print(ui_scale)
+## )
+## [/codeblock]
+func setting_changed(property: StringName) -> Signal:
+	if property in _signals:
+		return _signals[property]
+	add_user_signal(property, [{ "name": "new_value" }])
+	var s := Signal(self, property)
+	_signals[property] = s
 	return s
+
+
+func _get(property: StringName) -> Variant:
+	var safe := get_safe(property)
+	if not safe: return null
+	return safe[0]
+
+## Returns an array either containing the value of [param property] or nothing if it doesn't exist.
+func get_safe(property: StringName) -> Array[Variant]:
+	var data := property.split("/", true, 2)
+	if data.size() != 2:
+		return []
+	if data[0] in _config_data:
+		return [_config_data[data[0]].config.get(data[1])]
+	return []
+
+## Returns [param property] or [param default] if it doesn't exist.
+func get_or_default(property: StringName, default: Variant) -> Variant:
+	var result := get_safe(property)
+	return default if result.is_empty() else result[0]
+
+
+func _set(property: StringName, value: Variant) -> bool:
+	var data := property.split("/", true, 2)
+	if data.size() != 2:
+		return false
+	if data[0] in _config_data:
+		_config_data[data[0]].set_value(data[1], value)
+		serialize.call_deferred()
+		any_setting_changed.emit(property, value)
+		_emit_value_changed(property, value)
+		return true
+	return false
+
+## Returns whether [param property] exists.
+func has(property: StringName) -> bool:
+	var data := property.split("/", true, 2)
+	if data.size() != 2:
+		return false
+	return data[0] in _config_data and data[1] in _config_data[data[0]].config
+
+
+func _emit_value_changed(property_key: StringName, new_value) -> void:
+	if property_key in _signals:
+		_signals[property_key].emit(new_value)
+
+
+func _on_tree_item_selected() -> void:
+	var item := _tree.get_selected()
+	var id: String = item.get_metadata(0)
+	if _settings_container.get_child_count() > 0:
+		_settings_container.remove_child(_settings_container.get_child(0))
+	_settings_container.add_child(_config_data[id].control)
+
+## Force-saves the settings.
+func serialize() -> void:
+	var config_res := _SettingsSerializer.new()
+	config_res.location = Configuration.Location.CONFIG
+	config_res.generate_values()
+	if not DirAccess.dir_exists_absolute(config_path.get_base_dir()):
+		DirAccess.make_dir_recursive_absolute(config_path.get_base_dir())
+	ResourceSaver.save(config_res, config_path)
+	var local_res := _SettingsSerializer.new()
+	local_res.location = Configuration.Location.LOCAL
+	local_res.generate_values()
+	ResourceSaver.save(local_res, local_path)
+
+## Show the settings window set to the settings tab.
+func show_settings() -> void:
+	_tab_container.current_tab = 0
+	show()
+
+
+## Show the settings window set to the shortcuts tab.
+func show_shortcuts() -> void:
+	_tab_container.current_tab = 1
+	show()
 
 
 class ConfigurationData:
@@ -197,79 +282,3 @@ class ConfigurationData:
 		config.set(property, value)
 		if property in set_value_funcs:
 			set_value_funcs[property].call(value)
-
-
-func _get(property: StringName) -> Variant:
-	var safe := get_safe(property)
-	if not safe: return null
-	return safe[0]
-
-
-func get_safe(property: StringName) -> Array[Variant]:
-	var data := property.split("/", true, 2)
-	if data.size() != 2:
-		return []
-	if data[0] in config_data:
-		return [config_data[data[0]].config.get(data[1])]
-	return []
-
-
-func get_default(property: StringName, default: Variant) -> Variant:
-	var result := get_safe(property)
-	return default if result.is_empty() else result[0]
-
-
-func _set(property: StringName, value: Variant) -> bool:
-	var data := property.split("/", true, 2)
-	if data.size() != 2:
-		return false
-	if data[0] in config_data:
-		config_data[data[0]].set_value(data[1], value)
-		serialize.call_deferred()
-		any_setting_changed.emit(property, value)
-		_emit_value_changed(property, value)
-		return true
-	return false
-
-
-func has(property_id: StringName) -> bool:
-	var data := property_id.split("/", true, 2)
-	if data.size() != 2:
-		return false
-	return data[0] in config_data and data[1] in config_data[data[0]].config
-
-
-func _emit_value_changed(property_key: StringName, new_value) -> void:
-	if property_key in signals:
-		signals[property_key].emit(new_value)
-
-
-func _on_tree_item_selected() -> void:
-	var item := tree.get_selected()
-	var id: String = item.get_metadata(0)
-	if settings_container.get_child_count() > 0:
-		settings_container.remove_child(settings_container.get_child(0))
-	settings_container.add_child(config_data[id].control)
-
-
-func serialize() -> void:
-	var config_res := SettingsSerializer.new()
-	config_res.location = Configuration.Location.CONFIG
-	config_res.generate_values()
-	if not DirAccess.dir_exists_absolute(config_path.get_base_dir()):
-		DirAccess.make_dir_recursive_absolute(config_path.get_base_dir())
-	ResourceSaver.save(config_res, config_path)
-	var local_res := SettingsSerializer.new()
-	local_res.location = Configuration.Location.LOCAL
-	local_res.generate_values()
-	ResourceSaver.save(local_res, local_path)
-
-
-func show_settings() -> void:
-	tab_container.current_tab = 0
-	show()
-
-
-func show_shortcuts() -> void:
-	tab_container.current_tab = 1
-	show()

@@ -19,7 +19,6 @@ func _customize_resource(resource: Resource, path: String) -> Resource:
 	if not resource.resource_path.is_empty():
 		print(resource.resource_path)
 	if path == "res://app_info.tres" and resource is AppInfoContainer:
-		var info := resource as AppInfoContainer
-		info.git_hash = AppInfoContainer.get_git_hash()
-		return info
+		resource.git_hash = resource.git_hash
+		return resource
 	return null
