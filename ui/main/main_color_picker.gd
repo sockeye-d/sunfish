@@ -8,12 +8,13 @@ var color_popup := ColorPopup.new()
 func _init() -> void:
 	super()
 	WhiteboardManager.register_radial_popup(color_popup, "shortcuts/show_color_pie")
-	color_popup.item_selected.connect(func(item: ColorPopup.ColorItem): color = item.color)
+	color_popup.item_selected.connect(func(item: ColorPopup.ColorItem): set_swatch_and_ui(item.swatch))
 
 
 func _ready() -> void:
 	ThemeManager.active_theme_changed.connect(_reset_color_picker_colors)
 	_reset_color_picker_colors()
+	swatch = 0
 
 
 func _reset_color_picker_colors() -> void:
@@ -28,15 +29,17 @@ func _reset_color_picker_colors() -> void:
 	]
 	set_swatches(colors)
 	color_popup.items.clear()
-	for swatch_color in colors:
+	for swatch_index in colors.size():
 		var item := ColorPopup.ColorItem.new()
-		item.color = swatch_color
+		item.color = get_swatches()[swatch_index]
+		item.swatch = swatch_index
 		color_popup.items.append(item)
 
 
 class ColorPopup extends RadialPopup:
 	class ColorItem extends Item:
 		var color: Color
+		var swatch: int
 		var stylebox := StyleBoxFlat.new()
 		func is_enabled() -> bool: return true
 		func get_size() -> Vector2: return Vector2(50.0, 50.0)

@@ -13,11 +13,10 @@ func create_element() -> ShapeElement:
 class CircleElement extends ShapeTool.ShapeElement:
 	static func _static_init() -> void:
 		WhiteboardManager.register_deserializer(CircleElement)
-	
+
 	static func get_id() -> StringName: return "dev.fishies.sunfish.CircleElement"
-	
+
 	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard) -> void:
-		Util.unused(wb)
 		var size := rect.size * 0.5
 		var points: PackedVector2Array = []
 		points.resize(180)
@@ -25,6 +24,6 @@ class CircleElement extends ShapeTool.ShapeElement:
 		for point_index in points.size():
 			points[point_index] = Vector2.from_angle(point_index * index_to_angle) * size + rect.position + size
 		points.append(points[0])
-		canvas.draw_polyline(points, color, width)
-	
+		canvas.draw_polyline(points, wb.get_color(color), width)
+
 	static func deserialize(data: Dictionary) -> Element: return deserialize_into(new(), data)

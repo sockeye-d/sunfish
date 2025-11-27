@@ -2,7 +2,7 @@ extends WhiteboardTool
 
 
 @export_range(1.0, 5.0, 0.0, "or_greater") var width: float = _get_default_width()
-var color: Color
+var color
 
 var is_drawing: bool
 var last_draw_element: BrushElement
@@ -71,7 +71,7 @@ class BrushElement extends WhiteboardTool.Element:
 
 	var points: PackedVector2Array
 	var pressures: PackedFloat32Array
-	var color: Color
+	var color
 	var width: float
 
 	var min_p: Vector2 = Vector2(+INF, +INF)
@@ -95,9 +95,8 @@ class BrushElement extends WhiteboardTool.Element:
 
 
 	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard) -> void:
-		Util.unused(wb)
 		if points.size() >= 2:
-			DrawingUtil.draw_round_polyline(canvas.get_canvas_item(), points, color, width, pressures)
+			DrawingUtil.draw_round_polyline(canvas.get_canvas_item(), points, wb.get_color(color), width, pressures)
 
 
 	func get_bounding_box() -> Rect2:
@@ -148,8 +147,7 @@ class BrushDotElement extends WhiteboardTool.Element:
 	static func get_id() -> StringName: return "dev.fishies.sunfish.BrushDotElement"
 
 	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard) -> void:
-		Util.unused(wb)
-		canvas.draw_circle(position, width * 0.5, color)
+		canvas.draw_circle(position, width * 0.5, wb.get_color(color))
 
 	func get_bounding_box() -> Rect2:
 		return Rect2(position, Vector2.ZERO).grow(width)

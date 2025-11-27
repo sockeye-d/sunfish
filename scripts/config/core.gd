@@ -28,6 +28,8 @@ func get_id() -> StringName: return "core"
 
 @export var show_debug_menu: bool = false
 
+@export var use_text_save_format: bool = false
+
 @export_storage var tool_layout: Array[StringName]
 
 

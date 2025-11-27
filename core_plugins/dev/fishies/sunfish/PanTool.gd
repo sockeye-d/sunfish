@@ -19,6 +19,9 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> WhiteboardTool.Display:
 	var cursor_shape: Control.CursorShape = Control.CURSOR_ARROW
 	var mb := event as InputEventMouseButton
 	if mb:
+		var factor := mb.factor
+		if mb.alt_pressed:
+			factor *= 3.0
 		match mb.button_index:
 			MOUSE_BUTTON_MIDDLE:
 				if mb.pressed:
@@ -30,22 +33,22 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> WhiteboardTool.Display:
 					if mb.ctrl_pressed:
 						zoom(wb, mb.position, 1.0 * 1.1)
 					else:
-						pan(wb, mb, +00.0, +80.0)
+						pan(wb, factor, +00.0, +80.0)
 					wb.accept_event()
 			MOUSE_BUTTON_WHEEL_DOWN:
 				if mb.pressed:
 					if mb.ctrl_pressed:
 						zoom(wb, mb.position, 1.0 / 1.1)
 					else:
-						pan(wb, mb, +00.0, -80.0)
+						pan(wb, factor, +00.0, -80.0)
 					wb.accept_event()
 			MOUSE_BUTTON_WHEEL_LEFT:
 				if mb.pressed:
-					pan(wb, mb, +80.0, +00.0)
+					pan(wb, factor, +80.0, +00.0)
 					wb.accept_event()
 			MOUSE_BUTTON_WHEEL_RIGHT:
 				if mb.pressed:
-					pan(wb, mb, -80.0, +00.0)
+					pan(wb, factor, -80.0, +00.0)
 					wb.accept_event()
 	var mm := event as InputEventMouseMotion
 	if mm:
@@ -72,8 +75,8 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> WhiteboardTool.Display:
 	return Display.new().with_cursor_shape(cursor_shape)
 
 
-func pan(wb: Whiteboard, e: InputEventMouseButton, x: float, y: float) -> void:
-	wb.draw_xform = wb.draw_xform.translated(0.5 * e.factor * Vector2(x, y))
+func pan(wb: Whiteboard, factor: float, x: float, y: float) -> void:
+	wb.draw_xform = wb.draw_xform.translated(0.5 * factor * Vector2(x, y))
 
 
 func zoom(wb: Whiteboard, screen_center: Vector2, amount: float) -> void:

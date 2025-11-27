@@ -2,7 +2,7 @@
 class_name NiceColorPicker extends VBoxContainer
 
 
-signal color_changed(new_color: Color)
+signal color_changed(new_color)
 
 
 enum ClickedArea {
@@ -11,14 +11,29 @@ enum ClickedArea {
 	SAT_VAL,
 }
 
+var _is_swatch: bool
 var hsv_color: Vector3:
 	set(value):
 		hsv_color = value
 		(_color_wheel.material as ShaderMaterial).set_shader_parameter("hsv", hsv_color)
-		color_changed.emit(color)
+		if not _is_swatch:
+			_is_swatch = false
+			swatch = -1
+			if _swatch_button_group.get_pressed_button():
+				_swatch_button_group.get_pressed_button().button_pressed = false
+			color_changed.emit(color)
+		_is_swatch = false
 @export var color: Color:
 	get: return Color.from_hsv(hsv_color.x, hsv_color.y, hsv_color.z)
-	set(value): hsv_color = Vector3(value.h, value.s, value.v)
+	set(value):
+		hsv_color = Vector3(value.h, value.s, value.v)
+@export var swatch: int = -1:
+	set(value):
+		swatch = value
+		if value >= 0:
+			_is_swatch = true
+			hsv_color = Vector3(_swatches[value].h, _swatches[value].s, _swatches[value].v)
+			color_changed.emit(swatch)
 
 var _clicked_area := ClickedArea.NONE
 
@@ -26,15 +41,19 @@ var _color_wheel: ColorWheel
 var _color_display: ColorDisplay
 var _big_color_picker: ColorPicker
 var _big_color_picker_panel: PopupPanel
-var _swatch_container: HBoxContainer
+var _swatch_container: Container
+var _swatch_button_group := ButtonGroup.new()
+var _swatches: PackedColorArray
+var _swatch_buttons: Array[ColorDisplay]
 
 
 func _init() -> void:
 	_color_wheel = ColorWheel.new()
 	_color_wheel.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	_color_wheel.gui_input.connect(_color_wheel_gui_input)
-	add_child(_color_wheel)
 
+	var _picker_panel_container := VBoxContainer.new()
+	_picker_panel_container.add_child(_color_wheel)
 	_big_color_picker_panel = PopupPanel.new()
 	add_child(_big_color_picker_panel)
 
@@ -47,16 +66,17 @@ func _init() -> void:
 	color_changed.connect(func(new_color: Color): _big_color_picker.color = new_color)
 	_big_color_picker.color = color
 	_big_color_picker.color_changed.connect(func(new_color: Color): color = new_color)
-	_big_color_picker_panel.add_child(_big_color_picker)
+	_picker_panel_container.add_child(_big_color_picker)
 
 	_color_display = ColorDisplay.new()
 	_color_display.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	color_changed.connect(func(new_color: Color): _color_display.color = new_color)
+	color_changed.connect((func(): _color_display.color = color).unbind(1))
 	add_child(_color_display)
 
 	_color_display.pressed.connect(func():
 		_big_color_picker_panel.popup_on_parent(Rect2(_color_display.global_position + Vector2(0.0, _color_display.size.y), Vector2.ZERO))
 	)
+	_big_color_picker_panel.add_child(_picker_panel_container)
 
 	_swatch_container = HBoxContainer.new()
 	_swatch_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -81,14 +101,36 @@ func _color_wheel_gui_input(e: InputEvent) -> void:
 
 
 func set_swatches(swatches: PackedColorArray) -> void:
-	for child in _swatch_container.get_children():
-		child.queue_free()
-	for swatch in swatches:
+	_swatches = swatches
+	for button in _swatch_buttons:
+		button.queue_free()
+	_swatch_buttons.clear()
+	var i := 0
+	var old_selected_swatch := swatch
+	for swatch_color in swatches:
 		var color_button := ColorDisplay.new()
-		color_button.color = swatch
+		color_button.color = swatch_color
+		color_button.toggle_mode = true
+		if old_selected_swatch == i:
+			color_button.button_pressed = true
+		color_button.button_group = _swatch_button_group
 		color_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		color_button.pressed.connect(func(): color = swatch)
+		color_button.toggled.connect(func(toggled: bool):
+			if toggled:
+				swatch = i
+		)
 		_swatch_container.add_child(color_button)
+		_swatch_buttons.append(color_button)
+		i += 1
+	swatch = old_selected_swatch
+
+
+func get_swatches() -> PackedColorArray: return _swatches
+
+
+func set_swatch_and_ui(new_swatch: int) -> void:
+	swatch = new_swatch
+	_swatch_buttons[new_swatch].button_pressed = true
 
 
 func _set_colors(mm: InputEventMouse) -> void:
@@ -164,4 +206,4 @@ class ColorDisplay extends Button:
 	func _set_minimum_size() -> void:
 		var sb := get_theme_stylebox("normal")
 		var font_size := get_theme_font_size("font_size")
-		custom_minimum_size = Vector2(0.0, sb.content_margin_top + sb.content_margin_bottom + font_size / 2.0)
+		custom_minimum_size = Vector2(30.0, sb.content_margin_top + sb.content_margin_bottom + font_size / 2.0)

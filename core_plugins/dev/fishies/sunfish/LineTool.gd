@@ -2,7 +2,7 @@ extends WhiteboardTool
 
 
 @export_range(1.0, 5.0, 0.0, "or_greater") var width: float = 5.0
-var color: Color
+var color
 
 var is_drawing: bool
 var last_draw_element: LineElement
@@ -55,7 +55,7 @@ class LineElement extends WhiteboardTool.Element:
 	static func _static_init() -> void:
 		WhiteboardManager.register_deserializer(LineElement)
 
-	var color: Color
+	var color
 	var width: float
 
 	var start_pos: Vector2
@@ -65,9 +65,9 @@ class LineElement extends WhiteboardTool.Element:
 
 	func draw(canvas: Whiteboard.ElementLayer, wb: Whiteboard) -> void:
 		Util.unused(wb)
-		canvas.draw_circle(start_pos, width * 0.5, color)
-		canvas.draw_line(start_pos, end_pos, color, width)
-		canvas.draw_circle(end_pos, width * 0.5, color)
+		canvas.draw_circle(start_pos, width * 0.5, wb.get_color(color))
+		canvas.draw_line(start_pos, end_pos, wb.get_color(color), width)
+		canvas.draw_circle(end_pos, width * 0.5, wb.get_color(color))
 
 	func get_bounding_box() -> Rect2:
 		return Rect2(start_pos, end_pos - start_pos).abs().grow(width)

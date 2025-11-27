@@ -2,7 +2,7 @@
 
 
 @export_range(1.0, 5.0, 0.0, "or_greater") var width: float = 5.0
-var color: Color
+var color
 
 var is_drawing: bool
 var last_draw_element: ShapeElement
@@ -55,7 +55,7 @@ func should_hide_mouse() -> bool: return true
 
 
 @abstract class ShapeElement extends WhiteboardTool.Element:
-	var color: Color
+	var color
 	var width: float
 
 	var rect: Rect2

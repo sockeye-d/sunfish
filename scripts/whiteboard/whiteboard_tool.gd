@@ -79,11 +79,11 @@ func should_hide_mouse() -> bool: return false
 ## and [member width].
 class PlainPreviewElement extends WhiteboardTool.PreviewElement:
 	var position: Vector2
-	var color: Color
+	var color
 	var width: float
 
-	func draw(canvas: CanvasItem, _wb: Whiteboard) -> void:
-		canvas.draw_circle(position, width * 0.5, color, false, 1.5 / _wb.draw_scale)
+	func draw(canvas: CanvasItem, wb: Whiteboard) -> void:
+		canvas.draw_circle(position, width * 0.5, wb.get_color(color), false, 1.5 / wb.draw_scale)
 
 
 class Display:

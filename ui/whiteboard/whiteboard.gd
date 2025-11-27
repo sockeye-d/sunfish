@@ -5,6 +5,7 @@ const WHITEBOARD_BACKGROUND = preload("uid://h1qiidxtgcs0")
 enum {
 	NOTIFICATION_UPDATE_VISIBILITY = 20000,
 	NOTIFICATION_FREE_INVISIBLE,
+	NOTIFICATION_PROPAGATE_REDRAW,
 }
 
 signal xform_changed
@@ -42,7 +43,7 @@ var active_element_count: int:
 
 @export var color_picker: NiceColorPicker
 
-var primary_color: Color
+var primary_color
 
 var background: Panel
 var background_shader: ColorRect
@@ -89,7 +90,10 @@ func _init() -> void:
 
 	focus_mode = Control.FOCUS_ALL
 
-	theme_changed.connect(func(): if ThemeManager.active_theme: mat.set_shader_parameter("text_color", ThemeManager.active_theme.text))
+	theme_changed.connect(func():
+		if ThemeManager.active_theme: mat.set_shader_parameter("text_color", ThemeManager.active_theme.text)
+		viewport.propagate_notification(NOTIFICATION_PROPAGATE_REDRAW)
+	)
 
 	focus_entered.connect(_update_mouse_hidden)
 	mouse_entered.connect(_update_mouse_hidden)
@@ -137,15 +141,15 @@ func _ready() -> void:
 	if not Engine.is_editor_hint():
 		get_window().focus_exited.connect(serialize_or_new)
 	if color_picker:
-		color_picker.color_changed.connect(func(new_color: Color): primary_color = new_color)
-		color_picker.color = ThemeManager.active_theme.text
+		color_picker.color_changed.connect(func(new_color): primary_color = new_color)
 		var old_theme_color: PackedColorArray = [ThemeManager.active_theme.text]
 		ThemeManager.themes_changed.connect(func():
 			if old_theme_color[0] == color_picker.color:
 				color_picker.color = ThemeManager.active_theme.text
 			old_theme_color[0] = ThemeManager.active_theme.text
 		)
-		primary_color = color_picker.color
+		@warning_ignore("incompatible_ternary")
+		primary_color = color_picker.swatch if color_picker.swatch >= 0 else color_picker.color
 	if ThemeManager.active_theme:
 		(func():
 			background_shader.material.set_shader_parameter("text_color", ThemeManager.active_theme.text)
@@ -319,6 +323,7 @@ func serialize_or_new() -> void:
 		Settings["state/last_opened_filepath"] = filepath[0]
 	serialize(FileAccess.open(filepath[0], FileAccess.WRITE))
 
+const TEXT_FORMAT_HEADER = "SUNFISH_TEXT_SAVE\n"
 
 func serialize(
 		file: FileAccess = FileAccess.open(
@@ -326,25 +331,36 @@ func serialize(
 			FileAccess.WRITE
 		)
 	) -> void:
-	var json := var_to_bytes({
+	var json := {
 		"xform": draw_xform,
 		"element_undo_offset": element_undo_offset,
 		"elements": WhiteboardManager.serialize(elements),
 		"tool_data": _tool_data,
-	})
-	var json_compressed := json.compress(FileAccess.COMPRESSION_ZSTD)
-	var arr := PackedByteArray()
-	arr.resize(8)
-	arr.encode_u64(0, json.size())
-	file.store_buffer(arr)
-	file.store_buffer(json_compressed)
+	}
+	if Settings["core/use_text_save_format"]:
+		file.store_string(TEXT_FORMAT_HEADER)
+		file.store_string(var_to_str(json))
+	else:
+		var json_bytes := var_to_bytes(json)
+		var json_compressed := json_bytes.compress(FileAccess.COMPRESSION_ZSTD)
+		var arr := PackedByteArray()
+		arr.resize(8)
+		arr.encode_u64(0, json_bytes.size())
+		file.store_buffer(arr)
+		file.store_buffer(json_compressed)
 	WhiteboardBus.save_status_changed.emit(true)
 
 
 func deserialize(file: FileAccess) -> void:
-	var json_size := file.get_buffer(8).decode_u64(0)
-	var json_compressed: PackedByteArray = file.get_buffer(file.get_length() - file.get_position())
-	var data = bytes_to_var(json_compressed.decompress(json_size, FileAccess.COMPRESSION_ZSTD))
+	var is_string_format := file.get_buffer(TEXT_FORMAT_HEADER.length()).get_string_from_utf8() == TEXT_FORMAT_HEADER
+	file.seek(0)
+	var data
+	if is_string_format:
+		data = str_to_var(file.get_as_text().substr(TEXT_FORMAT_HEADER.length()))
+	else:
+		var json_size := file.get_buffer(8).decode_u64(0)
+		var json_compressed: PackedByteArray = file.get_buffer(file.get_length() - file.get_position())
+		data = bytes_to_var(json_compressed.decompress(json_size, FileAccess.COMPRESSION_ZSTD))
 	reset()
 	elements = WhiteboardManager.deserialize(data.elements)
 	for element_index in elements.size():
@@ -397,6 +413,14 @@ func calculate_brush_size(brush_size: float, use_screen_space_size: bool) -> flo
 	return brush_size / draw_scale if use_screen_space_size else brush_size
 
 
+func get_color(color) -> Color:
+	if color is Color:
+		return color
+	if color is int:
+		return color_picker.get_swatches()[color]
+	return Color()
+
+
 class PreviewControl extends Node2D:
 	var wb: Whiteboard
 
@@ -415,6 +439,8 @@ class ElementLayer extends Node2D:
 		if what == NOTIFICATION_FREE_INVISIBLE:
 			if not _is_visible():
 				queue_free()
+		if what == NOTIFICATION_PROPAGATE_REDRAW:
+			queue_redraw()
 
 	func _is_visible() -> bool:
 		return index < whiteboard.elements.size() - whiteboard.element_undo_offset
