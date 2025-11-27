@@ -24,8 +24,8 @@ var local_path := OS.get_user_data_dir().path_join("state.tres")
 @onready var _shortcut_search_event: EventInput = %ShortcutSearchEvent
 @onready var _tab_container: TabContainer = %TabContainer
 
-
-var _config_data: Dictionary[StringName, ConfigurationData]
+## Map of [StringName] IDs to the ["scripts/autoload/settings/settings.gd".ConfigurationData].
+var config_data: Dictionary[StringName, ConfigurationData]
 var _signals: Dictionary[StringName, Signal]
 
 
@@ -38,7 +38,7 @@ func _ready() -> void:
 	_reload_settings(deserialized_settings)
 	_shortcut_search_text.text_changed.connect(_emit_shortcut_search_changed)
 	_shortcut_search_event.event_changed.connect(_emit_shortcut_search_changed)
-	_settings_container.add_child(_config_data["core"].control)
+	_settings_container.add_child(config_data["core"].control)
 
 
 func _load(path: String) -> _SettingsSerializer:
@@ -58,12 +58,12 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _reload_settings(serialized_data: Dictionary[StringName, Dictionary]) -> void:
 	const EMPTY_DATA: Dictionary[StringName, Variant] = {}
-	for key in _config_data:
-		var data := _config_data[key]
+	for key in config_data:
+		var data := config_data[key]
 		data.control.queue_free()
 	for child in _shortcut_container.get_children():
 		child.queue_free()
-	_config_data.clear()
+	config_data.clear()
 	_tree.clear()
 	var root := _tree.create_item()
 	for config in PluginManager.configurations:
@@ -84,7 +84,7 @@ func _create_settings_for(parent: TreeItem, config: Configuration, serialized_da
 	var data := ConfigurationData.new()
 	data.config = config
 	data.control = grid_container
-	_config_data[id] = data
+	config_data[id] = data
 	for property in config.get_property_list():
 		var property_usage: PropertyUsageFlags = property.usage
 		if _SettingsSerializer.get_serialization_mode(property) <= _SettingsSerializer.SerializationMode.NONE:
@@ -206,8 +206,8 @@ func get_safe(property: StringName) -> Array[Variant]:
 	var data := property.split("/", true, 2)
 	if data.size() != 2:
 		return []
-	if data[0] in _config_data:
-		return [_config_data[data[0]].config.get(data[1])]
+	if data[0] in config_data:
+		return [config_data[data[0]].config.get(data[1])]
 	return []
 
 ## Returns [param property] or [param default] if it doesn't exist.
@@ -220,8 +220,8 @@ func _set(property: StringName, value: Variant) -> bool:
 	var data := property.split("/", true, 2)
 	if data.size() != 2:
 		return false
-	if data[0] in _config_data:
-		_config_data[data[0]].set_value(data[1], value)
+	if data[0] in config_data:
+		config_data[data[0]].set_value(data[1], value)
 		serialize.call_deferred()
 		any_setting_changed.emit(property, value)
 		_emit_value_changed(property, value)
@@ -233,7 +233,7 @@ func has(property: StringName) -> bool:
 	var data := property.split("/", true, 2)
 	if data.size() != 2:
 		return false
-	return data[0] in _config_data and data[1] in _config_data[data[0]].config
+	return data[0] in config_data and data[1] in config_data[data[0]].config
 
 
 func _emit_value_changed(property_key: StringName, new_value) -> void:
@@ -246,7 +246,7 @@ func _on_tree_item_selected() -> void:
 	var id: String = item.get_metadata(0)
 	if _settings_container.get_child_count() > 0:
 		_settings_container.remove_child(_settings_container.get_child(0))
-	_settings_container.add_child(_config_data[id].control)
+	_settings_container.add_child(config_data[id].control)
 
 ## Force-saves the settings.
 func serialize() -> void:
