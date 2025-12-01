@@ -116,6 +116,7 @@ func _render_screenshot(copy: bool) -> void:
 	if rect.size == Vector2.ZERO:
 		return
 	var vp := SubViewport.new()
+	vp.world_2d = whiteboard.viewport.find_world_2d()
 	@warning_ignore("unused_variable")
 	var vp_queue_free_defer := Defer.new(vp.queue_free)
 	TreeEvents.add_child(vp)
@@ -124,12 +125,6 @@ func _render_screenshot(copy: bool) -> void:
 	vp.size = pixel_resolution
 	vp.canvas_transform = Transform2D(0.0, -rect.position).scaled(Vector2.ONE * scaling_factor)
 	vp.render_target_update_mode = SubViewport.UPDATE_ONCE
-	for el_index in whiteboard.elements.size():
-		var layer := Whiteboard.ElementLayer.new()
-		layer.whiteboard = whiteboard
-		layer.index = el_index
-		vp.add_child(layer)
-		layer.queue_redraw()
 	await RenderingServer.frame_post_draw
 	var vp_tex := vp.get_texture()
 	var vp_image := vp_tex.get_image()

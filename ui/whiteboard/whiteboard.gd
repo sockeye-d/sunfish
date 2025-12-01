@@ -338,7 +338,7 @@ func serialize(
 		"tool_data": _tool_data,
 	}
 	if Settings["core/use_text_save_format"]:
-		file.store_string(TEXT_FORMAT_HEADER)
+		file.store_buffer(TEXT_FORMAT_HEADER.to_ascii_buffer())
 		file.store_string(var_to_str(json))
 	else:
 		var json_bytes := var_to_bytes(json)
@@ -352,7 +352,7 @@ func serialize(
 
 
 func deserialize(file: FileAccess) -> void:
-	var is_string_format := file.get_buffer(TEXT_FORMAT_HEADER.length()).get_string_from_utf8() == TEXT_FORMAT_HEADER
+	var is_string_format := file.get_buffer(TEXT_FORMAT_HEADER.length()).get_string_from_ascii() == TEXT_FORMAT_HEADER
 	file.seek(0)
 	var data
 	if is_string_format:

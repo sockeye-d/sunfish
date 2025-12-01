@@ -31,6 +31,9 @@ var hsv_color: Vector3:
 	set(value):
 		swatch = value
 		if value >= 0:
+			if value >= _swatches.size():
+				swatch = -1
+				return
 			_is_swatch = true
 			hsv_color = Vector3(_swatches[value].h, _swatches[value].s, _swatches[value].v)
 			color_changed.emit(swatch)

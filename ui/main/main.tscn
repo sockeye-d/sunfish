@@ -118,6 +118,7 @@ unique_name_in_owner = true
 layout_mode = 2
 script = ExtResource("7_qbxjj")
 color = Color(0.8039216, 0.8392157, 0.95686275, 1)
+swatch = 0
 metadata/_custom_type_script = "uid://bwc2gp0rut4nn"
 
 [node name="Inspector" parent="MarginContainer/VBoxContainer/BoxContainer/SplitContainer/SplitContainer" unique_id=1204817970 node_paths=PackedStringArray("whiteboard") instance=ExtResource("7_06s8x")]
