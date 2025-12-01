@@ -157,16 +157,14 @@ func _render_screenshot(copy: bool) -> void:
 	output_format.usage_bits = RenderingDevice.TEXTURE_USAGE_STORAGE_BIT | RenderingDevice.TEXTURE_USAGE_CAN_COPY_FROM_BIT
 
 	var output_rid := rd.texture_create(output_format, RDTextureView.new())
-	@warning_ignore("unused_variable")
-	var output_rid_defer := Defer.new(rd.free_rid.bind(output_rid))
+	rd.free_rid.call_deferred(output_rid)
 
 	var viewport_uniform := RDUniform.new()
 	viewport_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_IMAGE
 	viewport_uniform.binding = 0
 	var viewport_image := rd.texture_create(viewport_format, RDTextureView.new(), [vp_image.get_data()])
 	viewport_uniform.add_id(viewport_image)
-	@warning_ignore("unused_variable")
-	var viewport_image_defer := Defer.new(rd.free_rid.bind(viewport_image))
+	rd.free_rid.call_deferred(viewport_image)
 
 	var output_uniform := RDUniform.new()
 	output_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_IMAGE
@@ -177,8 +175,7 @@ func _render_screenshot(copy: bool) -> void:
 	var bg_color_bytes := PackedFloat32Array([bg_color.r, bg_color.g, bg_color.b, 0.0]).to_byte_array()
 
 	var bg_color_buffer := rd.uniform_buffer_create(bg_color_bytes.size(), bg_color_bytes)
-	@warning_ignore("unused_variable")
-	var bg_color_buffer_defer := Defer.new(rd.free_rid.bind(bg_color_buffer))
+	rd.free_rid.call_deferred(bg_color_buffer)
 
 	var bg_color_uniform := RDUniform.new()
 	bg_color_uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_UNIFORM_BUFFER
@@ -186,12 +183,10 @@ func _render_screenshot(copy: bool) -> void:
 	bg_color_uniform.add_id(bg_color_buffer)
 
 	var pipeline := rd.compute_pipeline_create(shader)
-	@warning_ignore("unused_variable")
-	var pipeline_defer := Defer.new(rd.free_rid.bind(pipeline))
+	rd.free_rid.call_deferred(pipeline)
 	var compute_list := rd.compute_list_begin()
 	rd.compute_list_bind_compute_pipeline(compute_list, pipeline)
 	var uniform_set := rd.uniform_set_create([viewport_uniform, output_uniform, bg_color_uniform], shader, 0)
-	@warning_ignore("unused_variable")
 	rd.compute_list_bind_uniform_set(compute_list, uniform_set, 0)
 	rd.compute_list_dispatch(compute_list, vp.size.x, vp.size.y, 1)
 	rd.compute_list_end()
