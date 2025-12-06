@@ -215,7 +215,7 @@ func _gui_input(e: InputEvent) -> void:
 			if e.is_match(Settings[WhiteboardManager._radial_popups[popup]]):
 				popup.center_pos = get_global_mouse_position()
 				popup.mouse_pos = Vector2.ZERO
-				popup.popup(get_viewport_rect())
+				popup.popup()
 				accept_event()
 				return
 	if e.is_match(Settings["shortcuts/undo"]) and e.is_pressed() and e.is_echo():

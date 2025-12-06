@@ -43,11 +43,10 @@ class ColorPopup extends RadialPopup:
 		var stylebox := StyleBoxFlat.new()
 		func is_enabled() -> bool: return true
 		func get_size() -> Vector2: return Vector2(50.0, 50.0)
-		func draw(canvas: Control, rect: Rect2, highlight_factor: float) -> void:
+		func draw(canvas: Control, rect: Rect2, highlight_factor: float, opacity: float) -> void:
 			Util.unused(highlight_factor)
 			stylebox.set_corner_radius_all(13)
-			stylebox.bg_color = color
-			#canvas.draw_rect(rect, color)
+			stylebox.bg_color = Color(color, opacity)
 			stylebox.draw(canvas.get_canvas_item(), rect)
 
 	func should_hide(event: InputEvent) -> bool:

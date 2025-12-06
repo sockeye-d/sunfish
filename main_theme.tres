@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=129 format=3 uid="uid://6m1sumf80mct"]
+[gd_resource type="Theme" format=3 uid="uid://6m1sumf80mct"]
 
 [ext_resource type="FontFile" uid="uid://cm1owo44e6kug" path="res://assets/fonts/LiberationSans-Regular.ttf" id="1_470mv"]
 [ext_resource type="Script" uid="uid://cg1d5ghvrv5un" path="res://scripts/resources/icon_texture_2d.gd" id="1_a2l2q"]

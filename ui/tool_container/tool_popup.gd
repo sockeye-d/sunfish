@@ -6,7 +6,6 @@ var selected_tools: Array[Script]
 
 
 func _ready() -> void:
-	super()
 	Settings.setting_changed("core/tool_layout").connect(update_tools)
 
 
@@ -41,8 +40,8 @@ class ToolItem extends Item:
 
 	func get_size() -> Vector2: return icon.get_size()
 
-	func draw(canvas: Control, rect: Rect2, highlight_factor: float) -> void:
+	func draw(canvas: Control, rect: Rect2, highlight_factor: float, opacity: float) -> void:
 		canvas.draw_texture_rect(
 			icon, rect, false,
-			Color.WHITE.lerp(ThemeManager.active_theme.accent_0, highlight_factor) if is_enabled() else Color(1, 1, 1, 0.5)
+			(Color.WHITE.lerp(ThemeManager.active_theme.accent_0, highlight_factor) if is_enabled() else Color(1, 1, 1, 0.5)) * Color(1, 1, 1, opacity)
 		)
