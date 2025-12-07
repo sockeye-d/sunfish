@@ -58,6 +58,7 @@ env:
     module_openxr_enabled=no
     module_text_server_adv_enabled=no
     opengl3=no
+    d3d12=no
   # Links
   GODOT_REPO: https://github.com/godotengine/godot.git
   ANGLE_DOWNLOAD_BASE_URL: https://github.com/godotengine/godot-angle-static/releases/download/chromium%2F6601.2/godot-angle-static

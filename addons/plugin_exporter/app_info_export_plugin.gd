@@ -16,8 +16,6 @@ func _get_customization_configuration_hash() -> int:
 
 
 func _customize_resource(resource: Resource, path: String) -> Resource:
-	if not resource.resource_path.is_empty():
-		print(resource.resource_path)
 	if path == "res://app_info.tres" and resource is AppInfoContainer:
 		resource.git_hash = resource.git_hash
 		return resource

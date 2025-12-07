@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://cx6dyh7jcf7hi"]
+[gd_scene format=3 uid="uid://cx6dyh7jcf7hi"]
 
 [ext_resource type="Script" uid="uid://bm64ce6hhghy" path="res://scripts/autoload/settings/settings.gd" id="1_nlfgh"]
 [ext_resource type="Script" uid="uid://cyewsxvhxivf" path="res://scripts/event_input.gd" id="2_5o5ow"]
@@ -32,6 +32,7 @@ current_tab = 1
 [node name="Settings" type="SplitContainer" parent="MarginContainer/TabContainer" unique_id=1735345592]
 visible = false
 layout_mode = 2
+split_offsets = PackedInt32Array(300)
 split_offset = 300
 metadata/_tab_index = 0
 
