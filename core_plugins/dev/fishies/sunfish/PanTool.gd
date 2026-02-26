@@ -2,6 +2,8 @@ extends WhiteboardTool
 
 var is_dragging: bool = false
 var drag_start_pos: Vector2
+var last_mouse_pos: Vector2
+var last_was_mag: bool = false
 
 
 static func _static_init() -> void:
@@ -51,7 +53,8 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> WhiteboardTool.Display:
 					pan(wb, factor, -80.0, +00.0)
 					wb.accept_event()
 	var mm := event as InputEventMouseMotion
-	if mm:
+	if mm and not wb.is_echoed_input:
+		last_mouse_pos = mm.position
 		if is_dragging:
 			cursor_shape = Control.CURSOR_DRAG
 			if mm.ctrl_pressed:
@@ -64,6 +67,8 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> WhiteboardTool.Display:
 		var delta := pg.delta
 		if pg.alt_pressed:
 			delta *= 3.0
+		if last_was_mag:
+			delta = -delta * 0.1
 		if pg.ctrl_pressed:
 			zoom(wb, pg.position, exp(-delta.y * 0.1))
 		else:
@@ -71,6 +76,8 @@ func receive_input(wb: Whiteboard, event: InputEvent) -> WhiteboardTool.Display:
 		wb.accept_event()
 	var zg := event as InputEventMagnifyGesture
 	if zg:
+		last_was_mag = true
+		set_deferred("last_was_mag", false)
 		zoom(wb, zg.position, zg.factor)
 	return Display.new().with_cursor_shape(cursor_shape)
 

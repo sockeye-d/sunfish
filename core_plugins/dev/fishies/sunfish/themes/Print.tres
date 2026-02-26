@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="ThemeColors" format=3 uid="uid://crnw0ewox3brx"]
+
+[ext_resource type="Script" uid="uid://54gqboo3cmcx" path="res://scripts/resources/theme_colors.gd" id="1_5luua"]
+
+[resource]
+script = ExtResource("1_5luua")
+background_0 = Color(1, 1, 1, 1)
+background_1 = Color(0.78974324, 0.80810934, 0.87239075, 1)
+background_2 = Color(0.71432304, 0.73093516, 0.78907776, 1)
+surface = Color(0.6745098, 0.6901961, 0.74509805, 1)
+surface_hover = Color(0.7372549, 0.7529412, 0.8, 1)
+surface_press = Color(0.8, 0.8156863, 0.85490197, 1)
+overlay = Color(0.4862745, 0.49803922, 0.5764706, 1)
+overlay_hover = Color(0.54901963, 0.56078434, 0.6313726, 1)
+overlay_press = Color(0.6117647, 0.627451, 0.6901961, 1)
+subtext = Color(0.15966849, 0.16487506, 0.20652771, 1)
+accent_0 = Color(0.53333336, 0.22352941, 0.9372549, 1)
+accent_1 = Color(0.11764706, 0.4, 0.9607843, 1)
+error = Color(0.8235294, 0.05882353, 0.22352941, 1)
+warning = Color(0.8745098, 0.5568628, 0.11372549, 1)
+success = Color(0.2509804, 0.627451, 0.16862746, 1)
+id = "dev.fishies.sunfish.themes.Print"
+name = "Print"
+metadata/_custom_type_script = "uid://54gqboo3cmcx"

@@ -18,6 +18,8 @@ var is_drawing: bool
 
 var draw_xform: Transform2D:
 	set(value):
+		if value.is_equal_approx(draw_xform):
+			return
 		draw_xform = value
 		inv_draw_xform = draw_xform.affine_inverse()
 		draw_scale = draw_xform.get_scale().length() / sqrt(2.0)
@@ -27,6 +29,7 @@ var draw_xform: Transform2D:
 			viewport.canvas_transform = draw_xform * Settings["display/ui_scale"]
 		save.call_deferred()
 		redraw_preview()
+		_queue_resend_mouse_motion()
 var inv_draw_xform: Transform2D
 var draw_scale: float
 var draw_origin: Vector2
@@ -197,13 +200,20 @@ func _ready() -> void:
 	WhiteboardManager.intialize_passive_tools(self)
 
 
+var is_echoed_input := false
 var _preview_draw_twice := false
 var _static_preview_draw_twice := false
-func _gui_input(e: InputEvent) -> void:
+var _last_mouse_motion_event: InputEventMouseMotion = null
+func _gui_input(e: InputEvent, not_echoed: bool = true) -> void:
 	if DebugManager.print_whiteboard_inputs:
 		print(e)
 	if e is InputEventMouseMotion and not has_focus():
 		grab_focus()
+	if e is InputEventMouseMotion and not_echoed:
+		_last_mouse_motion_event = e
+	#if not not_echoed:
+		#_last_mouse_motion_event = null
+	is_echoed_input = not not_echoed
 	var new_preview_elements: Array[WhiteboardTool.PreviewElement]
 	var new_static_preview_elements: Array[WhiteboardTool.StaticPreviewElement]
 	var tools: Array[WhiteboardTool]
@@ -226,9 +236,10 @@ func _gui_input(e: InputEvent) -> void:
 		redo()
 		accept_event()
 		return
+	var input_xform := draw_xform.affine_inverse()
 	for tool in tools:
 		@warning_ignore("redundant_await") # I don't know why it thinks this isn't a coroutine
-		var tool_output := await tool.receive_input(self, e.xformed_by((draw_xform).affine_inverse()))
+		var tool_output := await tool.receive_input(self, e.xformed_by(input_xform))
 		if tool_output == null:
 			continue
 
@@ -261,6 +272,21 @@ func _gui_input(e: InputEvent) -> void:
 		_static_preview_draw_twice = not static_preview_elements.is_empty()
 		queue_redraw()
 	mouse_default_cursor_shape = cursor_shape
+
+
+var _queued_resend_mouse_motion: bool = false
+func _queue_resend_mouse_motion() -> void:
+	if _queued_resend_mouse_motion:
+		return
+	_queued_resend_mouse_motion = true
+	_resend_mouse_motion.call_deferred()
+
+
+func _resend_mouse_motion() -> void:
+	_queued_resend_mouse_motion = false
+	if _last_mouse_motion_event == null: return
+	_gui_input(_last_mouse_motion_event, false)
+	#_last_mouse_motion_event = null
 
 
 func _draw() -> void:

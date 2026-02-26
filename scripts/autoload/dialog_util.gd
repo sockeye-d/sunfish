@@ -6,7 +6,6 @@ func open_file_dialog(filters: PackedStringArray, mode: FileDialog.FileMode, sta
 	var handle := FileDialogHandle.new()
 	add_child(fd)
 	fd.use_native_dialog = true
-	print(Settings["state/last_filedialog_path"])
 	fd.current_dir = Settings["state/last_filedialog_path"] if start_path.is_empty() else start_path
 	fd.current_path = fd.current_dir
 	if not filters.is_empty() and start_file.is_empty():
